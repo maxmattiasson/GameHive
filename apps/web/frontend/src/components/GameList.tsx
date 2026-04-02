@@ -8,10 +8,17 @@ export function GameList() {
   if (error) return <p>Error: {error} </p>;
 
   return (
-    <ul>
+    <div>
       {data.map((game) => (
-        <li key={game._id}>{game.title}</li>
+        <article key={game._id}>
+          <h3>{game.title}</h3>
+          <p>{game.genre}</p>
+          {game.multiplayer && <p>Multiplayer</p>}
+          <p>
+            Released {game.created} by {game.dev}
+          </p>
+        </article>
       ))}
-    </ul>
+    </div>
   );
 }
