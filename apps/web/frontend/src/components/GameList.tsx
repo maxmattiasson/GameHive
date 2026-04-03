@@ -1,4 +1,5 @@
 import { useGames } from "../hooks/useGames";
+import { GameCard } from "./GameCard";
 
 export function GameList() {
   const { data, loading, error } = useGames();
@@ -10,14 +11,7 @@ export function GameList() {
   return (
     <div>
       {data.map((game) => (
-        <article key={game._id}>
-          <h3>{game.title}</h3>
-          <p>{game.genre}</p>
-          {game.multiplayer && <p>Multiplayer</p>}
-          <p>
-            Released {game.created} by {game.dev}
-          </p>
-        </article>
+        <GameCard key={game._id} game={game} />
       ))}
     </div>
   );
