@@ -1,5 +1,5 @@
 import "./App.css";
-import { GameList } from "./components/GameList";
+import { GameList } from "./components/games/GameList";
 
 function App() {
   return (
@@ -13,7 +13,9 @@ function App() {
       >
         Eyyoo
       </h1>
-      <GameList />
+      <div className="center">
+        <GameList limit={3} />
+      </div>
     </>
   );
 }

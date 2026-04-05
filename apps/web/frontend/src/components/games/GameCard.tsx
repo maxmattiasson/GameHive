@@ -1,4 +1,5 @@
-import type { Game } from "../types/game";
+import type { Game } from "../../types/game";
+import { Badge } from "../ui/Badge";
 import "./GameCard.css";
 
 interface Props {
@@ -9,7 +10,10 @@ export function GameCard({ game }: Props) {
   return (
     <div className="game-card-small">
       <div>
-        <img src="https://picsum.photos/300/200" alt="Game Cover" />
+        <img
+          src="https://gaming-cdn.com/images/products/20970/616x353/mimesis-pc-steam-cover.jpg?v=1761750647"
+          alt="Game Cover"
+        />
       </div>
       <div className="inner">
         <h3>{game.title}</h3>
@@ -18,8 +22,10 @@ export function GameCard({ game }: Props) {
           explicabo!
         </p>
         <p>{game.created}</p>
-        <p>{game.genre}</p>
-        <p>{game.multiplayer}</p>
+        <div className="badges">
+          <Badge label={game.genre} />
+          {game.multiplayer && <Badge label="Multiplayer" />}
+        </div>
         <a href="">View Game</a>
       </div>
     </div>
