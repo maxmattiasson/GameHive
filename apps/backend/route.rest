@@ -1,2 +1,25 @@
-GET http://localhost:3000/api/games/title/mimesis
+### Alla spel
+GET http://localhost:3000/api/games
 
+### Sök på titel
+GET http://localhost:3000/api/games?title=zelda
+
+### Kombinerad sökning
+GET http://localhost:3000/api/games?genre=horror&multiplayer:true
+
+### Radera spel via Id
+
+DELETE http://localhost:3000/api/games/69ca9ac0f2f9adcf1c75ad7c
+
+### Lägg till spel
+
+POST http://localhost:3000/api
+Content-Type: application/json
+
+{
+    "title": "Mimesis",
+    "created": 2025,
+    "dev": "idk",
+    "genre": "Horror",
+    "multiplayer": true
+}
