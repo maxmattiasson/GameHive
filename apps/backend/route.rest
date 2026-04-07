@@ -9,11 +9,11 @@ GET http://localhost:3000/api/games?genre=horror&multiplayer:true
 
 ### Radera spel via Id
 
-DELETE http://localhost:3000/api/games/69ca9ac0f2f9adcf1c75ad7c
+DELETE http://localhost:3000/api/games/69d4fd11959948c3e095fbd5
 
 ### Lägg till spel
 
-POST http://localhost:3000/api
+POST http://localhost:3000/api/games
 Content-Type: application/json
 
 {

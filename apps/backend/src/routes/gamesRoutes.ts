@@ -31,7 +31,7 @@ router.get("/games", async (req, res) => {
 });
 
 // Lägg till spel
-router.post("/", async (req, res) => {
+router.post("/games", async (req, res) => {
   console.log("funkar?");
 
   const game = new Game({
