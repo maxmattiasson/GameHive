@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { NextFunction, Router, Request, Response } from "express";
 import Game from "../models/Game.js";
 
 const router = Router();
@@ -50,11 +50,11 @@ router.post("/games", async (req, res) => {
 });
 
 // Radera spel via id
-router.delete("/games/:id", async (req, res) => {
-  console.log("funkar?");
+router.delete("/games/:id", getGame, async (req, res) => {
+  // console.log("funkar?");
 
   try {
-    const deletedGame = await Game.findByIdAndDelete(req.params.id);
+    const deletedGame = await Game.findById(req.params.id);
 
     if (!deletedGame) {
       return res.status(404).json({ message: "Inget spel hittades" });
@@ -69,5 +69,19 @@ router.delete("/games/:id", async (req, res) => {
       .json({ message: "Fel vid borttagning av spel", error });
   }
 });
+
+// Middleware för id hantering
+async function getGame(req: Request, res: Response, next: NextFunction) {
+  try {
+    const game = await Game.findById(req.params.id);
+    if (!game) {
+      return res.status(404).json({ message: "inget spel hittades" });
+    }
+    res.locals.game = game;
+    next();
+  } catch (error) {
+    next(error);
+  }
+}
 
 export default router;
