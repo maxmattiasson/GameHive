@@ -9,7 +9,7 @@ GET http://localhost:3000/api/games?genre=horror&multiplayer:true
 
 ### Radera spel via Id
 
-DELETE http://localhost:3000/api/games/69d4fd11959948c3e095fbd5
+DELETE http://localhost:3000/api/games/69d6a891c45137184e82080
 
 ### Lägg till spel
 
@@ -23,3 +23,6 @@ Content-Type: application/json
     "genre": "Horror",
     "multiplayer": true
 }
+
+### Test global errorMiddleware (invalid ObjectId)
+DELETE http://localhost:3000/api/games/not-a-valid-id

@@ -1,10 +1,11 @@
-import { NextFunction, Router, Request, Response } from "express";
+import { Router } from "express";
 import Game from "../models/Game.js";
+import getGame from "../middleware/idMiddleware.js";
 
 const router = Router();
 
 // lista spel med title, genre, created, dev och multiplayer
-router.get("/games", async (req, res) => {
+router.get("/games", async (req, res, next) => {
   console.log("funkar?");
   try {
     const { title, genre, created, dev, multiplayer } = req.query as {
@@ -26,12 +27,12 @@ router.get("/games", async (req, res) => {
     const games = await Game.find(filter);
     res.json(games);
   } catch (error) {
-    res.status(500).json({ message: "Fel vid hämntning av spel", error });
+    next(error);
   }
 });
 
 // Lägg till spel
-router.post("/games", async (req, res) => {
+router.post("/games", async (req, res, next) => {
   console.log("funkar?");
 
   const game = new Game({
@@ -45,43 +46,19 @@ router.post("/games", async (req, res) => {
     const newGame = await game.save();
     res.status(201).json(newGame);
   } catch (error) {
-    res.status(400).json({ message: "De gick inte" });
+    next(error);
   }
 });
 
 // Radera spel via id
-router.delete("/games/:id", getGame, async (req, res) => {
-  // console.log("funkar?");
-
+router.delete("/games/:id", getGame, async (req, res, next) => {
   try {
-    const deletedGame = await Game.findById(req.params.id);
-
-    if (!deletedGame) {
-      return res.status(404).json({ message: "Inget spel hittades" });
-    }
-
-    return res
-      .status(200)
-      .json({ message: "Spelet togs bort", game: deletedGame });
-  } catch (error) {
-    return res
-      .status(500)
-      .json({ message: "Fel vid borttagning av spel", error });
-  }
-});
-
-// Middleware för id hantering
-async function getGame(req: Request, res: Response, next: NextFunction) {
-  try {
-    const game = await Game.findById(req.params.id);
-    if (!game) {
-      return res.status(404).json({ message: "inget spel hittades" });
-    }
-    res.locals.game = game;
-    next();
+    const game = res.locals.game;
+    await game.deleteOne();
+    return res.status(200).json({ message: "Spelet togs bort", game });
   } catch (error) {
     next(error);
   }
-}
+});
 
 export default router;
