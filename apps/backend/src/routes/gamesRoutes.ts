@@ -4,7 +4,7 @@ import getGame from "../middleware/idMiddleware.js";
 
 const router = Router();
 
-// lista spel med title, genre, created, dev och multiplayer
+// lista alla spel med title, genre, created, dev och multiplayer
 router.get("/games", async (req, res, next) => {
   console.log("funkar?");
   try {
@@ -31,6 +31,8 @@ router.get("/games", async (req, res, next) => {
   }
 });
 
+// GET:Id
+
 // Lägg till spel
 router.post("/games", async (req, res, next) => {
   console.log("funkar?");
@@ -49,6 +51,8 @@ router.post("/games", async (req, res, next) => {
     next(error);
   }
 });
+
+// PATCH
 
 // Radera spel via id
 router.delete("/games/:id", getGame, async (req, res, next) => {

@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import { connectDB } from "./config/db.js";
 import gamesRoutes from "./routes/gamesRoutes.js";
 import { errorMiddleware } from "./middleware/errorMiddleware.js";
+import { notFoundMiddleware } from "./middleware/notFoundMiddleware.js";
 
 dotenv.config();
 
@@ -18,7 +19,8 @@ app.get("/", (req, res) => {
   res.send("funking tjoho");
 });
 
-app.use(errorMiddleware);
+app.use(notFoundMiddleware); // för okända paths
+app.use(errorMiddleware); // för fel i routes
 
 async function main() {
   await connectDB();
