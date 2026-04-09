@@ -1,7 +1,8 @@
 import bcrypt from "bcrypt";
 import UserModel from "../models/User.js";
+import { Request, Response } from "express";
 
-export const signup = async (req, res) => {
+export const signup = async (req: Request, res: Response) => {
     
     try {
     const { username, email, password }= req.body;
@@ -12,7 +13,7 @@ export const signup = async (req, res) => {
         })
     }
 
-    const existingUser = await UserModel.findOne({ email })
+    const existingUser = await UserModel.findOne({ email: email.toLowerCase() })
     if (existingUser) {
         return res.status(400).json({ message: "User already exists"})
     }
@@ -22,12 +23,12 @@ export const signup = async (req, res) => {
     const user = new UserModel ({
         username,
         passwordHash,
-        email,
+        email: email.toLowerCase(),
     });
 
     await user.save();
 
-    res.status(200).json({ 
+    res.status(201).json({ 
         message: "User created",
         user: {
             id: user._id,
@@ -36,6 +37,7 @@ export const signup = async (req, res) => {
         }
      })
     } catch (err) {
+        console.error(err);
         res.status(500).json({ message: "Server error"})
     }
 }
