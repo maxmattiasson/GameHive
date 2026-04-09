@@ -32,6 +32,12 @@ router.get("/games", async (req, res, next) => {
 });
 
 // GET:Id
+// Sök spel med mongo id
+router.get("/games/:id", getGame, (req, res) => {
+  console.log("hallåhej");
+
+  return res.status(200).json(res.locals.game);
+});
 
 // Lägg till spel
 router.post("/games", async (req, res, next) => {
@@ -53,6 +59,24 @@ router.post("/games", async (req, res, next) => {
 });
 
 // PATCH
+//Hämtar spel med id, uppdaterar fält som skickas in i body.
+router.patch("/games/:id", getGame, async (req, res, next) => {
+  try {
+    const game = res.locals.game;
+
+    if (req.body.title !== undefined) game.title = req.body.title;
+    if (req.body.created !== undefined) game.created = req.body.created;
+    if (req.body.dev !== undefined) game.dev = req.body.dev;
+    if (req.body.genre !== undefined) game.genre = req.body.genre;
+    if (req.body.multiplayer !== undefined)
+      game.multiplayer = req.body.multiplayer;
+
+    const updatedGame = await game.save();
+    return res.status(200).json(updatedGame);
+  } catch (error) {
+    next(error);
+  }
+});
 
 // Radera spel via id
 router.delete("/games/:id", getGame, async (req, res, next) => {
