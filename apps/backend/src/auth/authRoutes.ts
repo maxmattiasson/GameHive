@@ -1,7 +1,12 @@
-import { Request, Response, Router } from "express";
-import UserModel from "../models/User.js";
-
+import { Router } from "express";
+import { login, signup } from "./authController.js" 
+ 
 const router = Router();
+
+router.post("/login", login);
+router.post("/signup", signup);
+
+export default router;
 
 // router.get("/", async (req, res) => {
 //     try {
