@@ -6,6 +6,8 @@ import gamesRoutes from "./routes/gamesRoutes.js";
 import rawgRoutes from "./routes/rawgRoutes.js"
 import authRoutes from "./auth/authRoutes.js"
 
+import { errorMiddleware } from "./middleware/errorMiddleware.js";
+import { notFoundMiddleware } from "./middleware/notFoundMiddleware.js";
 
 dotenv.config();
 
@@ -22,11 +24,14 @@ app.get("/", (req, res) => {
   res.send("funking tjoho");
 });
 
-async function main(){
+app.use(notFoundMiddleware); // för okända paths
+app.use(errorMiddleware); // för fel i routes
+
+async function main() {
   await connectDB();
   app.listen(3000, () => {
-  console.log("Server running on http://localhost:3000");
-})
-};
+    console.log("Server running on http://localhost:3000");
+  });
+}
 
-main()
+main();
