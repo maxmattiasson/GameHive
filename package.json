@@ -11,7 +11,7 @@
     "concurrently": "^9.2.1"
   },
   "scripts": {
-    "dev:web": "npm run dev -w gamehive",
+    "dev:web": "npm run dev -w @gamehive/web",
     "dev:backend": "npm run dev -w @gamehive/backend",
     "dev:both": "concurrently \"npm run dev:web\" \"npm run dev:backend\""
   }
