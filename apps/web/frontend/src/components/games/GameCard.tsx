@@ -21,9 +21,11 @@ export function GameCard({ game }: Props) {
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt,
           explicabo!
         </p>
-        <p>{game.created}</p>
+        <p>{game.release.toString()}</p>
         <div className="badges">
-          <Badge label={game.genre} />
+          {game.genres.map((genre) => (
+            <Badge key={genre} label={genre} />
+          ))}
           {game.multiplayer && <Badge label="Multiplayer" />}
         </div>
         <a href="">View Game</a>
