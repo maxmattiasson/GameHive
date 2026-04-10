@@ -3,7 +3,7 @@ import { Game } from "../types/gameType.js";
 export const games: Game[] = [
   {
     title: "Tetris",
-    release: "1988-06-06",
+    release: new Date("1988-06-06"),
     dev: "Alexey Pajitnov",
     genres: ["Puzzle"],
     platforms: ["Multi"],
@@ -15,7 +15,7 @@ export const games: Game[] = [
   },
   {
     title: "Minecraft",
-    release: "2011-11-18",
+    release: new Date("2011-11-18"),
     dev: "Mojang Studios",
     genres: ["Sandbox", "Survival"],
     platforms: ["Multi"],
@@ -27,7 +27,7 @@ export const games: Game[] = [
   },
   {
     title: "Grand Theft Auto V",
-    release: "2013-09-17",
+    release: new Date("2013-09-17"),
     dev: "Rockstar North",
     genres: ["Action-adventure"],
     platforms: ["Multi"],
@@ -39,7 +39,7 @@ export const games: Game[] = [
   },
   {
     title: "Wii Sports",
-    release: "2006-11-19",
+    release: new Date("2006-11-19"),
     dev: "Nintendo EAD",
     genres: ["Sports"],
     platforms: ["Wii"],
@@ -51,7 +51,7 @@ export const games: Game[] = [
   },
   {
     title: "Red Dead Redemption 2",
-    release: "2018-10-26",
+    release: new Date("2018-10-26"),
     dev: "Rockstar Games",
     genres: ["Action-adventure"],
     platforms: ["PS4", "Xbox One", "PC"],
@@ -63,7 +63,7 @@ export const games: Game[] = [
   },
   {
     title: "Mario Kart 8 Deluxe",
-    release: "2017-04-28",
+    release: new Date("2017-04-28"),
     dev: "Nintendo EPD",
     genres: ["Racing"],
     platforms: ["Switch"],
@@ -75,7 +75,7 @@ export const games: Game[] = [
   },
   {
     title: "PUBG: Battlegrounds",
-    release: "2017-12-20",
+    release: new Date("2017-12-20"),
     dev: "PUBG Studios",
     genres: ["Battle Royale", "Shooter"],
     platforms: ["PC", "Console"],
@@ -87,7 +87,7 @@ export const games: Game[] = [
   },
   {
     title: "Terraria",
-    release: "2011-05-16",
+    release: new Date("2011-05-16"),
     dev: "Re-Logic",
     genres: ["Action", "Adventure"],
     platforms: ["Multi"],
@@ -99,7 +99,7 @@ export const games: Game[] = [
   },
   {
     title: "The Witcher 3: Wild Hunt",
-    release: "2015-05-19",
+    release: new Date("2015-05-19"),
     dev: "CD Projekt Red",
     genres: ["RPG", "Open World"],
     platforms: ["Multi"],
@@ -111,7 +111,7 @@ export const games: Game[] = [
   },
   {
     title: "Call of Duty: Modern Warfare",
-    release: "2019-10-25",
+    release: new Date("2019-10-25"),
     dev: "Infinity Ward",
     genres: ["Shooter"],
     platforms: ["Multi"],
@@ -123,7 +123,7 @@ export const games: Game[] = [
   },
   {
     title: "Fortnite",
-    release: "2017-07-21",
+    release: new Date("2017-07-21"),
     dev: "Epic Games",
     genres: ["Battle Royale", "Shooter"],
     platforms: ["Multi"],
@@ -135,7 +135,7 @@ export const games: Game[] = [
   },
   {
     title: "The Elder Scrolls V: Skyrim",
-    release: "2011-11-11",
+    release: new Date("2011-11-11"),
     dev: "Bethesda Game Studios",
     genres: ["RPG", "Action"],
     platforms: ["Multi"],
@@ -147,7 +147,7 @@ export const games: Game[] = [
   },
   {
     title: "Super Mario Odyssey",
-    release: "2017-10-27",
+    release: new Date("2017-10-27"),
     dev: "Nintendo EPD",
     genres: ["Platform", "Adventure"],
     platforms: ["Switch"],
@@ -159,7 +159,7 @@ export const games: Game[] = [
   },
   {
     title: "The Legend of Zelda: Breath of the Wild",
-    release: "2017-03-03",
+    release: new Date("2017-03-03"),
     dev: "Nintendo EPD",
     genres: ["Action-adventure"],
     platforms: ["Switch", "Wii U"],
@@ -171,7 +171,7 @@ export const games: Game[] = [
   },
   {
     title: "World of Warcraft",
-    release: "2004-11-23",
+    release: new Date("2004-11-23"),
     dev: "Blizzard Entertainment",
     genres: ["MMORPG"],
     platforms: ["PC"],
@@ -183,7 +183,7 @@ export const games: Game[] = [
   },
   {
     title: "League of Legends",
-    release: "2009-10-27",
+    release: new Date("2009-10-27"),
     dev: "Riot Games",
     genres: ["MOBA"],
     platforms: ["PC"],
@@ -195,7 +195,7 @@ export const games: Game[] = [
   },
   {
     title: "Counter-Strike: Global Offensive",
-    release: "2012-08-21",
+    release: new Date("2012-08-21"),
     dev: "Valve",
     genres: ["Shooter"],
     platforms: ["PC"],
@@ -207,7 +207,7 @@ export const games: Game[] = [
   },
   {
     title: "Starfield",
-    release: "2023-09-06",
+    release: new Date("2023-09-06"),
     dev: "Bethesda Game Studios",
     genres: ["Action role-playing"],
     platforms: ["PC", "Xbox Series X/S", "PS5"],
@@ -219,7 +219,7 @@ export const games: Game[] = [
   },
   {
     title: "Baldur's Gate 3",
-    release: "2023-08-03",
+    release: new Date("2023-08-03"),
     dev: "Larian Studios",
     genres: ["RPG"],
     platforms: ["Multi"],
@@ -231,7 +231,7 @@ export const games: Game[] = [
   },
   {
     title: "Horizon Zero Dawn",
-    release: "2017-02-28",
+    release: new Date("2017-02-28"),
     dev: "Guerrilla Games",
     genres: ["Action role-playing"],
     platforms: ["PS4", "PC", "PS5"],
@@ -243,7 +243,7 @@ export const games: Game[] = [
   },
   {
     title: "Halo: Combat Evolved",
-    release: "2001-11-15",
+    release: new Date("2001-11-15"),
     dev: "Bungie",
     genres: ["Shooter"],
     platforms: ["Xbox", "PC"],
@@ -255,7 +255,7 @@ export const games: Game[] = [
   },
   {
     title: "BioShock",
-    release: "2007-08-21",
+    release: new Date("2007-08-21"),
     dev: "Irrational Games",
     genres: ["Shooter", "Adventure"],
     platforms: ["Multi"],
@@ -267,7 +267,7 @@ export const games: Game[] = [
   },
   {
     title: "Mass Effect 2",
-    release: "2010-01-26",
+    release: new Date("2010-01-26"),
     dev: "BioWare",
     genres: ["RPG", "Shooter"],
     platforms: ["Multi"],
@@ -279,7 +279,7 @@ export const games: Game[] = [
   },
   {
     title: "Portal 2",
-    release: "2011-04-19",
+    release: new Date("2011-04-19"),
     dev: "Valve",
     genres: ["Puzzle", "Action"],
     platforms: ["Multi"],
@@ -291,7 +291,7 @@ export const games: Game[] = [
   },
   {
     title: "Elden Ring",
-    release: "2022-02-25",
+    release: new Date("2022-02-25"),
     dev: "FromSoftware",
     genres: ["Action RPG"],
     platforms: ["Multi"],
@@ -303,7 +303,7 @@ export const games: Game[] = [
   },
   {
     title: "God of War Ragnarök",
-    release: "2022-11-09",
+    release: new Date("2022-11-09"),
     dev: "Santa Monica Studio",
     genres: ["Action", "Adventure"],
     platforms: ["PS4", "PS5"],
@@ -315,7 +315,7 @@ export const games: Game[] = [
   },
   {
     title: "Assassin's Creed Valhalla",
-    release: "2020-11-10",
+    release: new Date("2020-11-10"),
     dev: "Ubisoft Montreal",
     genres: ["Action-adventure"],
     platforms: ["Multi"],
@@ -327,7 +327,7 @@ export const games: Game[] = [
   },
   {
     title: "Overwatch",
-    release: "2016-05-24",
+    release: new Date("2016-05-24"),
     dev: "Blizzard Entertainment",
     genres: ["Shooter"],
     platforms: ["Multi"],
@@ -339,7 +339,7 @@ export const games: Game[] = [
   },
   {
     title: "Rocket League",
-    release: "2015-07-07",
+    release: new Date("2015-07-07"),
     dev: "Psyonix",
     genres: ["Sports", "Racing"],
     platforms: ["Multi"],
@@ -351,7 +351,7 @@ export const games: Game[] = [
   },
   {
     title: "Cyberpunk 2077",
-    release: "2020-12-10",
+    release: new Date("2020-12-10"),
     dev: "CD Projekt Red",
     genres: ["Action RPG"],
     platforms: ["Multi"],
@@ -363,7 +363,7 @@ export const games: Game[] = [
   },
   {
     title: "Animal Crossing: New Horizons",
-    release: "2020-03-20",
+    release: new Date("2020-03-20"),
     dev: "Nintendo",
     genres: ["Simulation"],
     platforms: ["Switch"],
@@ -375,7 +375,7 @@ export const games: Game[] = [
   },
   {
     title: "Dead Space",
-    release: "2008-10-14",
+    release: new Date("2008-10-14"),
     dev: "EA Redwood Shores",
     genres: ["Horror", "Shooter"],
     platforms: ["Multi"],
@@ -387,7 +387,7 @@ export const games: Game[] = [
   },
   {
     title: "Final Fantasy VII Remake",
-    release: "2020-04-10",
+    release: new Date("2020-04-10"),
     dev: "Square Enix",
     genres: ["RPG"],
     platforms: ["PS4", "PS5"],
@@ -399,7 +399,7 @@ export const games: Game[] = [
   },
   {
     title: "Doom Eternal",
-    release: "2020-03-20",
+    release: new Date("2020-03-20"),
     dev: "id Software",
     genres: ["Shooter"],
     platforms: ["Multi"],
@@ -411,7 +411,7 @@ export const games: Game[] = [
   },
   {
     title: "Resident Evil 4 Remake",
-    release: "2023-03-24",
+    release: new Date("2023-03-24"),
     dev: "Capcom",
     genres: ["Horror", "Shooter"],
     platforms: ["Multi"],
@@ -423,7 +423,7 @@ export const games: Game[] = [
   },
   {
     title: "Sekiro: Shadows Die Twice",
-    release: "2019-03-22",
+    release: new Date("2019-03-22"),
     dev: "FromSoftware",
     genres: ["Action"],
     platforms: ["Multi"],
@@ -435,7 +435,7 @@ export const games: Game[] = [
   },
   {
     title: "Persona 5 Royal",
-    release: "2020-03-31",
+    release: new Date("2020-03-31"),
     dev: "Atlus",
     genres: ["RPG"],
     platforms: ["Multi"],
@@ -447,7 +447,7 @@ export const games: Game[] = [
   },
   {
     title: "Street Fighter V",
-    release: "2016-02-16",
+    release: new Date("2016-02-16"),
     dev: "Capcom",
     genres: ["Fighting"],
     platforms: ["Multi"],
@@ -459,7 +459,7 @@ export const games: Game[] = [
   },
   {
     title: "Forza Horizon 5",
-    release: "2021-11-05",
+    release: new Date("2021-11-05"),
     dev: "Playground Games",
     genres: ["Racing"],
     platforms: ["Multi"],
@@ -471,7 +471,7 @@ export const games: Game[] = [
   },
   {
     title: "Dragon Age: Inquisition",
-    release: "2014-11-18",
+    release: new Date("2014-11-18"),
     dev: "BioWare",
     genres: ["RPG"],
     platforms: ["Multi"],
@@ -483,7 +483,7 @@ export const games: Game[] = [
   },
   {
     title: "Splatoon 3",
-    release: "2022-09-09",
+    release: new Date("2022-09-09"),
     dev: "Nintendo EPD",
     genres: ["Shooter"],
     platforms: ["Switch"],
@@ -495,7 +495,7 @@ export const games: Game[] = [
   },
   {
     title: "The Last of Us Part II",
-    release: "2020-06-19",
+    release: new Date("2020-06-19"),
     dev: "Naughty Dog",
     genres: ["Action", "Adventure"],
     platforms: ["PS4"],
@@ -507,7 +507,7 @@ export const games: Game[] = [
   },
   {
     title: "Metroid Dread",
-    release: "2021-10-08",
+    release: new Date("2021-10-08"),
     dev: "MercurySteam",
     genres: ["Action", "Adventure"],
     platforms: ["Switch"],
@@ -519,7 +519,7 @@ export const games: Game[] = [
   },
   {
     title: "Star Wars Jedi: Fallen Order",
-    release: "2019-11-15",
+    release: new Date("2019-11-15"),
     dev: "Respawn Entertainment",
     genres: ["Action", "Adventure"],
     platforms: ["Multi"],
