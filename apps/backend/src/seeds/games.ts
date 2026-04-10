@@ -1,7 +1,7 @@
 import "dotenv/config";
 import { MongoClient, Collection } from "mongodb";
 import { games } from "./seedData.js";
-import { Game } from "../types/game.js";
+import { Game } from "../types/gameType.js";
 
 async function seedGames(): Promise<void> {
   const uri = process.env.MONGO_URI;
@@ -12,7 +12,7 @@ async function seedGames(): Promise<void> {
     await client.connect();
 
     const db = client.db("GameHive");
-    const gamesCollection: Collection<Game> = db.collection("test.games");
+    const gamesCollection: Collection<Game> = db.collection("Games");
 
     for (const game of games) {
       await gamesCollection.updateOne(
