@@ -1,6 +1,6 @@
 export type Game = {
   title: string;
-  release: string;
+  release: Date;
   dev: string;
   genres: string[];
   platforms: string[];
@@ -8,5 +8,5 @@ export type Game = {
   thumb: string;
   multiplayer: boolean;
   avg_rating: number;
-  review: any[];
+  review: any[]; // change later when review type exists
 };
