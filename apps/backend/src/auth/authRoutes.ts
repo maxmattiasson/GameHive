@@ -1,18 +1,33 @@
 import { Request, Response, Router } from "express";
+import UserModel from "../models/User.js";
 
-const router = 
+const router = Router();
 
-app.get("/users/:id", (req: Request, res: Response) =>{
-    const user = users.find(u => u.id === parseInt(req.params.id))
-    if (!user) {
-        return res.status(404).json({message: "Finns ingen använderare", error: "user not found"};
+// router.get("/", async (req, res) => {
+//     try {
+//         const users = await UserModel.find()
+//         res.json(users)
+//     } catch (err) {
+//         console.error(err); 
+//         res.status(500).json({ message: "Server error"})
+//     }
+// })
 
-        )
-    }
-})
+// router.get("/:id", async (req: Request, res: Response) => {
+//     try {
+//         const users = await UserModel.
+//         const user = users.find(u => u.id === parseInt(req.params.id))
+//     }
+    
+//     if (!user) {
+//         return res.status(404).json({message: "Finns ingen använderare", error: "user not found"};
 
-app.post("/users", (req, res) => {
-    const newUser = { id: users.length + 1, ...req.body};
-    users.push(newUser);
-    res.status(201).json(newUser)
-})
+//         )
+//     }
+// })
+
+// router.post("/", (req, res) => {
+//     const newUser = { id: users.length + 1, ...req.body};
+//     users.push(newUser);
+//     res.status(201).json(newUser)
+// })

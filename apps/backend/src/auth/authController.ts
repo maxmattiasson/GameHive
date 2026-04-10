@@ -8,14 +8,16 @@ export const signup = async (req: Request, res: Response) => {
     const { username, email, password }= req.body;
 
     if (!username || !email || !password) {
-        return res.status(400).json({
+        res.status(400).json({
             message: "Missing fields on signup"
-        })
+        });
+        return;
     }
 
     const existingUser = await UserModel.findOne({ email: email.toLowerCase() })
     if (existingUser) {
-        return res.status(400).json({ message: "User already exists"})
+        res.status(400).json({ message: "User already exists"});
+        return
     }
 
     const passwordHash = await bcrypt.hash(password, 10);
@@ -39,5 +41,32 @@ export const signup = async (req: Request, res: Response) => {
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: "Server error"})
+    }
+}
+
+export const login = async (req: Request, res: Response) => {
+    try {
+        const { email, password } = req.body;
+        if (
+            typeof email !== "string" ||
+            typeof password !== "string" ||
+            !email.trim() ||
+            !password.trim()
+          ) {
+            res.status(400).json({ message: "Missing or invalid fields" });
+            return;
+        }
+
+    const normalizedEmail = email.toLowerCase().trim();
+
+    const user = await UserModel.findOne({ email: normalizedEmail });
+    
+    if (!user) {
+        res.status(401).json({ message: "Invalid email or password" })
+        return;
+    }
+
+    } catch (err) {
+
     }
 }
