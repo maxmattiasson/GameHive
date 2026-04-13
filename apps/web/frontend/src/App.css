@@ -96,6 +96,8 @@ video {
 header {
   width: 100dvw;
   display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  align-items: baseline;
 
   /* Lite planering av responsiv layout, jag labbar med det fortfarande, så ignorera de här raderna är ni snälla! */
   /*Nested logo container, auto resizing with min-max size*/
@@ -107,7 +109,10 @@ header {
     justify-self: left;
   }
   .nav-container {
-    justify-self: center;
+    width: 400px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
   }
   .user-container {
     justify-self: right;
