@@ -4,23 +4,23 @@ import getGame from "../middleware/idMiddleware.js";
 
 const router = Router();
 
-// lista alla spel med title, genre, created, dev och multiplayer
+// lista alla spel
 router.get("/games", async (req, res, next) => {
   console.log("funkar?");
   try {
-    const { title, genre, created, dev, multiplayer } = req.query as {
+    const { title, genre, release, dev, multiplayer } = req.query as {
       title?: string;
       genre?: string;
-      created?: string;
+      release?: string;
       dev?: string;
       multiplayer?: "true" | "false";
     };
+
     const filter: any = {};
 
-    // matchar sökt, case-insensitive
     if (title) filter.title = { $regex: title, $options: "i" };
-    if (genre) filter.genre = { $regex: genre, $options: "i" };
-    if (created) filter.created = created;
+    if (genre) filter.genres = { $regex: genre, $options: "i" };
+    if (release) filter.release = release;
     if (dev) filter.dev = { $regex: dev, $options: "i" };
     if (multiplayer !== undefined) filter.multiplayer = multiplayer === "true";
 
@@ -45,11 +45,17 @@ router.post("/games", async (req, res, next) => {
 
   const game = new Game({
     title: req.body.title,
-    created: req.body.created,
+    release: req.body.release,
     dev: req.body.dev,
-    genre: req.body.genre,
-    multiplayer: req.body.multiplayer
+    genres: req.body.genres,
+    platforms: req.body.platforms,
+    desc: req.body.desc,
+    thumb: req.body.thumb,
+    multiplayer: req.body.multiplayer,
+    avg_rating: req.body.avg_rating,
+    review: req.body.review,
   });
+
   try {
     const newGame = await game.save();
     res.status(201).json(newGame);
@@ -65,11 +71,17 @@ router.patch("/games/:id", getGame, async (req, res, next) => {
     const game = res.locals.game;
 
     if (req.body.title !== undefined) game.title = req.body.title;
-    if (req.body.created !== undefined) game.created = req.body.created;
+    if (req.body.release !== undefined) game.release = req.body.release;
     if (req.body.dev !== undefined) game.dev = req.body.dev;
-    if (req.body.genre !== undefined) game.genre = req.body.genre;
+    if (req.body.genres !== undefined) game.genres = req.body.genres;
+    if (req.body.platforms !== undefined) game.platforms = req.body.platforms;
+    if (req.body.desc !== undefined) game.desc = req.body.desc;
+    if (req.body.thumb !== undefined) game.thumb = req.body.thumb;
     if (req.body.multiplayer !== undefined)
       game.multiplayer = req.body.multiplayer;
+    if (req.body.avg_rating !== undefined)
+      game.avg_rating = req.body.avg_rating;
+    if (req.body.review !== undefined) game.review = req.body.review;
 
     const updatedGame = await game.save();
     return res.status(200).json(updatedGame);
