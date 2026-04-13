@@ -4,18 +4,42 @@ import { GameList } from "./components/games/GameList";
 function App() {
   return (
     <>
+      // Header component here!
+      <header>
+
+        // Logo
+
+        // Nav
+
+        // User menu (Login/Logout, avatar, screen name, menu button)
+
+      </header>
+      // Move ^^this^^ into Header component, or not?
+
+      // Page component here!
       <h1
         style={{
           display: "flex",
           justifyContent: "center",
           paddingTop: "50px",
         }}
-      >
+        >
         Eyyoo
       </h1>
       <div className="center">
         <GameList limit={3} />
       </div>
+      // Move ^^this^^ into Home(?) component
+      
+      // Footer component here!
+      <footer>
+        
+        // About: List of links to info articles
+
+        // Contact: List of contact paths to the site developers
+
+      </footer>
+      // Move ^^this^^ into Footer component, or not?
     </>
   );
 }

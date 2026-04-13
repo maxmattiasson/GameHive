@@ -94,6 +94,15 @@ video {
 }
 
 /* ===== Elements ===== */
+header {
+  width: 100dvw;
+  display: grid;
+
+  /*Nested logo container, auto resizing with min-max size*/
+  /*Nested nav container, item boxes auto resizing with min-max width, turning hamburger when too narrow */
+  /*Nested user container, no resizing, but when too narrow: hiding first login/logout button (also found in menu), then screen name */
+}
+
 main {
   max-width: 1200px;
   margin: 0 auto;
