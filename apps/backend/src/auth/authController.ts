@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import UserModel from "../models/User.js";
 import { Request, Response } from "express";
+import jwt  from "jsonwebtoken";
 
 export const signup = async (req: Request, res: Response) => {
     
@@ -71,8 +72,16 @@ export const login = async (req: Request, res: Response) => {
         res.status(401).json({ message: "Invalid user och password"});
         return;
     }
+
+    const token = jwt.sign(
+        { userId: user._id, email: user.email },
+        process.env.JWT_SECRET!,
+        { expiresIn: "7d" }
+    );
+
     res.status(200).json({
         message: "Login successful",
+        token,
         user: {
             id: user._id,
             username: user.username,
