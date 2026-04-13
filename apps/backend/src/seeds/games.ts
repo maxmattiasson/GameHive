@@ -12,7 +12,7 @@ async function seedGames(): Promise<void> {
     await client.connect();
 
     const db = client.db("GameHive");
-    const gamesCollection: Collection<Game> = db.collection("Game");
+    const gamesCollection: Collection<Game> = db.collection("Games");
 
     for (const game of games) {
       await gamesCollection.updateOne(
