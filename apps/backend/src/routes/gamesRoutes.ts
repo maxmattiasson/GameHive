@@ -1,7 +1,11 @@
 import { Router } from "express";
 import Game from "../models/Game.js";
 import getGame from "../middleware/idMiddleware.js";
-import { getAllGames, getGamebyId } from "../controllers/gameController.js";
+import {
+  getAllGames,
+  getGamebyId,
+  addNewGame,
+} from "../controllers/gameController.js";
 
 const router = Router();
 
@@ -11,30 +15,8 @@ router.get("/games", getAllGames);
 //GET by ID
 router.get("/games/:id", getGame, getGamebyId);
 
-// Lägg till spel
-router.post("/games", async (req, res, next) => {
-  console.log("funkar?");
-
-  const game = new Game({
-    title: req.body.title,
-    release: req.body.release,
-    dev: req.body.dev,
-    genres: req.body.genres,
-    platforms: req.body.platforms,
-    desc: req.body.desc,
-    thumb: req.body.thumb,
-    multiplayer: req.body.multiplayer,
-    avg_rating: req.body.avg_rating,
-    review: req.body.review,
-  });
-
-  try {
-    const newGame = await game.save();
-    res.status(201).json(newGame);
-  } catch (error) {
-    next(error);
-  }
-});
+// Add game
+router.post("/games", addNewGame);
 
 // PATCH
 //Hämtar spel med id, uppdaterar fält som skickas in i body.

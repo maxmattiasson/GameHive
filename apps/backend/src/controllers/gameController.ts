@@ -7,7 +7,7 @@ export const getAllGames = async (
   res: Response,
   next: NextFunction,
 ) => {
-  console.log("funkar?");
+  console.log("funkar");
   try {
     const { title, genre, release, dev, multiplayer } = req.query as {
       title?: string;
@@ -35,4 +35,32 @@ export const getAllGames = async (
 // GET game by ID
 export const getGamebyId = (req: Request, res: Response) => {
   return res.status(200).json(res.locals.game);
+};
+
+export const addNewGame = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  console.log("funkar?");
+
+  const game = new Game({
+    title: req.body.title,
+    release: req.body.release,
+    dev: req.body.dev,
+    genres: req.body.genres,
+    platforms: req.body.platforms,
+    desc: req.body.desc,
+    thumb: req.body.thumb,
+    multiplayer: req.body.multiplayer,
+    avg_rating: req.body.avg_rating,
+    review: req.body.review,
+  });
+
+  try {
+    const newGame = await game.save();
+    res.status(201).json(newGame);
+  } catch (error) {
+    next(error);
+  }
 };
