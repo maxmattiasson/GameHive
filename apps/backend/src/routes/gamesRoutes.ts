@@ -1,20 +1,15 @@
 import { Router } from "express";
 import Game from "../models/Game.js";
 import getGame from "../middleware/idMiddleware.js";
-import { getAllGames } from "../controllers/gameController.js";
+import { getAllGames, getGamebyId } from "../controllers/gameController.js";
 
 const router = Router();
 
 // list all games
 router.get("/games", getAllGames);
 
-// GET:Id
-// Sök spel med mongo id
-router.get("/games/:id", getGame, (req, res) => {
-  console.log("hallåhej");
-
-  return res.status(200).json(res.locals.game);
-});
+//GET by ID
+router.get("/games/:id", getGame, getGamebyId);
 
 // Lägg till spel
 router.post("/games", async (req, res, next) => {

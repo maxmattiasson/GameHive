@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import Game from "../models/Game.js";
 
+// List all games
 export const getAllGames = async (
   req: Request,
   res: Response,
@@ -29,4 +30,9 @@ export const getAllGames = async (
   } catch (error) {
     next(error);
   }
+};
+
+// GET game by ID
+export const getGamebyId = (req: Request, res: Response) => {
+  return res.status(200).json(res.locals.game);
 };
