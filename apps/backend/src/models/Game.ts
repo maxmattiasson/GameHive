@@ -2,32 +2,53 @@ import mongoose from "mongoose";
 // MongoDB model / schema
 // Defines how game data is stored
 
-const gameSchema = new mongoose.Schema({
+const gameSchema = new mongoose.Schema(
+  {
     title: {
       type: String,
       required: true,
       trim: true,
     },
-    created: {
-      type: String,
+    release: {
+      type: Date,
+      required: true,
     },
     dev: {
       type: String,
       required: true,
       trim: true,
     },
-    genre: {
-      type: String,
+    genres: {
+      type: [String],
       required: true,
+    },
+    platforms: {
+      type: [String],
+      required: true,
+    },
+    desc: {
+      type: String,
       trim: true,
     },
+    thumb: {
+      type: String,
+    },
     multiplayer: {
-        type: Boolean,
+      type: Boolean,
+      required: true,
+    },
+    avg_rating: {
+      type: Number,
+      min: 0,
+      max: 10,
+    },
+    review: {
+      type: [mongoose.Schema.Types.Mixed], // change later when review type exists
     },
   },
-  { collection: "Game" }
+  { collection: "Games" },
 );
-  
-  const Game = mongoose.model("Game", gameSchema);
 
-  export default Game;
+const Game = mongoose.model("Game", gameSchema);
+
+export default Game;

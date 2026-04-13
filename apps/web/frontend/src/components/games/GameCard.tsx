@@ -17,14 +17,14 @@ export function GameCard({ game }: Props) {
       </div>
       <div className="inner">
         <h3>{game.title}</h3>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt,
-          explicabo!
-        </p>
-        <p>{game.created}</p>
+        <h4>{game.dev}</h4>
+        <p>{game.desc}</p>
         <div className="badges">
-          <Badge label={game.genre} />
+          {game.genres.map((genre) => (
+            <Badge key={genre} label={genre} />
+          ))}
           {game.multiplayer && <Badge label="Multiplayer" />}
+          <p>Release date: {new Date(game.release).toLocaleDateString()}</p>
         </div>
         <a href="">View Game</a>
       </div>
