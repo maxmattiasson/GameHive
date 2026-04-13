@@ -8,6 +8,8 @@ const router = Router();
 router.post("/login", login);
 router.post("/signup", signup);
 
+
+// Protected route
 router.get("/me", authMiddleware, async (req: AuthRequest, res) => {
     try {
         const userId = req.user?.userId;
@@ -30,6 +32,6 @@ router.get("/me", authMiddleware, async (req: AuthRequest, res) => {
         res.status(500).json({ message: "Server error" });
       }
     });
-    
+
 export default router;
 
