@@ -3,6 +3,9 @@ import cors from "cors";
 import dotenv from "dotenv";
 import { connectDB } from "./config/db.js";
 import gamesRoutes from "./routes/gamesRoutes.js";
+import rawgRoutes from "./routes/rawgRoutes.js"
+import authRoutes from "./auth/authRoutes.js"
+
 import { errorMiddleware } from "./middleware/errorMiddleware.js";
 import { notFoundMiddleware } from "./middleware/notFoundMiddleware.js";
 
@@ -14,6 +17,8 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/api", gamesRoutes);
+app.use("/api/rawg", rawgRoutes)
+app.use("/api/auth", authRoutes)
 
 app.get("/", (req, res) => {
   res.send("funking tjoho");

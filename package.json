@@ -14,5 +14,8 @@
     "dev:web": "npm run dev -w @gamehive/web",
     "dev:backend": "npm run dev -w @gamehive/backend",
     "dev:both": "concurrently \"npm run dev:web\" \"npm run dev:backend\""
+  },
+  "dependencies": {
+    "mongodb": "^7.1.1"
   }
 }

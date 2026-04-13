@@ -1,6 +1,7 @@
 import type { Game } from "../../types/game";
 import { Badge } from "../ui/Badge";
 import "./GameCard.css";
+import "../ui/ArrowButton.css";
 
 interface Props {
   game: Game;
@@ -17,16 +18,22 @@ export function GameCard({ game }: Props) {
       </div>
       <div className="inner">
         <h3>{game.title}</h3>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt,
-          explicabo!
+        <h4>{game.dev}</h4>
+        <p className="meta">Rating: {game.avg_rating}/10</p>
+        <p className="desc">{game.desc}</p>
+        <p className="meta">
+          Release date: {new Date(game.release).toLocaleDateString()}
         </p>
-        <p>{game.created}</p>
         <div className="badges">
-          <Badge label={game.genre} />
+          {game.genres.map((genre) => (
+            <Badge key={genre} label={genre} />
+          ))}
           {game.multiplayer && <Badge label="Multiplayer" />}
         </div>
-        <a href="">View Game</a>
+        <a className="arrow-button" href="">
+          View Game
+          <span className="arrow" />
+        </a>
       </div>
     </div>
   );
