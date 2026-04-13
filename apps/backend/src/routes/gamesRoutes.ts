@@ -1,35 +1,12 @@
 import { Router } from "express";
 import Game from "../models/Game.js";
 import getGame from "../middleware/idMiddleware.js";
+import { getAllGames } from "../controllers/gameController.js";
 
 const router = Router();
 
-// lista alla spel
-router.get("/games", async (req, res, next) => {
-  console.log("funkar?");
-  try {
-    const { title, genre, release, dev, multiplayer } = req.query as {
-      title?: string;
-      genre?: string;
-      release?: string;
-      dev?: string;
-      multiplayer?: "true" | "false";
-    };
-
-    const filter: any = {};
-
-    if (title) filter.title = { $regex: title, $options: "i" };
-    if (genre) filter.genres = { $regex: genre, $options: "i" };
-    if (release) filter.release = release;
-    if (dev) filter.dev = { $regex: dev, $options: "i" };
-    if (multiplayer !== undefined) filter.multiplayer = multiplayer === "true";
-
-    const games = await Game.find(filter);
-    res.json(games);
-  } catch (error) {
-    next(error);
-  }
-});
+// list all games
+router.get("/games", getAllGames);
 
 // GET:Id
 // Sök spel med mongo id
