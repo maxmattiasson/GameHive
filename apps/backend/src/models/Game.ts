@@ -46,7 +46,7 @@ const gameSchema = new mongoose.Schema(
       type: [mongoose.Schema.Types.Mixed], // change later when review type exists
     },
   },
-  { collection: "Games" },
+  { collection: "games" },
 );
 
 const Game = mongoose.model("Game", gameSchema);
