@@ -8,6 +8,7 @@ interface Props {
 }
 
 export function GameCard({ game }: Props) {
+  console.log(game._id);
   return (
     <div className="game-card-small">
       <div>
@@ -30,7 +31,7 @@ export function GameCard({ game }: Props) {
           ))}
           {game.multiplayer && <Badge label="Multiplayer" />}
         </div>
-        <a className="arrow-button" href="">
+        <a className="arrow-button" href={`/games/${game._id}`}>
           View Game
           <span className="arrow" />
         </a>
