@@ -33,6 +33,9 @@
         req.user = decoded;
         next();
     } catch (err) {
-        return res.status(401).json({ message: "Invalid token" });
+        if (err instanceof jwt.TokenExpiredError) {
+            return res.status(401).json({ message: "Token expired" });
+          }
+          return res.status(401).json({ message: "Invalid token" });
     }
     };
