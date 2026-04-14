@@ -75,7 +75,7 @@ export const login = async (req: Request, res: Response) => {
 
     const token = jwt.sign(
         { userId: user._id, email: user.email },
-        process.env.JWT_SECRET!,
+        getJwtSecret(),
         { expiresIn: "7d" }
     );
 
@@ -93,3 +93,13 @@ export const login = async (req: Request, res: Response) => {
         res.status(500).json({ message: "Server error"})
     }
 }
+
+function getJwtSecret(): string {
+    const secret = process.env.JWT_SECRET;
+  
+    if (!secret) {
+      throw new Error("JWT_SECRET is not defined");
+    }
+  
+    return secret;
+  }
