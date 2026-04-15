@@ -66,6 +66,7 @@
   display: flex;
   margin: 0 auto;
   gap: 1rem;
+  padding: 2rem;
 }
 
 .col-2 {
