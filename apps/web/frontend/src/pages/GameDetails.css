@@ -1,4 +1,4 @@
-.game-details-container {
+/* .game-details-container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -23,4 +23,50 @@
     gap: 1rem;
     margin-top: 2rem;
   }
+}
+ */
+
+.header {
+  width: 100%;
+  text-align: left;
+}
+
+.container {
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 1200px;
+  padding: 5rem;
+}
+
+.details-container {
+  display: flex;
+  margin: 0 auto;
+  gap: 1rem;
+}
+
+.col-2 {
+  flex: 4;
+}
+
+.col-1,
+.col-3 {
+  flex: 1;
+}
+
+.col-2 .info-card {
+  width: 100%;
+  margin: 0 0.8rem;
+}
+
+.bold {
+  font-weight: 500;
+  color: white;
+}
+
+.reviews-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
 }
