@@ -5,15 +5,15 @@ function App() {
   return (
     <>
       <header>
-        <div>
+        <div className="logo-container">
           <h1>Game Hive</h1>
         </div>
-        <div>
+        <div className="nav-container">
           <span>Home</span>
           <span>Games</span>
           <span>About</span>
         </div>
-        <div>
+        <div className="user-container">
           Sign up/Log in
         </div>
       </header>
