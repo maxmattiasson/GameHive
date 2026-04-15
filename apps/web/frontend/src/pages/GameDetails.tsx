@@ -15,6 +15,12 @@ export function GameDetails() {
   return (
     <div className="container">
       <div className="header">
+        {/* <div
+  className="header"
+  style={{
+    url(${data.banner})`,
+  }}
+> */}
         <h1>{data.title}</h1>
         <p>Rating: {data.avg_rating}/10</p>
         <p>
