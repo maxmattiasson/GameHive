@@ -1,5 +1,4 @@
-export interface Game {
-  _id: string;
+export type Game = {
   title: string;
   release: Date;
   dev: string;
@@ -9,5 +8,5 @@ export interface Game {
   thumb: string;
   multiplayer: boolean;
   avg_rating: number;
-  review: any[];
-}
+  review: any[]; // change later when review type exists
+};

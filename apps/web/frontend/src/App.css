@@ -1,4 +1,3 @@
-
 @import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
 
 * {
@@ -94,6 +93,32 @@ video {
 }
 
 /* ===== Elements ===== */
+header {
+  width: 100dvw;
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  align-items: baseline;
+
+  /* Lite planering av responsiv layout, jag labbar med det fortfarande, så ignorera de här raderna är ni snälla! */
+  /*Nested logo container, auto resizing with min-max size*/
+  /*Nested nav container, item boxes auto resizing with min-max width, turning hamburger when too narrow */
+  /*Nested user container, no resizing, but when too narrow: hiding first login/logout button (also found in menu), then screen name */
+
+  .logo-container {
+    /* contains the image of the logo*/
+    justify-self: left;
+  }
+  .nav-container {
+    width: 400px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  .user-container {
+    justify-self: right;
+  }
+}
+
 main {
   max-width: 1200px;
   margin: 0 auto;
@@ -125,15 +150,26 @@ h6 {
   letter-spacing: -0.01em;
 }
 
-h1 { font-size: var(--fs-5); }
-h2 { font-size: var(--fs-4); }
-h3 { font-size: var(--fs-3); }
-h4 { font-size: var(--fs-2); }
-h5 { font-size: var(--fs-2); }
-h6 { font-size: var(--fs-1); }
+h1 {
+  font-size: var(--fs-5);
+}
+h2 {
+  font-size: var(--fs-4);
+}
+h3 {
+  font-size: var(--fs-3);
+}
+h4 {
+  font-size: var(--fs-2);
+}
+h5 {
+  font-size: var(--fs-2);
+}
+h6 {
+  font-size: var(--fs-1);
+}
 
 p {
   margin: 0 0 var(--space-4);
   color: #cbd3d9;
 }
-
