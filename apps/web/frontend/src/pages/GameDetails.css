@@ -1,0 +1,95 @@
+/* .game-details-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  margin-top: 10rem;
+}
+
+.game-details-img {
+}
+
+@media (max-width: 768px) {
+  .game-details-container {
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-top: 4rem;
+    padding: 0 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .game-details-container {
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+}
+ */
+
+.header {
+  width: 100%;
+  padding: 2rem;
+  margin-bottom: 1rem;
+
+  background: url("https://gaming-cdn.com/images/products/20970/616x353/mimesis-pc-steam-cover.jpg?v=1761750647");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+  mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+
+  border-radius: 2px;
+}
+
+.header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.header > * {
+  position: relative;
+}
+
+.container {
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 1200px;
+  padding: 5rem;
+}
+
+.details-container {
+  display: flex;
+  margin: 0 auto;
+  gap: 1rem;
+  padding: 2rem;
+}
+
+.col-2 {
+  flex: 4;
+}
+
+.col-1,
+.col-3 {
+  flex: 1;
+}
+
+.col-2 .info-card {
+  width: 100%;
+  margin: 0 0.8rem;
+}
+
+.bold {
+  font-weight: 500;
+  color: white;
+}
+
+.reviews-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
