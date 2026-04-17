@@ -4,8 +4,9 @@
   --gray-800: #1a1f24;
   --gray-700: #2a323a;
   --gray-600: #3b4650;
-  --accent-500: #20c7b6;
-  --accent-600: #16a595;
+  --white-100: #efe;
+  --accent-500: rgb(56, 173, 134);
+  --accent-600: rgb(60, 139, 113);
 
   /* Typography */
   --font-sans: "Sora", "Space Grotesk", "Segoe UI", sans-serif;
@@ -53,7 +54,7 @@ body {
   font-family: var(--font-mono);
   font-size: var(--fs-2);
   line-height: var(--lh-2);
-  color: #e7ecf0;
+  color: var(--white-100);
   background:
     radial-gradient(
       600px 400px at 85% 10%,

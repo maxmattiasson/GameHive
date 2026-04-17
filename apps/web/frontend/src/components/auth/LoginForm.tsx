@@ -71,7 +71,7 @@ const LoginForm = () => {
           value={password}
           onChange={handleChange}
         />
-        <Button color="secondary" disabled={isLoading} type="submit">
+        <Button color="primary" disabled={isLoading} type="submit">
           Logga in
         </Button>
         <p>{errorMessage}</p>
