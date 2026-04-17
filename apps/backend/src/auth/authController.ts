@@ -79,9 +79,15 @@ export const login = async (req: Request, res: Response) => {
         { expiresIn: "7d" }
     );
 
+    res.cookie("token", token, {
+        httpOnly: true,
+        secure: false,
+        sameSite: "lax",
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+    
     res.status(200).json({
         message: "Login successful",
-        token,  
         user: {
             id: user._id,
             username: user.username,
@@ -93,6 +99,11 @@ export const login = async (req: Request, res: Response) => {
         res.status(500).json({ message: "Server error"})
     }
 }
+
+export const logout = (req: Request, res: Response) => {
+    res.clearCookie("token");
+    return res.status(200).json({ message: "Logged out" });
+};
 
 function getJwtSecret(): string {
     const secret = process.env.JWT_SECRET;
