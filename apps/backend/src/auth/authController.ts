@@ -101,10 +101,15 @@ export const login = async (req: Request, res: Response) => {
 }
 
 export const logout = (req: Request, res: Response) => {
-    res.clearCookie("token");
+    res.clearCookie("token", {
+      httpOnly: true,
+      secure: false,
+      sameSite: "lax",
+    });
+  
     return res.status(200).json({ message: "Logged out" });
-};
-
+  };
+  
 function getJwtSecret(): string {
     const secret = process.env.JWT_SECRET;
   
