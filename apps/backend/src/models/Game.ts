@@ -19,10 +19,12 @@ const gameSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-    genres: {
-      type: [String],
-      required: true,
-    },
+    genres: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Genre",
+      },
+    ],
     platforms: {
       type: [String],
       required: true,

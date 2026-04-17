@@ -1,5 +1,25 @@
 import { Game } from "../types/gameType.js";
 
+const actionId = "69e2015a82b0d22d9432f159";
+const puzzleId = "69e203e53b8bd3e32f6c53b6";
+const sandboxId = "69e203e53b8bd3e32f6c53b7";
+const survivalId = "69e203e53b8bd3e32f6c53b8";
+const actionAdventureId = "69e203e53b8bd3e32f6c53b9";
+const sportsId = "69e203e53b8bd3e32f6c53ba";
+const racingid = "69e203e53b8bd3e32f6c53bb";
+const battleRoyaleId = "69e203e53b8bd3e32f6c53bc";
+const shooterId = "69e203e53b8bd3e32f6c53bd";
+const adventureId = "69e203e53b8bd3e32f6c53bf";
+const rpgId = "69e203e53b8bd3e32f6c53c0";
+const openWorldId = "69e203e53b8bd3e32f6c53c1";
+const platformId = "69e203e53b8bd3e32f6c53c2";
+const mmorpgId = "69e203e53b8bd3e32f6c53c3";
+const mobaId = "69e203e53b8bd3e32f6c53c4";
+const actionRpgId = "69e203e53b8bd3e32f6c53c6";
+const simulationId = "69e203e53b8bd3e32f6c53c7";
+const horrorId = "69e203e53b8bd3e32f6c53c8";
+const fightingId = "69e203e53b8bd3e32f6c53c9";
+
 export const games: Game[] = [
   {
     title: "Tetris",
@@ -209,7 +229,7 @@ export const games: Game[] = [
     title: "Starfield",
     release: new Date("2023-09-06"),
     dev: "Bethesda Game Studios",
-    genres: ["Action role-playing"],
+    genres: ["Action RPG"],
     platforms: ["PC", "Xbox Series X/S", "PS5"],
     desc: "Open-world space RPG.",
     thumb: "",
@@ -233,7 +253,7 @@ export const games: Game[] = [
     title: "Horizon Zero Dawn",
     release: new Date("2017-02-28"),
     dev: "Guerrilla Games",
-    genres: ["Action role-playing"],
+    genres: ["Action RPG"],
     platforms: ["PS4", "PC", "PS5"],
     desc: "Post-apocalyptic action RPG.",
     thumb: "",
