@@ -12,9 +12,9 @@ export function Header() {
                     <LoginForm />
                 </div>
                 <div className="nav-container">
-                    <span>Home</span>
-                    <span>Games</span>
-                    <span>About</span>
+                    <a href="/">Home</a>
+                    <a href="/games">Games</a>
+                    <a href="/">About</a>
                 </div>
             </header>
         </>

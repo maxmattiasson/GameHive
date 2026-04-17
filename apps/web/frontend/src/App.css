@@ -134,3 +134,13 @@ p {
   margin: 0 0 var(--space-4);
   color: #cbd3d9;
 }
+
+a { 
+  color: inherit;
+  text-decoration: none;
+  transition: all .2s linear;
+
+  &:active { color: inherit;}
+  &:visited { color: inherit;}
+  &:hover { color: var(--accent-500);}
+}
