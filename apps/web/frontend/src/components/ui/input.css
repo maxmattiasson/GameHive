@@ -1,0 +1,14 @@
+input {
+    margin-right: var(--space-1);
+    padding-inline: var(--space-1);
+    width: 15ch;
+    min-height: 1.8rem;
+    background: var(--gray-900);
+    border: 1px solid var(--accent-600);
+    border-radius: var(--radius-1);
+    color: var(--accent-500);
+    &:focus {
+        border-color: var(--accent-500);
+        box-shadow: 0 0 5px 5px var(--accent-500);
+    }
+}

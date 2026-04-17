@@ -1,0 +1,16 @@
+button {
+    min-height: 1.8rem;
+    border-radius: var(--radius-round);
+    border: 1px solid var(--accent-500);
+    padding-inline: var(--space-3);
+    font-family: inherit;
+    font-size: var(--fs-1);
+    &.btn-primary, &.btn-secondary:hover {
+        background-color: var(--accent-500);
+        color: var(--gray-900);
+    }
+    &.btn-secondary, &.btn-primary:hover {
+        background: #0000;
+        color: var(--accent-500);
+    }
+}

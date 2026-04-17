@@ -1,6 +1,9 @@
 import { useState } from "react";
 import type { ChangeEvent } from "react";
 
+import Button from "../ui/Button";
+import Input from "../ui/Input";
+
 const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -56,21 +59,21 @@ const LoginForm = () => {
   return (
     <div>
       <form onSubmit={handleSubmit}>
-        <input
+        <Input
           type="email"
           name="email"
           value={email}
           onChange={handleChange}
         />
-        <input
+        <Input
           type="password"
           name="password"
           value={password}
           onChange={handleChange}
         />
-        <button disabled={isLoading} type="submit">
+        <Button color="secondary" disabled={isLoading} type="submit">
           Logga in
-        </button>
+        </Button>
         <p>{errorMessage}</p>
       </form>
     </div>
