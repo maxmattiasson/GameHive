@@ -1,4 +1,4 @@
-export type Game = {
+export interface Game {
   title: string;
   release: Date;
   dev: string;
@@ -9,4 +9,4 @@ export type Game = {
   multiplayer: boolean;
   avg_rating: number;
   review: any[]; // change later when review type exists
-};
+}
