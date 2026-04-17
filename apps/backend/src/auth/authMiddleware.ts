@@ -14,13 +14,7 @@
     next: NextFunction
     ) => {
     try {
-        const authHeader = req.headers.authorization;
-
-        if (!authHeader || !authHeader.startsWith("Bearer ")) {
-        return res.status(401).json({ message: "No token provided" });
-        }
-
-       const token = req.cookies.token;
+        const token = req.cookies.token;
 
         if (!token) {
                 return res.status(401).json({ message: "No token provided" });
@@ -29,10 +23,10 @@
         const secret = process.env.JWT_SECRET;
         if (!secret) throw new Error("JWT_SECRET is not defined");
 
-        const decoded = jwt.verify(token as string, secret) as unknown as {
+        const decoded = jwt.verify(token, secret) as {
             userId: string;
             email: string;
-        };
+          };
 
         req.user = decoded;
         next();
