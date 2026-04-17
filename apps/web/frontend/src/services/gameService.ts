@@ -7,3 +7,9 @@ export const getAllGames = async (): Promise<Game[]> => {
   if (!res.ok) throw new Error("Failed to fetch games");
   return res.json();
 };
+
+export const getGameById = async (id: string): Promise<Game> => {
+  const res = await fetch(`${API_URL}/${id}`);
+  if (!res.ok) throw new Error("Couldnt fetch game");
+  return res.json();
+};

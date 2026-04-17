@@ -1,43 +1,44 @@
 import "./App.css"
+import { Header } from "./components/layout/Header"
 import { GameList } from "./components/games/GameList"
+import { Route, Routes } from "react-router-dom";
+import { GameDetails } from "./pages/GameDetails";
+import { GamesPage } from "./pages/GamesPage";
 
 function App() {
   return (
     <>
-      <header>
-        <div>
-          <h1>Game Hive</h1>
-        </div>
-        <div>
-          <span>Home</span>
-          <span>Games</span>
-          <span>About</span>
-        </div>
-        <div>
-          Sign up/Log in
-        </div>
-      </header>
+      <Header />
       
-      <h1
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          paddingTop: "50px",
-        }}
-      >
-        Eyyoo
-      </h1>
-      <div className="center">
-        <GameList limit={3} />
-      </div>
+      <main>
+
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <div className="center">
+                <GameList limit={3} />
+              </div>
+            }
+            />
+          <Route path="/games/:id" element={<GameDetails />} />
+          <Route
+            path="/games"
+            element={
+              <GamesPage />
+            }
+            />
+        </Routes>
+
+      </main>
+      
       <footer>
-        { /* About: List of links to info articles */ }
-        
+        {/* About: List of links to info articles */}
+
         {/* Contact: List of contact paths to the site developers */}
       </footer>
-    
     </>
-  )
+  );
 }
 
-export default App
+export default App;

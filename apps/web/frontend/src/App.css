@@ -1,35 +1,12 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
-
-* {
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  font-family: "Inter";
-  font-weight: 300;
-  background: #13151c;
-  background: linear-gradient(
-    90deg,
-    rgba(19, 21, 28, 1) 0%,
-    rgb(31, 33, 44) 54%
-  );
-  min-height: 100vh;
-}
-
-.center {
-  display: flex;
-  justify-content: center;
-}
-
 :root {
   /* Colors */
   --gray-900: #0e1114;
   --gray-800: #1a1f24;
   --gray-700: #2a323a;
   --gray-600: #3b4650;
-  --accent-500: #20c7b6;
-  --accent-600: #16a595;
+  --white-100: #efe;
+  --accent-500: rgb(56, 173, 134);
+  --accent-600: rgb(60, 139, 113);
 
   /* Typography */
   --font-sans: "Sora", "Space Grotesk", "Segoe UI", sans-serif;
@@ -68,14 +45,16 @@ body {
 html,
 body {
   height: 100vh;
+  margin: 0;
+  padding: 0;
 }
 
 body {
   margin: 0;
-  font-family: var(--font-sans);
+  font-family: var(--font-mono);
   font-size: var(--fs-2);
   line-height: var(--lh-2);
-  color: #e7ecf0;
+  color: var(--white-100);
   background:
     radial-gradient(
       600px 400px at 85% 10%,
@@ -92,32 +71,14 @@ video {
   display: block;
 }
 
-/* ===== Elements ===== */
-header {
-  width: 100dvw;
-  display: grid;
-  grid-template-columns: 1fr 2fr 1fr;
-  align-items: baseline;
+/* ===== Utilities ===== */
 
-  /* Lite planering av responsiv layout, jag labbar med det fortfarande, så ignorera de här raderna är ni snälla! */
-  /*Nested logo container, auto resizing with min-max size*/
-  /*Nested nav container, item boxes auto resizing with min-max width, turning hamburger when too narrow */
-  /*Nested user container, no resizing, but when too narrow: hiding first login/logout button (also found in menu), then screen name */
-
-  .logo-container {
-    /* contains the image of the logo*/
-    justify-self: left;
-  }
-  .nav-container {
-    width: 400px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-  }
-  .user-container {
-    justify-self: right;
-  }
+.center {
+  display: flex;
+  justify-content: center;
 }
+
+/* ===== Elements ===== */
 
 main {
   max-width: 1200px;
@@ -172,4 +133,14 @@ h6 {
 p {
   margin: 0 0 var(--space-4);
   color: #cbd3d9;
+}
+
+a { 
+  color: inherit;
+  text-decoration: none;
+  transition: all .2s linear;
+
+  &:active { color: inherit;}
+  &:visited { color: inherit;}
+  &:hover { color: var(--accent-500);}
 }
