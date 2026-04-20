@@ -92,14 +92,6 @@ const GameFilter = ({ onSearch }: GameFilterProps) => {
         placeholder="Search Developer"
       />
 
-      <input
-        name="release"
-        type="text"
-        value={filter.release}
-        onChange={handleInputChange}
-        placeholder="Release year, ex 2024"
-      />
-
       <label>
         <input
           className="multiplayer-box"
