@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { ChangeEvent } from "react";
-
+import { useAuth } from "../../hooks/useAuth";
 import Button from "../ui/Button";
 import Input from "../ui/Input";
 
@@ -9,6 +9,8 @@ const LoginForm = () => {
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+
+  const { setUser } = useAuth();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -56,8 +58,8 @@ const LoginForm = () => {
         return;
       }
       const checkedUser = await me.json();
+      setUser(checkedUser);
       console.log("Logged in user:", checkedUser);
-      setUser(checkedUser)
 
     } catch {
       setErrorMessage("Kunde inte ansluta till servern");
