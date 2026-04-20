@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { login, signup } from "./authController.js" 
+import { login, signup, logout } from "./authController.js" 
 import { authMiddleware, AuthRequest } from "./authMiddleware.js";
 import UserModel from "../models/User.js";
  
@@ -7,6 +7,7 @@ const router = Router();
 
 router.post("/login", login);
 router.post("/signup", signup);
+router.post("/logout", logout);
 
 
 // Protected route
