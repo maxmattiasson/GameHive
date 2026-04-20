@@ -4,11 +4,15 @@ import { requireRole } from "../auth/requireRole.js";
 
 const router = express.Router();
 
-router.get("/profile", authMiddleware, (req: AuthRequest, res) => {
+router.get("/", authMiddleware, (req: AuthRequest, res) => {
+    console.log("HIT /api/profile");
+
     res.json({ message: "User profile", user: req.user})
 })
 
-router.get("/dev/profile", authMiddleware, requireRole('dev'), (req: AuthRequest, res) => {
+router.get("/dev", authMiddleware, requireRole('dev'), (req: AuthRequest, res) => {
+    console.log("HIT /api/profile/dev");
+
     res.json({ message: "dev profile", user: req.user})
 })
 

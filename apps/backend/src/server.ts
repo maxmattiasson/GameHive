@@ -26,7 +26,7 @@ app.use(cookieParser())
 app.use("/api", gamesRoutes);
 app.use("/api/rawg", rawgRoutes)
 app.use("/api/auth", authRoutes)
-app.use("/api", profileRoutes)
+app.use("/api/profile", profileRoutes)
 
 app.get("/", (req, res) => {
   res.send("funking tjoho");

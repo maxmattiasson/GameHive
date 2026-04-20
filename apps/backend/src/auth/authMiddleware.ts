@@ -30,6 +30,7 @@
             email: string;
             role: Role;
           };
+          console.log("decoded user:", decoded);
 
         req.user = decoded;
         next();
