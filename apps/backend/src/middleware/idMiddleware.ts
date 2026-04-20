@@ -5,10 +5,10 @@ import Game from "../models/Game.js";
 export default async function getGame(
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) {
   try {
-    const game = await Game.findById(req.params.id);
+    const game = await Game.findById(req.params.id).populate("genres");
     if (!game) {
       return res.status(404).json({ message: "inget spel hittades" });
     }
