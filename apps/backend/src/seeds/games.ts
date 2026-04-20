@@ -59,7 +59,7 @@ async function seedGames(): Promise<void> {
     await client.connect();
 
     const db = client.db("GameHive");
-    const gamesCollection: Collection<Game> = db.collection("Games");
+    const gamesCollection: Collection<Game> = db.collection("games");
     const genresCollection = db.collection("genres");
 
     for (const genre of genreDocs) {
