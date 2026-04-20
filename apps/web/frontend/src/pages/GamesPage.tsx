@@ -16,6 +16,8 @@ export function GamesPage() {
   const [activeFilters, setActiveFilters] =
     useState<GameFilterValues>(initialFilters);
   const { data, loading, error } = useGames();
+
+  // filters values and returns boolean
   const filteredGames = data.filter((game) => {
     const titleMatch = game.title
       .toLowerCase()
