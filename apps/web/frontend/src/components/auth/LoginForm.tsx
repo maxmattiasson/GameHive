@@ -35,6 +35,7 @@ const LoginForm = () => {
         headers: {
           "Content-Type": "application/json"
         },
+        credentials: "include",
         body: JSON.stringify({
           email: email.trim(),
           password: password.trim()
@@ -47,8 +48,17 @@ const LoginForm = () => {
         setErrorMessage(data.message || "Inloggning misslyckades");
         return;
       }
+    const me = await fetch("http://localhost:3000/api/auth/me", {
+        credentials: "include"
+      });
+      if (!me.ok) {
+        setErrorMessage("Session failed, cookie not set");
+        return;
+      }
+      const checkedUser = await me.json();
+      console.log("Logged in user:", checkedUser);
+      setUser(checkedUser)
 
-      localStorage.setItem("authToken", data.token);
     } catch {
       setErrorMessage("Kunde inte ansluta till servern");
     } finally {
