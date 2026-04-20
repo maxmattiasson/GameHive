@@ -1,19 +1,20 @@
 import "./Header.css"
 import LoginForm from "../auth/LoginForm"
 import { useAuth } from "../../hooks/useAuth"
+import { NavLink } from "react-router-dom";
 
 export function Header() {
-
-    const { user, loading, setUser } = useAuth();
-
+    const { user, loading, logout } = useAuth();
 
     const handleLogout = async () => {
-        await fetch("http://localhost:3000/api/auth/logout", {
-          method: "POST",
-          credentials: "include",
-        });
-        setUser(null);
-      };
+        await logout();
+        // navigera någonstans efter logout eller annat  ?
+   };
+
+   const navClass = ({ isActive }: { isActive: boolean }) =>
+    `nav-link ${isActive ? "nav-link-active" : ""}`;
+
+   const profilePath = user?.role === "dev" ? "/dev/profile" : "/profile";
 
     if (loading) return <p>Loading...</p>
 
@@ -27,17 +28,19 @@ export function Header() {
 
         {user ?  (
             <div>
-                <span>{user.username}</span>
-                <button onClick={handleLogout}>Logout</button>
+                <NavLink to={profilePath} className="profile-link">
+                    {user.username}
+                </NavLink>
+                <button onClick={handleLogout }>Logout</button>
             </div>
             ) : (
             <LoginForm />
             ) }    
                 </div>
                 <div className="nav-container">
-                    <a href="/">Home</a>
-                    <a href="/games">Games</a>
-                    <a href="/">About</a>
+                    <NavLink to="/" end className={navClass}>Home</NavLink>
+                    <NavLink to="/games" className={navClass}>Games</NavLink>
+                    <NavLink to="/about" className={navClass}>About</NavLink>
                 </div>
             </header>
         </>
