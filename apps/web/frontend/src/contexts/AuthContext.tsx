@@ -10,6 +10,7 @@ type User = {
 type AuthContextType= {
     user: User;
     setUser: (user: User) => void;
+    logout: () => Promise<void>;
     loading: boolean;
 }
 
@@ -31,9 +32,22 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         .catch(() => setUser(null))
         .finally(() => setLoading(false));
     }, []);
+
+    const logout = async () => {
+        try {
+            await fetch("http://localhost:3000/api/auth/logout", {
+                method: "POST",
+                credentials: "include",
+            });
+        } catch (err) {
+            console.error("Logout failed", err);
+        } finally {
+            setUser(null);
+        }
+    };
     
     return (
-      <AuthContext.Provider value={{ user, setUser, loading }}>
+      <AuthContext.Provider value={{ user, setUser, loading, logout }}>
         {children}
       </AuthContext.Provider>
     );

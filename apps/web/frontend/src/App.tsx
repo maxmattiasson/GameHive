@@ -5,6 +5,7 @@ import { Route, Routes } from "react-router-dom";
 import { GameDetails } from "./pages/GameDetails";
 import { GamesPage } from "./pages/GamesPage";
 import { useGames } from "./hooks/useGames";
+import DevProfilePage from "./pages/DevProfilePage";
 import { PlayerProfile } from "./pages/playerPage/PlayerProfilePage";
 import { PlayerLibraryPage } from "./pages/playerPage/PlayerLibraryPage";
 import { PlayerAchivementsPage } from "./pages/playerPage/PlayerAchivementsPage";
@@ -30,6 +31,7 @@ function App() {
           />
           <Route path="/games/:id" element={<GameDetails />} />
           <Route path="/games" element={<GamesPage />} />
+          <Route path="/dev/profile" element={<DevProfilePage />} />
           <Route path="/profile" element={<PlayerProfile />} />
           <Route path="/profile/library" element={<PlayerLibraryPage />} />
           <Route
