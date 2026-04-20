@@ -5,6 +5,7 @@ import { Route, Routes } from "react-router-dom";
 import { GameDetails } from "./pages/GameDetails";
 import { GamesPage } from "./pages/GamesPage";
 import { useGames } from "./hooks/useGames";
+import DevProfilePage from "./pages/DevProfilePage";
 
 function App() {
   const { data, loading, error } = useGames();
@@ -26,6 +27,7 @@ function App() {
           />
           <Route path="/games/:id" element={<GameDetails />} />
           <Route path="/games" element={<GamesPage />} />
+          <Route path="/dev/profile" element={<DevProfilePage />} />
         </Routes>
       </main>
 

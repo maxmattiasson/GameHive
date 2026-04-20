@@ -1,28 +1,27 @@
 header {
-    width: 100dvw;
-    padding-inline: var(--space-5);
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-auto-flow: row dense;
-    align-items: baseline;
+  width: 100dvw;
+  padding-inline: var(--space-5);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-auto-flow: row dense;
+  align-items: baseline;
 
-    .logo-container {
-        justify-self: left;
-    }
+  .logo-container {
+    justify-self: left;
+  }
 
-    .nav-container {
-        grid-column: 1 / -1;
-        justify-self: center;
-        width: 100%;
-        max-width: 80ch;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-around;
-    }
+  .nav-container {
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: 100%;
+    max-width: 80ch;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+  }
 
-    .user-container {
-        justify-self: right;
-        text-align: right;
-    }
+  .user-container {
+    justify-self: right;
+    text-align: right;
+  }
 }
-
