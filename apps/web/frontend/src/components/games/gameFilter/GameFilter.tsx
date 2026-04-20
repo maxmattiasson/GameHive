@@ -1,5 +1,6 @@
 import { useState } from "react";
 import type { GameFilterValues } from "../../../types/gameFilter";
+import "./GameFilter.css";
 
 type GameFilterProps = {
   onSearch: (filters: GameFilterValues) => void;
@@ -21,11 +22,8 @@ const genres = [
   "Horror",
   "Fighting",
   "MMO",
-  "Roguelike",
   "MOBA",
-  "Card Game",
   "Stealth",
-  "Party",
   "Puzzle"
 ];
 
@@ -63,7 +61,7 @@ const GameFilter = ({ onSearch }: GameFilterProps) => {
     setFilter((prev) => ({ ...prev, multiplayer: e.target.checked }));
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     onSearch(filter);
   };
@@ -86,30 +84,6 @@ const GameFilter = ({ onSearch }: GameFilterProps) => {
         placeholder="Search title"
       />
 
-      <div>
-        <p>Genres</p>
-        {genres.map((genre) => (
-          <label key={genre}>
-            <input
-              type="checkbox"
-              value={genre}
-              checked={filter.genre.includes(genre)}
-              onChange={handleGenreChange}
-            />
-            {genre}
-          </label>
-        ))}
-      </div>
-
-      <label>
-        <input
-          type="checkbox"
-          checked={filter.multiplayer}
-          onChange={handleMultiplayerChange}
-        />
-        Multiplayer
-      </label>
-
       <input
         name="dev"
         type="text"
@@ -126,6 +100,30 @@ const GameFilter = ({ onSearch }: GameFilterProps) => {
         placeholder="Release year, ex 2024"
       />
 
+      <label>
+        <input
+          className="multiplayer-box"
+          type="checkbox"
+          checked={filter.multiplayer}
+          onChange={handleMultiplayerChange}
+        />
+        Multiplayer
+      </label>
+
+      <div className="genre-wrapper">
+        <p>Genres</p>
+        {genres.map((genre) => (
+          <label key={genre}>
+            <input
+              type="checkbox"
+              value={genre}
+              checked={filter.genre.includes(genre)}
+              onChange={handleGenreChange}
+            />
+            {genre}
+          </label>
+        ))}
+      </div>
       <button type="submit">Search</button>
       <button type="button" onClick={handleReset}>
         Reset
