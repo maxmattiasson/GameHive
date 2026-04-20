@@ -1,0 +1,69 @@
+.game-card-small {
+  width: 17rem;
+  margin: 1rem;
+  border-radius: 20px;
+  background: linear-gradient(
+    100deg,
+    rgba(87, 87, 89, 0.509) 5%,
+    rgb(48, 48, 67) 25%,
+    rgba(17, 17, 18, 0.199) 100%
+  );
+  box-shadow: 0 4px 30px rgba(123, 121, 121, 0.1);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border: 2px solid rgba(255, 255, 255, 0.231);
+  color: white;
+}
+
+.game-card-small img {
+  width: 100%;
+  height: 9rem;
+  object-fit: cover;
+  border-radius: 20px 20px 0 0;
+  margin-bottom: 0.5rem;
+}
+
+.inner {
+  padding: 0rem 1rem 0.5rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.badges {
+  padding: 1rem 0;
+  font-weight: 500;
+}
+
+.desc {
+  height: 2.5rem;
+  overflow: hidden;
+}
+
+.game-card-small h3 {
+  font-size: 1.4rem;
+  font-weight: 500;
+}
+
+.game-card-small h4 {
+  color: #6dac97;
+  font-size: 0.95rem;
+  font-weight: 400;
+  margin-bottom: 0.5rem;
+}
+
+.meta {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.5);
+  margin: 0.1rem 0;
+}
+.game-card-small p {
+  font-size: 0.9rem;
+  font-weight: 300;
+}
+
+.game-card-small a {
+  font-size: 0.9rem;
+  color: white;
+  text-decoration: none;
+}

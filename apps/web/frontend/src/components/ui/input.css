@@ -1,0 +1,28 @@
+input {
+    margin-right: var(--space-1);
+    padding-inline: var(--space-1);
+    width: 15ch;
+    min-height: 1.8rem;
+    background: var(--gray-900);
+    border: 1px solid var(--gray-600);
+    border-radius: var(--radius-1);
+    color: var(--white-100);
+    transition: all linear .2s;
+    z-index: 1;
+    &:focus {
+        z-index: 2;
+        border-color: var(--accent-500);
+        /* box-shadow: 0 0 5px 5px var(--accent-500); */
+        animation: glow 1s ease infinite alternate;
+    }
+}
+
+@keyframes glow {
+    from {
+        box-shadow: 0 0 5px 5px var(--accent-500);
+    }
+    to {
+        
+        box-shadow: 0 0 10px 10px var(--accent-500);
+    }
+}

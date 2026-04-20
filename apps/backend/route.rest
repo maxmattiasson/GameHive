@@ -1,2 +1,40 @@
+### Alla spel
 GET http://localhost:3000/api/games
 
+### Sök på titel
+GET http://localhost:3000/api/games?title=zelda
+
+### Sök på id
+GET http://localhost:3000/api/games/69cd701066f8103d510cc599
+
+### Kombinerad sökning
+GET http://localhost:3000/api/games?genre=horror&multiplayer=true
+
+### Radera spel via Id
+DELETE http://localhost:3000/api/games/69d6a891c45137184e82080
+
+### Lägg till spel
+POST http://localhost:3000/api/games
+Content-Type: application/json
+
+{
+  "title": "Mimesis",
+  "release": "2025-01-01",
+  "dev": "idk",
+  "genres": ["Horror"],
+  "platforms": ["PC"],
+  "multiplayer": true
+}
+
+### Test global errorMiddleware (invalid ObjectId)
+DELETE http://localhost:3000/api/games/not-a-valid-id
+
+### Uppdatera spel
+PATCH http://localhost:3000/api/games/69d78e8184d39f9da87e7800
+Content-Type: application/json
+
+{
+  "title": "L4D2",
+  "genres": ["Action"],
+  "multiplayer": true
+}
