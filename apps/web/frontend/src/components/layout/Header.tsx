@@ -3,17 +3,12 @@ import LoginForm from "../auth/LoginForm"
 import { useAuth } from "../../hooks/useAuth"
 
 export function Header() {
-
-    const { user, loading, setUser } = useAuth();
-
+    const { user, loading, logout } = useAuth();
 
     const handleLogout = async () => {
-        await fetch("http://localhost:3000/api/auth/logout", {
-          method: "POST",
-          credentials: "include",
-        });
-        setUser(null);
-      };
+        await logout();
+        // navigera någonstans efter logout eller annat  ?
+   };
 
     if (loading) return <p>Loading...</p>
 
@@ -28,7 +23,7 @@ export function Header() {
         {user ?  (
             <div>
                 <span>{user.username}</span>
-                <button onClick={handleLogout}>Logout</button>
+                <button onClick={handleLogout }>Logout</button>
             </div>
             ) : (
             <LoginForm />
