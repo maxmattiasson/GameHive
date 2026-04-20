@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { ChangeEvent } from "react";
-
+import { useAuth } from "../../hooks/useAuth";
 import Button from "../ui/Button";
 import Input from "../ui/Input";
 
@@ -9,6 +9,8 @@ const LoginForm = () => {
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+
+  const { setUser } = useAuth();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -35,6 +37,7 @@ const LoginForm = () => {
         headers: {
           "Content-Type": "application/json"
         },
+        credentials: "include",
         body: JSON.stringify({
           email: email.trim(),
           password: password.trim()
@@ -47,8 +50,17 @@ const LoginForm = () => {
         setErrorMessage(data.message || "Inloggning misslyckades");
         return;
       }
+    const me = await fetch("http://localhost:3000/api/auth/me", {
+        credentials: "include"
+      });
+      if (!me.ok) {
+        setErrorMessage("Session failed, cookie not set");
+        return;
+      }
+      const checkedUser = await me.json();
+      setUser(checkedUser);
+      console.log("Logged in user:", checkedUser);
 
-      localStorage.setItem("authToken", data.token);
     } catch {
       setErrorMessage("Kunde inte ansluta till servern");
     } finally {
