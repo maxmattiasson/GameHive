@@ -1,8 +1,10 @@
+import { ObjectId } from "mongodb";
+
 export interface Game {
   title: string;
   release: Date;
   dev: string;
-  genres: string[];
+  genres: ObjectId[];
   platforms: string[];
   desc: string;
   thumb: string;
