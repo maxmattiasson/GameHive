@@ -1,7 +1,7 @@
 import "./Header.css";
 import LoginForm from "../auth/LoginForm";
 import { useAuth } from "../../hooks/useAuth";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 export function Header() {
   const { user, loading, logout } = useAuth();
@@ -21,22 +21,8 @@ export function Header() {
   return (
     <>
       <header>
-        <div className="logo-container">
-          <h1>Game Hive</h1>
-        </div>
-        <div className="user-container">
-          {user ? (
-            <div>
-              <NavLink to={profilePath} className="profile-link">
-                {user.username}
-              </NavLink>
-              <button onClick={handleLogout}>Logout</button>
-            </div>
-          ) : (
-            <LoginForm />
-          )}
-        </div>
-        <div className="nav-container">
+        <h1>Game Hive</h1>
+        <nav>
           <NavLink to="/" end className={navClass}>
             Home
           </NavLink>
@@ -46,7 +32,20 @@ export function Header() {
           <NavLink to="/about" className={navClass}>
             About
           </NavLink>
-        </div>
+        </nav>
+        {user ? (
+          <div>
+            <NavLink to={profilePath} className="profile-link">
+              {user.username}
+            </NavLink>
+            <button onClick={handleLogout}>Logout</button>
+          </div>
+        ) : (
+          <div className="login-container">
+            <LoginForm />
+            <Link to="/signup">Sign up</Link>
+          </div>
+        )}
       </header>
     </>
   );

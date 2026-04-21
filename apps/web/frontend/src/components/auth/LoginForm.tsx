@@ -35,13 +35,13 @@ const LoginForm = () => {
       const response = await fetch("http://localhost:3000/api/auth/login", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
         credentials: "include",
         body: JSON.stringify({
           email: email.trim(),
-          password: password.trim()
-        })
+          password: password.trim(),
+        }),
       });
 
       const data = await response.json();
@@ -51,7 +51,7 @@ const LoginForm = () => {
         return;
       }
       const me = await fetch("http://localhost:3000/api/auth/me", {
-        credentials: "include"
+        credentials: "include",
       });
       if (!me.ok) {
         setErrorMessage("Session failed, cookie not set");

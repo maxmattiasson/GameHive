@@ -1,5 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import Game from "../models/Game.js";
+import Genre from "../models/Genre.js";
+import { AuthRequest } from "../auth/authMiddleware.js";
 
 // List all games
 export const getAllGames = async (
@@ -25,7 +27,7 @@ export const getAllGames = async (
     if (dev) filter.dev = { $regex: dev, $options: "i" };
     if (multiplayer !== undefined) filter.multiplayer = multiplayer === "true";
 
-    const games = await Game.find(filter);
+    const games = await Game.find(filter).populate("genres");
     res.json(games);
   } catch (error) {
     next(error);
@@ -39,11 +41,15 @@ export const getGamebyId = (req: Request, res: Response) => {
 
 // Add new game
 export const addNewGame = async (
-  req: Request,
+  req: AuthRequest,
   res: Response,
   next: NextFunction,
 ) => {
   console.log("funkar?");
+
+  if (!req.user) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
 
   const game = new Game({
     title: req.body.title,
@@ -56,6 +62,7 @@ export const addNewGame = async (
     multiplayer: req.body.multiplayer,
     avg_rating: req.body.avg_rating,
     review: req.body.review,
+    ownerUserId: req.user.userId,
   });
 
   try {
