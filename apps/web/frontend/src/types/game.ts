@@ -1,9 +1,11 @@
+import type { Genre } from "./genre";
+
 export interface Game {
   _id: string;
   title: string;
   release: Date;
   dev: string;
-  genres: string[];
+  genres: Genre[];
   platforms: string[];
   desc: string;
   thumb: string;

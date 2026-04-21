@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import Game from "../models/Game.js";
+import Genre from "../models/Genre.js";
 import { AuthRequest } from "../auth/authMiddleware.js";
 
 // List all games
@@ -26,7 +27,7 @@ export const getAllGames = async (
     if (dev) filter.dev = { $regex: dev, $options: "i" };
     if (multiplayer !== undefined) filter.multiplayer = multiplayer === "true";
 
-    const games = await Game.find(filter);
+    const games = await Game.find(filter).populate("genres");
     res.json(games);
   } catch (error) {
     next(error);

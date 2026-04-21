@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import type { Game } from "../types/gameType.js";
 // MongoDB model / schema
 // Defines how game data is stored
 
@@ -23,10 +24,12 @@ const gameSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-    genres: {
-      type: [String],
-      required: true,
-    },
+    genres: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Genre",
+      },
+    ],
     platforms: {
       type: [String],
       required: true,
@@ -54,6 +57,6 @@ const gameSchema = new mongoose.Schema(
   { collection: "games" },
 );
 
-const Game = mongoose.model("Game", gameSchema);
+const Game = mongoose.model<Game>("Game", gameSchema);
 
 export default Game;
