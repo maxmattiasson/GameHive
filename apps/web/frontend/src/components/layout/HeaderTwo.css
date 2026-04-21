@@ -2,11 +2,17 @@ header {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  overflow: hidden;
+  padding: 0.5rem 1rem;
 }
 
 nav {
   display: flex;
-  gap: 1rem;
+  gap: 2rem;
+}
+
+.nav-link {
+  font-size: large;
 }
 
 .login-container {
@@ -17,12 +23,7 @@ nav {
 
 .login-container form {
   display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.login-container input {
-  width: 100px;
+  gap: 0.2rem;
 }
 
 @media (max-width: 768px) {
