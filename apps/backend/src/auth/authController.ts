@@ -2,6 +2,23 @@ import bcrypt from "bcrypt";
 import UserModel from "../models/User.js";
 import { Request, Response } from "express";
 import jwt  from "jsonwebtoken";
+import { Achievements } from "../models/Achievements.js";
+
+interface Achievement {
+    title: string,
+    description: string,
+    criteria: number,
+}
+
+const checkForAchievement = (metric: string, userValue: number): Achievement | null => {
+    // Find the Achievevement with the matching criteria if there is one.
+    const metricArray = Achievements[metric as keyof typeof Achievements]
+    const unlocked: Achievement | null = metricArray.filter(ach => userValue >= ach.criteria).pop() || null
+ 
+    // Compare metric with criteria
+    // If fulfilled, return achievement
+    return unlocked
+}
 
 export const signup = async (req: Request, res: Response) => {
     
@@ -72,6 +89,10 @@ export const login = async (req: Request, res: Response) => {
         res.status(401).json({ message: "Invalid user och password"});
         return;
     }
+
+    user.loginCount = (user.loginCount || 0) + 1
+    const achievementUnlocked = checkForAchievement("loginCount", user.loginCount)
+    console.log(user);
 
     const token = jwt.sign(
         { userId: user._id, email: user.email, role: user.role },

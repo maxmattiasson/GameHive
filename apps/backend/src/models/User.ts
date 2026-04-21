@@ -23,6 +23,15 @@ const UserSchema = new mongoose.Schema({
         enum: ["user", "admin", "dev"],
         default: "user",
     },
+    loginCount: {
+        type: Number,
+        required: false,
+        default: 0,
+    },
+    userAchievements: {
+        type: Array,
+        default: [],
+    }
 }, {
     collection: "users",
     timestamps: true,
