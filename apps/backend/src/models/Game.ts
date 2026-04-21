@@ -9,6 +9,11 @@ const gameSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    ownerUserId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: false,
+    },
     release: {
       type: Date,
       required: true,
