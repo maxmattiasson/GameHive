@@ -1,5 +1,5 @@
 import "./App.css";
-import { Header } from "./components/layout/Header";
+import { HeaderTwo } from "./components/layout/HeaderTwo";
 import { GameList } from "./components/games/GameList";
 import { Route, Routes } from "react-router-dom";
 import { GameDetails } from "./pages/GameDetails";
@@ -18,7 +18,7 @@ function App() {
   const games = data.slice(0, 3); //slice array to limit, otherwise return all
   return (
     <>
-      <Header />
+      <HeaderTwo />
 
       <main>
         <Routes>

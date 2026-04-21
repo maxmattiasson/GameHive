@@ -3,7 +3,6 @@ import type { ChangeEvent } from "react";
 import { useAuth } from "../../hooks/useAuth";
 import Button from "../ui/Button";
 import Input from "../ui/Input";
-import { Link } from "react-router-dom";
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
@@ -84,10 +83,8 @@ const LoginForm = () => {
           onChange={handleChange}
         />
         <Button color="primary" disabled={isLoading} type="submit">
-          Log In
+          Login
         </Button>
-
-        <Link to="/signup">Sign up</Link>
         <p>{errorMessage}</p>
       </form>
     </div>
