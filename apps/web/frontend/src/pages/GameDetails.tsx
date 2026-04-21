@@ -15,16 +15,10 @@ export function GameDetails() {
   return (
     <div className="container">
       <div className="header">
-        {/* <div
-  className="header"
-  style={{
-    url(${data.banner})`,
-  }}
-> */}
         <h1>{data.title}</h1>
         <p>Rating: {data.avg_rating}/10</p>
         <p>
-          {data.genres} - {data.dev}
+          {data.genres.map((g) => g.name).join(", ")} - {data.dev}
         </p>
       </div>
       <div className="details-container">
@@ -43,14 +37,16 @@ export function GameDetails() {
               </li>
               <li>
                 <span>Genre</span>
-                <span className="bold">{data.genres}</span>
+                <span className="bold">
+                  {data.genres.map((g) => g.name).join(", ")}
+                </span>
               </li>
             </ul>
           </InfoCard>
           <div className="badges">
             <p>Tags</p>
             {data.genres.map((genre) => (
-              <Badge key={genre} label={genre} />
+              <Badge key={genre._id} label={genre.name} />
             ))}
             {data.multiplayer && <Badge label="Multiplayer" />}
           </div>
