@@ -2,17 +2,11 @@ header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  overflow: hidden;
-  padding: 0.5rem 1rem;
 }
 
 nav {
   display: flex;
-  gap: 2rem;
-}
-
-.nav-link {
-  font-size: large;
+  gap: 1rem;
 }
 
 .login-container {
@@ -23,5 +17,27 @@ nav {
 
 .login-container form {
   display: flex;
-  gap: 0.2rem;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.login-container input {
+  width: 100px;
+}
+
+@media (max-width: 768px) {
+  header {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .auth-container {
+    flex-direction: column;
+  }
+
+  .auth-container input {
+    width: 100%;
+  }
 }
