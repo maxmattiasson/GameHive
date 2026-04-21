@@ -6,7 +6,11 @@ import gamesRoutes from "./routes/gamesRoutes.js";
 import rawgRoutes from "./routes/rawgRoutes.js";
 import authRoutes from "./auth/authRoutes.js";
 import cookieParser from "cookie-parser";
+<<<<<<< HEAD
 import "./models/Genre.js";
+=======
+import profileRoutes from "./routes/profileRoutes.js"
+>>>>>>> dev
 
 import { errorMiddleware } from "./middleware/errorMiddleware.js";
 import { notFoundMiddleware } from "./middleware/notFoundMiddleware.js";
@@ -25,8 +29,14 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use("/api", gamesRoutes);
+<<<<<<< HEAD
 app.use("/api/rawg", rawgRoutes);
 app.use("/api/auth", authRoutes);
+=======
+app.use("/api/rawg", rawgRoutes)
+app.use("/api/auth", authRoutes)
+app.use("/api/profile", profileRoutes)
+>>>>>>> dev
 
 app.get("/", (req, res) => {
   res.send("funking tjoho");

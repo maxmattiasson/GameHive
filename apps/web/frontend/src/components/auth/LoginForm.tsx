@@ -35,13 +35,13 @@ const LoginForm = () => {
       const response = await fetch("http://localhost:3000/api/auth/login", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
         credentials: "include",
         body: JSON.stringify({
           email: email.trim(),
-          password: password.trim()
-        })
+          password: password.trim(),
+        }),
       });
 
       const data = await response.json();
@@ -50,8 +50,8 @@ const LoginForm = () => {
         setErrorMessage(data.message || "Inloggning misslyckades");
         return;
       }
-    const me = await fetch("http://localhost:3000/api/auth/me", {
-        credentials: "include"
+      const me = await fetch("http://localhost:3000/api/auth/me", {
+        credentials: "include",
       });
       if (!me.ok) {
         setErrorMessage("Session failed, cookie not set");
@@ -60,7 +60,6 @@ const LoginForm = () => {
       const checkedUser = await me.json();
       setUser(checkedUser);
       console.log("Logged in user:", checkedUser);
-
     } catch {
       setErrorMessage("Kunde inte ansluta till servern");
     } finally {
@@ -84,7 +83,7 @@ const LoginForm = () => {
           onChange={handleChange}
         />
         <Button color="primary" disabled={isLoading} type="submit">
-          Logga in
+          Login
         </Button>
         <p>{errorMessage}</p>
       </form>
