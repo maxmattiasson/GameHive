@@ -34,11 +34,11 @@ nav {
 }
 
 @media (max-width: 480px) {
-  .auth-container {
+  .login-container {
     flex-direction: column;
   }
 
-  .auth-container input {
+  .login-container input {
     width: 100%;
   }
 }
