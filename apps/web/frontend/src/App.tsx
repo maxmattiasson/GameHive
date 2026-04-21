@@ -10,6 +10,7 @@ import { PlayerProfile } from "./pages/playerPage/PlayerProfilePage";
 import { PlayerLibraryPage } from "./pages/playerPage/PlayerLibraryPage";
 import { PlayerAchivementsPage } from "./pages/playerPage/PlayerAchivementsPage";
 import { PlayerFriendsPage } from "./pages/playerPage/PlayerFriendsPage";
+import { SignupPage } from "./pages/signup/SignupPage";
 
 function App() {
   const { data, loading, error } = useGames();
@@ -31,6 +32,7 @@ function App() {
           />
           <Route path="/games/:id" element={<GameDetails />} />
           <Route path="/games" element={<GamesPage />} />
+          <Route path="/signup" element={<SignupPage />} />
           <Route path="/dev/profile" element={<DevProfilePage />} />
           <Route path="/profile" element={<PlayerProfile />} />
           <Route path="/profile/library" element={<PlayerLibraryPage />} />

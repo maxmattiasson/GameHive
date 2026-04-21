@@ -3,6 +3,7 @@ import type { ChangeEvent } from "react";
 import { useAuth } from "../../hooks/useAuth";
 import Button from "../ui/Button";
 import Input from "../ui/Input";
+import { Link } from "react-router-dom";
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
@@ -35,13 +36,13 @@ const LoginForm = () => {
       const response = await fetch("http://localhost:3000/api/auth/login", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
         credentials: "include",
         body: JSON.stringify({
           email: email.trim(),
-          password: password.trim()
-        })
+          password: password.trim(),
+        }),
       });
 
       const data = await response.json();
@@ -51,7 +52,7 @@ const LoginForm = () => {
         return;
       }
       const me = await fetch("http://localhost:3000/api/auth/me", {
-        credentials: "include"
+        credentials: "include",
       });
       if (!me.ok) {
         setErrorMessage("Session failed, cookie not set");
@@ -83,8 +84,10 @@ const LoginForm = () => {
           onChange={handleChange}
         />
         <Button color="primary" disabled={isLoading} type="submit">
-          Login
+          Log In
         </Button>
+
+        <Link to="/signup">Sign up</Link>
         <p>{errorMessage}</p>
       </form>
     </div>
