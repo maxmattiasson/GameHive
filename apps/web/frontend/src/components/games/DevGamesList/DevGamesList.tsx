@@ -1,37 +1,27 @@
-import { useEffect, useState } from "react"
-import { getDevsOwnGames } from "../../../services/gameService";
 import type { Game } from "../../../types/game";
-import { useAuth } from "../../../hooks/useAuth";
 
-export default function DevGamesList(){
-    const [gamesList, setGamesList] = useState<Game[]>([]);
-    const { user, loading } = useAuth();
+type Props = {
+    games: Game[];
+    onEdit: (game: Game) => void;
+    onDelete: (id: string) => void;
+  };
 
-    
-    useEffect(() => {
-        if (loading) return;
-        if (!user) return;
-
-        const fetchGames = async () => {
-            try {
-                const data = await getDevsOwnGames();
-                setGamesList(data)
-            } catch (err) {
-                console.error(err)
-            }
-        }
-        fetchGames();
-    },[loading, user])
+export default function DevGamesList({ games, onEdit, onDelete }: Props){
 
     return (
         <div>
-            {gamesList.length === 0 ? (
+            {games.length === 0 ? (
                 <p>No games yet</p>
             ) : (
-                gamesList.map((game) => (
-                <div key={game._id}>{game.title}</div>
+                games.map((game) => (
+                <div key={game._id}>
+                    <div>{game.title}</div>
+                    <button onClick={() => onEdit(game)}>Edit</button>
+                    <button onClick={() => onDelete(game._id)}>Delete</button>
+                </div>
                 ))
             )}
         </div>
     )
 }
+

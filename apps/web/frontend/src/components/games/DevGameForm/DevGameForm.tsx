@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from "react";
-import styles from "./CreateGameForm.module.css"
+import styles from "./DevGameForm.module.css"
 import getGenres from "../../../services/genreService";
 import type { Genre } from "../../../types/genre";
+import type { Game } from "../../../types/game";
 
-export default function CreateGameForm(){
+type Props = {
+    selectedGame: Game | null;
+  };
+
+export default function DevGameForm({ selectedGame }: Props) {
     const [title, setTitle] = useState("")
     const [release, setRelease] = useState("")
     const [platforms, setPlatforms] = useState<string[]>([]);
@@ -66,12 +71,32 @@ export default function CreateGameForm(){
         loadGenres();  
     }, [])
 
+    useEffect(() => {
+        if (!selectedGame) {
+          setTitle("");
+          setRelease("");
+          setDesc("");
+          setSelectedGenres([]);
+          setPlatforms([]);
+          setMultiplayer(false);
+          return;
+        }
+      
+        setTitle(selectedGame.title || "");
+        setRelease(selectedGame.release ? new Date(selectedGame.release).toISOString().slice(0, 10) : "");
+        setDesc(selectedGame.desc || "");
+        setSelectedGenres(selectedGame.genres.map((genre) => genre._id));
+        setPlatforms(selectedGame.platforms || []);
+        setMultiplayer(selectedGame.multiplayer || false);
+      }, [selectedGame]);
+
     const options = ["PC", "PS5", "Xbox"];
 
     return (
         <>
             <form className={styles.devUploadForm} onSubmit={handleSubmit}>
-                <h3>Upload game</h3>
+            <h3>{selectedGame ? "Edit game" : "Upload game"}</h3>                
+            
                 <label>
                     <span>Title</span>
                 <input
