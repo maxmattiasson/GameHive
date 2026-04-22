@@ -1,0 +1,11 @@
+.devUploadForm {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+}
+
+.devUploadForm button {
+  width: 80px;
+}
