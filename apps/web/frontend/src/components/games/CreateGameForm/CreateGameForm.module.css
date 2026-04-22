@@ -11,6 +11,10 @@
 .devUploadForm input {
   cursor: pointer;
 }
+.devUploadForm input:focus {
+  outline: none;
+  animation: none;
+}
 .devUploadForm button {
   width: 80px;
 }
