@@ -1,6 +1,7 @@
 import { useAuth } from "../hooks/useAuth";
 import CreateGameForm from "../components/games/CreateGameForm/CreateGameForm";
 import { useState } from "react";
+import DevGamesList from "../components/games/DevGamesList/DevGamesList";
 
 export default function DevProfilePage(){
     const [isUploading, setIsUploading] = useState(false);
@@ -14,6 +15,9 @@ export default function DevProfilePage(){
 
             <button onClick={() => setIsUploading(!isUploading)}>Upload game</button>
             {isUploading ? <CreateGameForm/> : '' }
+
+            <DevGamesList/>
+            
         </>
     )
 }

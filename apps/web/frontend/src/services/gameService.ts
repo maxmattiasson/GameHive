@@ -13,3 +13,12 @@ export const getGameById = async (id: string): Promise<Game> => {
   if (!res.ok) throw new Error("Couldnt fetch game");
   return res.json();
 };
+
+export const getDevsOwnGames = async () => {
+  const res = await fetch(`${API_URL}/my-games`, {
+    credentials: "include",
+  });
+  
+  if (!res.ok) throw new Error("Couldnt fetch devs own games")
+  return res.json();
+}
