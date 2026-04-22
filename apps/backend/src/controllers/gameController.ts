@@ -54,7 +54,7 @@ export const addNewGame = async (
   const game = new Game({
     title: req.body.title,
     release: req.body.release,
-    dev: req.body.dev,
+    dev: req.user.username,
     genres: req.body.genres,
     platforms: req.body.platforms,
     desc: req.body.desc,

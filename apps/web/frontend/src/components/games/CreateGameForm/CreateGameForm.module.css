@@ -49,3 +49,6 @@
   outline: none;
   animation: none;
 }
+.textArea {
+  height: 50px;
+}
