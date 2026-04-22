@@ -1,3 +1,12 @@
+### Logga in
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "test@test.com",
+  "password": "123456"
+}
+
 ### Alla spel
 GET http://localhost:3000/api/games
 
@@ -38,3 +47,25 @@ Content-Type: application/json
   "genres": ["Action"],
   "multiplayer": true
 }
+
+### Lägg till spel i bibliotek
+POST http://localhost:3000/api/library
+Content-Type: application/json
+
+{
+  "game": "69e622f0e28b137e4d237d1f"
+}
+
+### Hämta bibliotek
+GET http://localhost:3000/api/library
+
+### Uppdatera speltid
+PATCH http://localhost:3000/api/library/69e622f0e28b137e4d237d1e
+Content-Type: application/json
+
+{
+  "playtimeMinutes": 120
+}
+
+### Ta bort spel från bibliotek
+DELETE http://localhost:3000/api/library/69e2035fe28b137e4d20c456

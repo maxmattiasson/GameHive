@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { InferSchemaType, model } from "mongoose";
 
 const LibrarySchema = new mongoose.Schema(
   {
@@ -14,7 +14,7 @@ const LibrarySchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["owned", "wishlist"],
+      enum: ["owned"],
       default: "owned",
       required: true
     },
@@ -23,16 +23,6 @@ const LibrarySchema = new mongoose.Schema(
       min: 0,
       default: 0,
       required: true
-    },
-    lastPlayedAt: {
-      type: Number,
-      default: null
-    },
-    createdAt: {
-      type: Date
-    },
-    updatedAt: {
-      type: Date
     }
   },
   { collection: "library", timestamps: true }
@@ -40,6 +30,8 @@ const LibrarySchema = new mongoose.Schema(
 
 LibrarySchema.index({ userId: 1, gameId: 1 }, { unique: true });
 
-const LibraryModel = mongoose.model("library", LibrarySchema);
+export type LibraryDocument = InferSchemaType<typeof LibrarySchema>;
+
+const LibraryModel = model<LibraryDocument>("Library", LibrarySchema);
 
 export default LibraryModel;
