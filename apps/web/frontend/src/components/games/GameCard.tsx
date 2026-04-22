@@ -33,7 +33,7 @@ export function GameCard({ game }: Props) {
         </div>
         <a className="arrow-button" href={`/games/${game._id}`}>
           View Game
-          <span className="arrow" />
+          <span className="arrow">→</span>
         </a>
       </div>
     </div>

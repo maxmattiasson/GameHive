@@ -6,6 +6,7 @@
     user?: {
         userId: string;
         email: string;
+        username: string;
         role: Role;
     };
     }
@@ -28,6 +29,7 @@
         const decoded = jwt.verify(token, secret) as {
             userId: string;
             email: string;
+            username: string;
             role: Role;
           };
 

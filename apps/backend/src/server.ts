@@ -8,6 +8,7 @@ import authRoutes from "./auth/authRoutes.js";
 import cookieParser from "cookie-parser";
 import "./models/Genre.js";
 import profileRoutes from "./routes/profileRoutes.js";
+import genresRoutes from "./routes/genresRoutes.js"
 
 import { errorMiddleware } from "./middleware/errorMiddleware.js";
 import { notFoundMiddleware } from "./middleware/notFoundMiddleware.js";
@@ -29,10 +30,8 @@ app.use("/api", gamesRoutes);
 
 app.use("/api/rawg", rawgRoutes);
 app.use("/api/auth", authRoutes);
-
-app.use("/api/rawg", rawgRoutes);
-app.use("/api/auth", authRoutes);
 app.use("/api/profile", profileRoutes);
+app.use("/api/genres", genresRoutes)
 
 app.get("/", (req, res) => {
   res.send("funking tjoho");
