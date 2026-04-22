@@ -14,4 +14,4 @@ router.get("/library", getPlayerLibrary);
 router.post("/library", addToLibrary);
 
 // edit players game in library
-router.patch("/library/:id", updateLibraryEntry);
+router.patch("/library/:gameId", updateLibraryEntry);

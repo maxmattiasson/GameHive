@@ -5,14 +5,12 @@ const LibrarySchema = new mongoose.Schema(
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      required: true,
-      unique: true
+      required: true
     },
     gameId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Game",
-      required: true,
-      unique: true
+      required: true
     },
     status: {
       type: String,
