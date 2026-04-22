@@ -1,23 +1,12 @@
-.arrow-button {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 1rem;
-  font-weight: 500;
-  cursor: pointer;
-  padding: 0;
-  text-decoration: none;
-  color: inherit;
-  margin-bottom: 0.7rem;
-}
-
 .arrow-button .arrow {
-  width: 7px;
-  height: 7px;
-  transform: rotate(-45deg);
+  display: inline-block;
+  font-size: 1.7rem;
+  line-height: 1;
+  transform: translateY(3px);
   transition: transform 0.2s ease;
+  margin-left: 5px;
 }
 
 .arrow-button:hover .arrow {
-  transform: rotate(-45deg) translate(3px, 3px);
+  transform: translateX(5px) translateY(3px);
 }
