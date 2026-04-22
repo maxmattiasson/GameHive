@@ -1,12 +1,28 @@
-import type { Game } from "../../../types/game";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./CreateGameForm.module.css"
+import getGenres from "../../../services/genreService";
+import type { Genre } from "../../../types/genre";
 
 export default function CreateGameForm(){
     const [title, setTitle] = useState("")
     const [release, setRelease] = useState("")
     const [platforms, setPlatforms] = useState<string[]>([]);
     const [multiplayer, setMultiplayer] = useState(false);
+    const [genreList, setGenreList] = useState<Genre[]>([]);
+
+
+    useEffect(() => { 
+        const loadGenres = async () => {
+            try {
+                const data = await getGenres();
+                setGenreList(data)
+            } catch (err) {
+                console.error(err)
+            }
+        };
+
+        loadGenres();  
+    }, [])
 
     const options = ["PC", "PS5", "Xbox"];
 
@@ -67,6 +83,12 @@ export default function CreateGameForm(){
                     }}
                     />
                 </label>
+                ))}
+                {genreList.map((genre) => (
+                    <label key={genre._id} className={styles.genreList}>
+                        <span>{genre.name}</span>
+                        <input className={styles.genreInput} type="checkbox" />
+                    </label>
                 ))}
                         <button type="submit">Submit</button>
             </form>
