@@ -53,7 +53,7 @@ POST http://localhost:3000/api/library
 Content-Type: application/json
 
 {
-  "game": "69e622f0e28b137e4d237d1f"
+  "gameId": "69e62b5d8f1d9f73f49a1fcc"
 }
 
 ### Hämta bibliotek
@@ -68,4 +68,4 @@ Content-Type: application/json
 }
 
 ### Ta bort spel från bibliotek
-DELETE http://localhost:3000/api/library/69e2035fe28b137e4d20c456
+DELETE http://localhost:3000/api/library/69e62b5d8f1d9f73f49a1fcc
