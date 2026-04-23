@@ -1,7 +1,9 @@
 import type { Game } from "../types/game";
 
+// base-adress
 const API_URL = "http://localhost:3000/api/library";
 
+// Library entry has to have it
 type LibraryEntry = {
   _id: string;
   userId: string;
@@ -11,6 +13,7 @@ type LibraryEntry = {
   updatedAt: string;
 };
 
+// extracts error messages from API
 const parseApiError = async (res: Response, fallback: string) => {
   try {
     const data = await res.json();
