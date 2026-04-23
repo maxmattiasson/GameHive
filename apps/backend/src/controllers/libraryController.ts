@@ -59,7 +59,11 @@ export const getPlayerLibrary = async (
 
     const library = await LibraryModel.find({
       userId: userObjectId
-    }).populate("gameId", GAME_POPULATE_FIELDS);
+    }).populate({
+      path: "gameId",
+      select: GAME_POPULATE_FIELDS,
+      populate: { path: "genres", select: "name" }
+    });
 
     return res.json(library);
   } catch (error) {
@@ -85,7 +89,11 @@ export const addToLibrary = async (
       gameId: gameObjectId
     });
 
-    const populated = await entry.populate("gameId", GAME_POPULATE_FIELDS);
+    const populated = await entry.populate({
+      path: "gameId",
+      select: GAME_POPULATE_FIELDS,
+      populate: { path: "genres", select: "name" }
+    });
     return res.status(201).json(populated);
   } catch (error: any) {
     if (error.code === 11000) {
@@ -127,7 +135,11 @@ export const updateLibraryEntry = async (
       },
       { playtimeMinutes },
       { new: true, runValidators: true }
-    ).populate("gameId", GAME_POPULATE_FIELDS);
+    ).populate({
+      path: "gameId",
+      select: GAME_POPULATE_FIELDS,
+      populate: { path: "genres", select: "name" }
+    });
 
     if (!updated)
       return res.status(404).json({ message: "Library entry not found" });
