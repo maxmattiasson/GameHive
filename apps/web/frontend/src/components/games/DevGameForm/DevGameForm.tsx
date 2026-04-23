@@ -20,6 +20,7 @@ export default function DevGameForm({ selectedGame }: Props) {
     const [multiplayer, setMultiplayer] = useState(selectedGame?.multiplayer ?? false);
     const [desc, setDesc] = useState(selectedGame?.desc ?? "");
     const [genreList, setGenreList] = useState<Genre[]>([]);
+    const [thumb, setThumb] = useState(selectedGame?.thumb ?? "");
     const [selectedGenres, setSelectedGenres] = useState(
         selectedGame?.genres.map((g) => g._id) ?? []
       );
@@ -34,6 +35,7 @@ export default function DevGameForm({ selectedGame }: Props) {
           genres: selectedGenres,
           platforms,
           multiplayer,
+          thumb,
         };
     
         try {
@@ -53,6 +55,7 @@ export default function DevGameForm({ selectedGame }: Props) {
           setSelectedGenres([]);
           setPlatforms([]);
           setMultiplayer(false);
+          setThumb('');
         } catch (err) {
           console.error(err);
         }
@@ -111,6 +114,15 @@ export default function DevGameForm({ selectedGame }: Props) {
                     onChange={(e) => setMultiplayer(e.target.checked)}
                     />
                     </label>
+                <label>
+                <span>Thumbnail URL</span>
+                    <input
+                        type="text"
+                        name="thumb"
+                        value={thumb}
+                        onChange={(e) => setThumb(e.target.value)}
+                    />
+                </label>
                 {options.map((platform) => (
                 <label key={platform}>
                    <span>{platform}</span> 
@@ -127,6 +139,7 @@ export default function DevGameForm({ selectedGame }: Props) {
                     }}
                     />
                 </label>
+                
                 ))}
                 {genreList.map((genre) => (
                     <label key={genre._id} className={styles.genreList}>
