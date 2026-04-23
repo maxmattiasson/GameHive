@@ -12,12 +12,6 @@ const LibrarySchema = new mongoose.Schema(
       ref: "Game",
       required: true
     },
-    status: {
-      type: String,
-      enum: ["owned"],
-      default: "owned",
-      required: true
-    },
     playtimeMinutes: {
       type: Number,
       min: 0,

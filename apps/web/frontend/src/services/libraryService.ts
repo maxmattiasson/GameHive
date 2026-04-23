@@ -6,7 +6,6 @@ type LibraryEntry = {
   _id: string;
   userId: string;
   gameId: Game;
-  status: "owned";
   playtimeMinutes: number;
   createdAt: string;
   updatedAt: string;
