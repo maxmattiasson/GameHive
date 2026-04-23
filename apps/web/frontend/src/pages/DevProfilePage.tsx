@@ -2,7 +2,7 @@ import { useAuth } from "../hooks/useAuth";
 import DevGameForm from "../components/games/DevGameForm/DevGameForm";
 import { useState, useEffect } from "react";
 import DevGamesList from "../components/games/DevGamesList/DevGamesList";
-import { getDevsOwnGames } from "../services/gameService";
+import { getDevsOwnGames, deleteGame } from "../services/gameService";
 import type { Game } from "../types/game";
 
 export default function DevProfilePage(){
@@ -11,6 +11,8 @@ export default function DevProfilePage(){
     const [selectedGame, setSelectedGame] = useState<Game | null>(null);
 
     const { user, loading } = useAuth();
+    
+
 
     useEffect(() => {
         if (loading) return;
@@ -24,6 +26,7 @@ export default function DevProfilePage(){
                 console.error(err)
             }
         }
+
         fetchGames();
     },[loading, user])
 
@@ -33,9 +36,13 @@ export default function DevProfilePage(){
       };
     
     const handleDelete = async (id: string) => {
-    console.log("deleted game with id:", id);
-    // await deleteGame(id)
-    // setGamesList(prev => prev.filter(game => game._id !== id))
+    try {
+        await deleteGame(id);
+        setGamesList(prev => prev.filter(game => game._id !== id));
+        console.log("deleted game with id:", id);
+      } catch (err) {
+        console.error(err);
+      }
     };
 
     const handleToggleForm = () => {
@@ -43,6 +50,7 @@ export default function DevProfilePage(){
         setIsUploading((prev) => !prev);
       };
 
+      
     return (
         <>
             <h1>DEV PAGE</h1>
@@ -50,7 +58,7 @@ export default function DevProfilePage(){
 
             <button onClick={handleToggleForm}>Upload game</button>
 
-            {isUploading && <DevGameForm selectedGame={selectedGame} />}
+            {isUploading && <DevGameForm key={selectedGame?._id ?? "new"} selectedGame={selectedGame} />}
 
             <DevGamesList onDelete={handleDelete} onEdit={handleEdit} games={gamesList}/>
 
