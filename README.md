@@ -170,14 +170,12 @@ Available filters on GET /games:
 - Review system with helpful/not-helpful voting
 - Per-game leaderboard endpoints with ranking and filtering logic
 - Complete RBAC enforcement for Admin, Developer, and Player actions
-- Developer onboarding workflow from contact form to approved Developer account
 - GDPR tools for data export and account/game-history deletion requests
 
 ### Planned Frontend
 
-- Contact form flow for developer applications
 - Player dashboard for library, playtime, and achievement progress
-- Friends UI for requests, accepted friends, and status updates
+- Friends UI for requests, accepted friends.
 - Review and rating interface with helpful/not-helpful actions
 - Leaderboard pages with sorting and filter controls
 - Developer portal for uploading and managing published games end-to-end
