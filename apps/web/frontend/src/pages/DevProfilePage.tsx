@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import DevGamesList from "../components/games/DevGamesList/DevGamesList";
 import { getDevsOwnGames, deleteGame } from "../services/gameService";
 import type { Game } from "../types/game";
+import styles from "./DevProfilePage.module.css"
 
 export default function DevProfilePage(){
     const [isUploading, setIsUploading] = useState(false);
@@ -52,7 +53,7 @@ export default function DevProfilePage(){
 
       
     return (
-        <>
+        <section className={styles.DevPage}>
             <h1>DEV PAGE</h1>
             <p>{user?.username}</p>
 
@@ -60,8 +61,9 @@ export default function DevProfilePage(){
 
             {isUploading && <DevGameForm key={selectedGame?._id ?? "new"} selectedGame={selectedGame} />}
 
-            <DevGamesList onDelete={handleDelete} onEdit={handleEdit} games={gamesList}/>
-
-        </>
+            <div className={styles.DevGameList}>
+                <DevGamesList onDelete={handleDelete} onEdit={handleEdit} games={gamesList}/>
+            </div>
+        </section>
     )
 }
