@@ -14,7 +14,7 @@ export function GameDetails() {
 
   return (
     <div className="container">
-      <div className="header">
+      <div className="header" style={{backgroundImage: `url(${data.thumb})`,}}>
         <h1>{data.title}</h1>
         <p>Rating: {data.avg_rating}/10</p>
         <p>
