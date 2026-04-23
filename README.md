@@ -22,21 +22,11 @@ Instead of spreading game data across disconnected tools, users and developers g
 - Game catalog with genres, platforms, and metadata
 - User library with owned games and playtime tracking
 - Achievement system with rules and progress tracking
-- Friend system with requests and status handling
+- Friend system with requests.
 - Per-game leaderboards with ranking and filtering
 - Reviews and ratings with helpful/not-helpful voting
 - User registration and login flow with Player as the default role
-- Developer application flow through a contact form on the website
-- Developer role approval flow that unlocks developer-level access
 - Developer login with permission to upload and manage published games
-
-### Authentication And Role Upgrade Flow
-
-1. A new user registers as a Player.
-2. The user logs in as a Player and can use player features.
-3. A user who wants to become a Developer contacts us through the website form.
-4. After approval, the user account gets Developer permissions.
-5. The user can then log in as a Developer and upload games to the platform.
 
 ## Getting Started Locally
 
