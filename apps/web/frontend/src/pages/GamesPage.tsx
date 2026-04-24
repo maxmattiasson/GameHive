@@ -9,13 +9,13 @@ const initialFilters: GameFilterValues = {
   genre: [],
   dev: "",
   release: "",
-  multiplayer: false,
+  multiplayer: false
 };
 
 export function GamesPage() {
   const [activeFilters, setActiveFilters] =
     useState<GameFilterValues>(initialFilters);
-  const { data, loading, error } = useGames();
+  const { data } = useGames();
 
   // filters values and returns boolean
   const filteredGames = data.filter((game) => {
@@ -35,7 +35,7 @@ export function GamesPage() {
     const genreMatch =
       activeFilters?.genre.length === 0 ||
       activeFilters?.genre.some((selectedGenre) =>
-        game.genres.some((g) => g.name === selectedGenre),
+        game.genres.some((g) => g.name === selectedGenre)
       );
 
     const multiplayerMatch = !activeFilters?.multiplayer || game.multiplayer;
