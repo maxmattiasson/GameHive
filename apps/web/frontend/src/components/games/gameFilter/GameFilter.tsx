@@ -38,6 +38,7 @@ const initialFilter: GameFilterValues = {
 
 const GameFilter = ({ onSearch }: GameFilterProps) => {
   const [filter, setFilter] = useState<GameFilterValues>(initialFilter);
+  const [showGenres, setShowGenres] = useState(false);
 
   // updates field dynamic.
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -102,20 +103,31 @@ const GameFilter = ({ onSearch }: GameFilterProps) => {
         Multiplayer
       </label>
 
-      <div className="genre-wrapper">
-        <p>Genres</p>
-        {genres.map((genre) => (
-          <label key={genre}>
-            <input
-              type="checkbox"
-              value={genre}
-              checked={filter.genre.includes(genre)}
-              onChange={handleGenreChange}
-            />
-            {genre}
-          </label>
-        ))}
-      </div>
+      <button
+        type="button"
+        aria-expanded={showGenres}
+        onClick={() => setShowGenres((v) => !v)}
+      >
+        {showGenres ? "Hide genre" : "Show genre"}
+      </button>
+
+      {showGenres && (
+        <fieldset>
+          <legend>Genre</legend>
+          {genres.map((genre) => (
+            <label key={genre}>
+              <input
+                type="checkbox"
+                value={genre}
+                checked={filter.genre.includes(genre)}
+                onChange={handleGenreChange}
+              />
+              {genre}
+            </label>
+          ))}
+        </fieldset>
+      )}
+
       <button type="submit">Search</button>
       <button type="button" onClick={handleReset}>
         Reset
