@@ -31,4 +31,23 @@ async function sendFriendRequest(req: AuthRequest, res: Response) {
   }
 }
 
-export { sendFriendRequest };
+async function getPendingRequests(req: AuthRequest, res: Response) {
+  const userId = req.user?.userId;
+
+  if (!userId) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+
+  try {
+    const requests = await FriendshipModel.find({
+      recipient: userId,
+      status: "pending",
+    }).populate("requester", "username");
+
+    return res.status(200).json(requests);
+  } catch (err) {
+    return res.status(500).json({ message: "Something went wrong" });
+  }
+}
+
+export { sendFriendRequest, getPendingRequests };
