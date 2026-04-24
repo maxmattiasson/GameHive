@@ -45,9 +45,7 @@ export function GamesPage() {
   return (
     <>
       <p>Hush! 🤫 You're in a library... </p>
-      <h1>OUR GAMES LIBRARY!! 🥳🎮🕹️👾</h1>
-
-      <p>(Tons and tons of games here....)</p>
+      <h1>A GAME LIBRARY!! 🎮🕹️👾</h1>
       <div className="game-filter-wrapper">
         <GameFilter onSearch={setActiveFilters} />
         <GameList games={filteredGames} />
