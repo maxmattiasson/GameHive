@@ -5,6 +5,7 @@ import { connectDB } from "./config/db.js";
 import gamesRoutes from "./routes/gamesRoutes.js";
 import rawgRoutes from "./routes/rawgRoutes.js";
 import authRoutes from "./auth/authRoutes.js";
+import friendshipRoutes from "./routes/friendshipRoutes.js";
 import cookieParser from "cookie-parser";
 import "./models/Genre.js";
 import profileRoutes from "./routes/profileRoutes.js";
@@ -33,6 +34,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/rawg", rawgRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/profile", profileRoutes);
+app.use("/api/friends", friendshipRoutes);
 
 app.get("/", (req, res) => {
   res.send("funking tjoho");
