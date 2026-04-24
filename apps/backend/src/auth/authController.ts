@@ -10,6 +10,8 @@ interface Achievement {
     criteria: number,
 }
 
+
+// Flytta den här funktionen till en middleware som körs efter login, så att vi kan hantera achievements där i stället. 
 const checkForAchievement = (metric: string, userValue: number): Achievement | null => {
     // Find the Achievevement with the matching criteria if there is one.
     const metricArray = Achievements[metric as keyof typeof Achievements]
@@ -62,7 +64,7 @@ export const signup = async (req: Request, res: Response) => {
     }
 }
 
-export const login = async (req: Request, res: Response) => {
+export const login = async (req: Request, res: Response) => { // Lägg in en parameter för next() här, så att vi kan köra en middleware efter login som hanterar achievements unlocked vid login
     try {
         const { email, password } = req.body;
         if (
@@ -89,6 +91,8 @@ export const login = async (req: Request, res: Response) => {
         res.status(401).json({ message: "Invalid user och password"});
         return;
     }
+
+    // Ta bort den här snutten och lägg in next() i stället, så att vi kan hantera achievements i en middleware efter login
 
     user.loginCount = (user.loginCount || 0) + 1
     const achievementUnlocked = checkForAchievement("loginCount", user.loginCount)
