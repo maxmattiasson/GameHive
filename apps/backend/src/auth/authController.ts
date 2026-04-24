@@ -1,29 +1,9 @@
 import bcrypt from "bcrypt";
 import UserModel from "../models/User.js";
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import jwt  from "jsonwebtoken";
-import { Achievements } from "../models/Achievements.js";
-
-interface Achievement {
-    title: string,
-    description: string,
-    criteria: number,
-}
-
-
-// Flytta den här funktionen till en middleware som körs efter login, så att vi kan hantera achievements där i stället. 
-const checkForAchievement = (metric: string, userValue: number): Achievement | null => {
-    // Find the Achievevement with the matching criteria if there is one.
-    const metricArray = Achievements[metric as keyof typeof Achievements]
-    const unlocked: Achievement | null = metricArray.filter(ach => userValue >= ach.criteria).pop() || null
- 
-    // Compare metric with criteria
-    // If fulfilled, return achievement
-    return unlocked
-}
 
 export const signup = async (req: Request, res: Response) => {
-    
     try {
     const { username, email, password }= req.body;
 
@@ -64,7 +44,7 @@ export const signup = async (req: Request, res: Response) => {
     }
 }
 
-export const login = async (req: Request, res: Response) => { // Lägg in en parameter för next() här, så att vi kan köra en middleware efter login som hanterar achievements unlocked vid login
+export const login = async (req: Request, res: Response, next: NextFunction ) => {
     try {
         const { email, password } = req.body;
         if (
@@ -92,12 +72,6 @@ export const login = async (req: Request, res: Response) => { // Lägg in en par
         return;
     }
 
-    // Ta bort den här snutten och lägg in next() i stället, så att vi kan hantera achievements i en middleware efter login
-
-    user.loginCount = (user.loginCount || 0) + 1
-    const achievementUnlocked = checkForAchievement("loginCount", user.loginCount)
-    console.log(user);
-
     const token = jwt.sign(
         { userId: user._id, email: user.email, role: user.role },
         getJwtSecret(),
@@ -110,15 +84,15 @@ export const login = async (req: Request, res: Response) => { // Lägg in en par
         sameSite: "lax",
         maxAge: 7 * 24 * 60 * 60 * 1000,
     });
-    
-    res.status(200).json({
-        message: "Login successful",
-        user: {
-            id: user._id,
-            username: user.username,
-            email: user.email
-        },
-    });
+
+    req.body = { 
+        id: user._id,
+        username: user.username,
+        email: user.email
+    }
+
+    next()
+
     } catch (err) {
         console.log(err)
         res.status(500).json({ message: "Server error"})
