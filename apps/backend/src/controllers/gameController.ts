@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from "express";
 import Game from "../models/Game.js";
-import Genre from "../models/Genre.js";
 import { AuthRequest } from "../auth/authMiddleware.js";
 
 // List all games
@@ -45,7 +44,7 @@ export const addNewGame = async (
   res: Response,
   next: NextFunction,
 ) => {
-  console.log("funkar?");
+  console.log("funkar");
 
   if (!req.user) {
     return res.status(401).json({ message: "Unauthorized" });
@@ -84,7 +83,7 @@ export const updateGame = async (
 
     if (req.body.title !== undefined) game.title = req.body.title;
     if (req.body.release !== undefined) game.release = req.body.release;
-    if (req.body.dev !== undefined) game.dev = req.body.dev;
+    // if (req.body.dev !== undefined) game.dev = req.body.dev;
     if (req.body.genres !== undefined) game.genres = req.body.genres;
     if (req.body.platforms !== undefined) game.platforms = req.body.platforms;
     if (req.body.desc !== undefined) game.desc = req.body.desc;
@@ -116,3 +115,23 @@ export const deleteGame = async (
     next(error);
   }
 };
+
+export const getOwnersGames = async (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const ownerId = req.user.userId;
+
+    const games = await Game.find({ ownerUserId: ownerId }).populate('genres');
+
+    return res.status(200).json(games);
+  } catch (error) {
+    next(error);
+  }
+}
