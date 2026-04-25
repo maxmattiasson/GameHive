@@ -12,14 +12,14 @@ import UserModel from "../models/User.js"
 
 
 export const checkLoginCount = async (req: Request, res: Response, next: NextFunction) => {
-    // refactor required user data from req.body.user
     let { loginCount, achievements } = req.body.user
     loginCount = (loginCount || 0) + 1
-    // Fetch the achievements meeting criteria for category "loginCount" from the database
+
+    // Uppfyller användaren kriterierna för några nya achievements?
     const achievementsMeetingCriteria = await Achievements.find({ category: "loginCount", criteria: { $lte: loginCount } })
-    // Check if the user has already unlocked any of the achievements
     const unlockedAchievements = achievementsMeetingCriteria.filter(ach => !achievements.includes(ach._id.toString()))
-    // If there are new achievements to unlock, add them to the user's achievements, save the users new login count and achievements
+
+    // Spara uppdaterad loginCount och eventuella nya achievements i databasen
     const dbUser = await UserModel.findById(req.body.user._id)
     if (dbUser) {
         dbUser.loginCount = loginCount
@@ -28,11 +28,13 @@ export const checkLoginCount = async (req: Request, res: Response, next: NextFun
         }
         await dbUser.save()
     }
-    // Add the new achievements to the req.body.user object for use in the response
+
+    // Lägg uppdaterad loginCount och nya achievements i req.body för att sen skickas med i res
     req.body.user.loginCount = loginCount
     req.body.user.achievements = [...(achievements || []), ...unlockedAchievements.map(ach => ach._id.toString())]
-    req.body.user.newUnlocks = unlockedAchievements.map(ach => ach._id.toString())
-    
+    // För att frontend ska kunna visa vilka nya achievements som låstes upp vid inloggningen
+    req.body.user.newUnlocks = unlockedAchievements.map(ach => ach._id.toString()) 
+
     next()
 }
 
