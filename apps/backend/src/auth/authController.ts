@@ -85,11 +85,8 @@ export const login = async (req: Request, res: Response, next: NextFunction ) =>
         maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
-    req.body = { 
-        id: user._id,
-        username: user.username,
-        email: user.email
-    }
+    const { passwordHash, ...userWithoutPassword } = user.toObject();
+    req.body = { user: userWithoutPassword };
 
     next()
 

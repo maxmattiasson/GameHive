@@ -6,7 +6,7 @@ export const getAllAchievements = async (req: Request, res: Response, next: Next
     try {
         const achievementsList = Achievements.find() 
         if(!achievementsList) {
-            res.status(404).json({error: "Achieved nothing, will never..."})
+            res.status(404).json({error: "Achieved nothing, will probably never..."})
         }
         res.json(achievementsList)
     } catch(error) {
@@ -16,8 +16,8 @@ export const getAllAchievements = async (req: Request, res: Response, next: Next
 // Add new achievement
 export const addAchievement = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { name, description, gameId } = req.body
-        const newAchievement = new Achievements({ name, description, gameId })
+        const { name, description, criteria, category } = req.body
+        const newAchievement = new Achievements({ name, description, criteria, category })
         await newAchievement.save()
         res.status(201).json(newAchievement)
     } catch(error) {
