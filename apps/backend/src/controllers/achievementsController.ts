@@ -14,3 +14,13 @@ export const getAllAchievements = async (req: Request, res: Response, next: Next
     }
 }
 // Add new achievement
+export const addAchievement = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { name, description, gameId } = req.body
+        const newAchievement = new Achievements({ name, description, gameId })
+        await newAchievement.save()
+        res.status(201).json(newAchievement)
+    } catch(error) {
+        next(error)
+    }
+}
