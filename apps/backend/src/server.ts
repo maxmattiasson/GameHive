@@ -5,6 +5,7 @@ import { connectDB } from "./config/db.js";
 import gamesRoutes from "./routes/gamesRoutes.js";
 import rawgRoutes from "./routes/rawgRoutes.js"
 import authRoutes from "./auth/authRoutes.js"
+import achievementsRoutes from "./routes/achievementsRoutes.js";
 import cookieParser from "cookie-parser";
 
 import { errorMiddleware } from "./middleware/errorMiddleware.js";
@@ -25,6 +26,7 @@ app.use(cookieParser())
 app.use("/api", gamesRoutes);
 app.use("/api/rawg", rawgRoutes)
 app.use("/api/auth", authRoutes)
+app.use("/api/achievements", achievementsRoutes)
 
 app.get("/", (req, res) => {
   res.send("funking tjoho");
