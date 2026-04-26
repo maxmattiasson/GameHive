@@ -27,13 +27,13 @@ export function GameCard({ game }: Props) {
         </p>
         <div className="badges">
           {game.genres.map((genre) => (
-            <Badge key={genre} label={genre} />
+            <Badge key={genre._id} label={genre.name} />
           ))}
           {game.multiplayer && <Badge label="Multiplayer" />}
         </div>
         <a className="arrow-button" href={`/games/${game._id}`}>
           View Game
-          <span className="arrow" />
+          <span className="arrow">→</span>
         </a>
       </div>
     </div>
