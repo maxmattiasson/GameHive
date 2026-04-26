@@ -5,6 +5,8 @@ export interface User {
   passwordHash: string;
   email: string;
   role: UserRole;
+  loginCount: number;
+  userAchievements: any[];  
   createdAt: Date;
   updatedAt: Date;
 }

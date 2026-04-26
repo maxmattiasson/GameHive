@@ -4,7 +4,6 @@ import { addAchievement, getAllAchievements } from "../controllers/achievementsC
 const router = Router()
 
 router.get('/', getAllAchievements)
-// TODO: Add new achievement
 router.post('/', addAchievement)
 
 export default router

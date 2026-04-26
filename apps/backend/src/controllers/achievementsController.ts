@@ -4,10 +4,7 @@ import Achievements from "../models/Achievements.js";
 // List all achievements
 export const getAllAchievements = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const achievementsList = Achievements.find() 
-        if(!achievementsList) {
-            res.status(404).json({error: "Achieved nothing, will probably never..."})
-        }
+        const achievementsList = await Achievements.find() 
         res.json(achievementsList)
     } catch(error) {
         next(error)
@@ -16,8 +13,8 @@ export const getAllAchievements = async (req: Request, res: Response, next: Next
 // Add new achievement
 export const addAchievement = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { name, description, criteria, category } = req.body
-        const newAchievement = new Achievements({ name, description, criteria, category })
+        const { title, description, criteria, category } = req.body
+        const newAchievement = new Achievements({ title, description, criteria, category })
         await newAchievement.save()
         res.status(201).json(newAchievement)
     } catch(error) {
