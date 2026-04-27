@@ -43,8 +43,10 @@ const LoginForm = () => {
           password: password.trim(),
         }),
       });
-
+      
       const data = await response.json();
+      console.log("After hitting /login!");
+      console.log("data.body.user:", data.body.user);
 
       if (!response.ok) {
         setErrorMessage(data.message || "Inloggning misslyckades");

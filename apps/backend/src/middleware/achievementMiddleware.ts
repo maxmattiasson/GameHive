@@ -3,7 +3,7 @@ import Achievements from "../models/Achievements.js"
 import UserModel from "../models/User.js"
 
 export const checkLoginCount = async (req: Request, res: Response, next: NextFunction) => {
-    let { loginCount, achievements: userAchievements } = req.body.user
+    let { loginCount, userAchievements } = req.body.user
     loginCount = (loginCount || 0) + 1
 
     // Uppfyller användaren kriterierna för några nya achievements?
@@ -22,7 +22,7 @@ export const checkLoginCount = async (req: Request, res: Response, next: NextFun
 
     // Lägg uppdaterad loginCount och nya achievements i req.body för att sen skickas med i res
     req.body.user.loginCount = loginCount
-    req.body.user.achievements = [...(userAchievements || []), ...unlockedAchievements.map(ach => ach._id.toString())]
+    req.body.user.userAchievements = [...(userAchievements || []), ...unlockedAchievements.map(ach => ach._id.toString())]
     // För att frontend ska kunna visa vilka nya achievements som låstes upp vid inloggningen
     req.body.user.newUnlocks = unlockedAchievements.map(ach => ach._id.toString()) 
 

@@ -5,6 +5,8 @@ type User = {
     username: string;
     email: string;
     role: string;
+    loginCount: number;
+    userAchievements: object[];
 } | null;
 
 type AuthContextType= {
