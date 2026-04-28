@@ -19,7 +19,7 @@ const reviewSchema = new mongoose.Schema({
     },
     rating: {
         type: Number,
-        min: 1,
+        min: 0,
         max: 5
     },
     votes: [
@@ -30,7 +30,8 @@ const reviewSchema = new mongoose.Schema({
             }, 
             value: {
                 type: Number,
-                enum: [1, -1]
+                enum: [1, -1],
+                required: true,
             },
         },
     ],
@@ -39,3 +40,7 @@ const reviewSchema = new mongoose.Schema({
 );
 
 reviewSchema.index({ user: 1, game: 1 }, { unique: true });
+
+const Review = mongoose.model("Review", reviewSchema);
+
+export default Review;

@@ -11,6 +11,7 @@ import {
 import { authMiddleware } from "../auth/authMiddleware.js";
 import { requireRole } from "../auth/requireRole.js";
 import { canEditGame } from "../middleware/canEditGame.js";
+import { createReview } from "../controllers/reviewController.js";
 
 const router = Router();
 
@@ -33,5 +34,8 @@ router.patch("/games/:id", authMiddleware, getGame, canEditGame, updateGame);
 
 //Delete
 router.delete("/games/:id", authMiddleware, getGame, canEditGame, deleteGame);
+
+// REVIEWS! Create review on game
+router.post("/games/:id/review", authMiddleware, createReview)
 
 export default router;
