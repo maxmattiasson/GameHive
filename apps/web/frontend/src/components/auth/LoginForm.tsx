@@ -45,9 +45,6 @@ const LoginForm = () => {
       });
 
       const data = await response.json();
-      console.log("After hitting /login!");
-      console.log("data:", data);
-
 
       if (!response.ok) {
         setErrorMessage(data.message || "Inloggning misslyckades");
@@ -56,14 +53,21 @@ const LoginForm = () => {
       const me = await fetch("http://localhost:3000/api/auth/me", {
         credentials: "include",
       });
-      console.log("user from /me:", me);
       if (!me.ok) {
         setErrorMessage("Session failed, cookie not set");
         return;
       }
-      const checkedUser = await me.json();
+      const checkedUser = await me.json(); //
       setUser(checkedUser);
       console.log("Logged in user:", checkedUser);
+
+      const unlocked = data.user.newUnlocks || null
+      if (unlocked[0]) {
+        alert(`Achievement unlocked: ${unlocked.length} new achievement(s) unlocked!`)
+        console.log("Achievement unlocked!");
+        console.log(unlocked);
+      }
+
     } catch(err) {
       console.error("Login error:", err);
       setErrorMessage("Kunde inte ansluta till servern");
