@@ -6,7 +6,7 @@ export interface User {
   email: string;
   role: UserRole;
   loginCount: number;
-  userAchievements: any[];  
+  userAchievements: string[];  
   createdAt: Date;
   updatedAt: Date;
 }

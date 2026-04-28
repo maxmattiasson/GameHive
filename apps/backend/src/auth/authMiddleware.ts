@@ -1,13 +1,13 @@
     import { NextFunction, Request, Response } from "express";
     import jwt from "jsonwebtoken";
-    import { Role } from "../types/role.js";
+    import { UserRole } from "../types/userType.js";
 
     export interface AuthRequest extends Request {
     user?: {
         userId: string;
         email: string;
         username: string;
-        role: Role;
+        role: UserRole;
     };
     }
 
@@ -30,7 +30,7 @@
             userId: string;
             email: string;
             username: string;
-            role: Role;
+            role: UserRole;
           };
 
         req.user = decoded;

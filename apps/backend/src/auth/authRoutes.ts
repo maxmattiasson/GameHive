@@ -7,6 +7,7 @@ import UserModel from "../models/User.js";
 const router = Router();
 
 router.post("/login", login, checkLoginCount, (req, res) => {
+  console.log("user from /login:", req.body);
   res.status(200).json({
       message: "Login successful",
       user: { ...req.body }
@@ -32,7 +33,7 @@ router.get("/me", authMiddleware, async (req: AuthRequest, res) => {
           res.status(404).json({ message: "User not found" });
           return;
         }
-    
+        
         res.status(200).json(user);
       } catch (err) {
         console.error(err);
