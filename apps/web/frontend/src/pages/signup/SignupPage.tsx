@@ -13,7 +13,8 @@ export function SignupPage() {
     onChangeEmail,
     onChangePassword,
     onChangeConfirmPassword,
-    signup
+    signup,
+    loading
   } = useSignup();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -28,34 +29,46 @@ export function SignupPage() {
       <p>Join the GameHive Community</p>
       {success && <p style={{ color: "green" }}>{success}</p>}
       {error && <p style={{ color: "red" }}>{error}</p>}
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} autoComplete="off">
         <input
           type="text"
           value={username}
+          name="signup_user_field"
           onChange={onChangeUsername}
-          placeholder="username"
+          placeholder="Username"
+          autoComplete="off"
         />
         <input
-          type="text"
+          type="email"
           value={email}
+          name="signup_email_field"
           onChange={onChangeEmail}
-          placeholder="email"
+          placeholder="Email"
+          autoComplete="off"
         />
+
         <input
           type="password"
+          name="signup_password_field"
           value={password}
+          autoComplete="new-password"
           onChange={onChangePassword}
-          placeholder="password"
+          placeholder="Password"
         />
 
         <input
           type="password"
+          name="signup_confirm_field"
           value={confirmPassword}
+          autoComplete="new-password"
           onChange={onChangeConfirmPassword}
-          placeholder="re-enter password"
+          placeholder="Re-enter password"
         />
 
-        <button type="submit">SingUp</button>
+        <button type="submit" disabled={loading}>
+          {" "}
+          {loading ? "Creating account..." : "Sign up"}
+        </button>
       </form>
       <Link to="/">Back to home</Link>
     </section>

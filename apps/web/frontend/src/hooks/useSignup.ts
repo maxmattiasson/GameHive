@@ -8,6 +8,7 @@ export function useSignup() {
   const [username, setUsername] = useState("");
   const [success, setSuccess] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const onChangeEmail = (e: ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
@@ -25,24 +26,29 @@ export function useSignup() {
   const signup = async () => {
     setError(null);
     setSuccess(null);
-    setUsername("");
-    setEmail("");
-    setPassword("");
-    setConfirmPassword("");
+    setLoading(true);
 
     if (password !== confirmPassword) {
       setError("passwords do not match");
+      setLoading(false);
       return;
     }
     try {
-      await handleSignup(email, password, username);
-      setSuccess("Account created successfully!");
+      const data = await handleSignup(username, email, password);
+      setSuccess(data.message);
+
+      setUsername("");
+      setEmail("");
+      setPassword("");
+      setConfirmPassword("");
     } catch (error) {
       if (error instanceof Error) {
         setError(error.message);
       } else {
         setError("something went wrong");
       }
+    } finally {
+      setLoading(false);
     }
   };
   return {
@@ -60,6 +66,7 @@ export function useSignup() {
     onChangePassword,
     onChangeConfirmPassword,
     signup,
-    success
+    success,
+    loading
   };
 }
