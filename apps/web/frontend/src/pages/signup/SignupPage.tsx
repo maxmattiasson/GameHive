@@ -7,13 +7,13 @@ export function SignupPage() {
     email,
     password,
     confirmPassword,
+    success,
     error,
     onChangeUsername,
     onChangeEmail,
     onChangePassword,
     onChangeConfirmPassword,
-    signup,
-    success
+    signup
   } = useSignup();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
