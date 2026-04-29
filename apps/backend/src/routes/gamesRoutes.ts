@@ -38,4 +38,8 @@ router.delete("/games/:id", authMiddleware, getGame, canEditGame, deleteGame);
 // REVIEWS! Create review on game
 router.post("/games/:id/review", authMiddleware, createReview)
 
+// Get all reviews on a game
+router.get("/games/:id/review", authMiddleware, getAllGamesReviews)
+
+
 export default router;

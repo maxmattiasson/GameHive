@@ -37,3 +37,8 @@ export const createReview = async (req: AuthRequest, res: Response, next: NextFu
         next(error);
       }
 }
+
+export const getAllGamesReviews = (req: AuthRequest, res: Response, next: NextFunction) => {
+  const id = req.params.id;
+  res.json()
+}
