@@ -43,7 +43,6 @@ export function useSignup() {
       return;
     }
 
-    // API
     try {
       const data = await signupUser({ username, email, password });
 
