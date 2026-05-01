@@ -1,5 +1,6 @@
 import { useState, type ChangeEvent } from "react";
-import { handleSignup } from "../services/signupService";
+import { signupUser } from "../services/signupService";
+import { validateSignup } from "../helpers/validators";
 
 export function useSignup() {
   const [email, setEmail] = useState("");
@@ -33,10 +34,20 @@ export function useSignup() {
       setLoading(false);
       return;
     }
-    try {
-      const data = await handleSignup(username, email, password);
-      setSuccess(data.message);
 
+    const validationResult = validateSignup({ username, email, password });
+    console.log("[signup] validationResult:", validationResult);
+    if (validationResult !== true) {
+      setError(validationResult);
+      setLoading(false);
+      return;
+    }
+
+    // API
+    try {
+      const data = await signupUser({ username, email, password });
+
+      setSuccess(data.message);
       setUsername("");
       setEmail("");
       setPassword("");

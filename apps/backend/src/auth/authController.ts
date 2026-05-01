@@ -2,26 +2,24 @@ import bcrypt from "bcrypt";
 import UserModel from "../models/User.js";
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
-
-//regex validering för epost, lägg till att användarnamnet måste vara minst 3 och max 30 tecken(bokstäver, siffror och understreck), lösenord minst 6 tecken(siffror och bokstäver) och inga specialtecken, kolla att användarnamnet är unikt.
+import { validateSignup } from "../helpers/validators.js";
 
 export const signup = async (req: Request, res: Response) => {
   try {
     const { username, email, password } = req.body;
 
-    if (!username || !email || !password) {
-      res.status(400).json({
-        message: "Missing fields on signup"
-      });
-      return;
+    const validationResult = validateSignup({ username, email, password });
+
+    if (validationResult !== true) {
+      return res.status(400).json({ message: validationResult });
     }
 
     const existingUser = await UserModel.findOne({
       email: email.toLowerCase()
     });
+
     if (existingUser) {
-      res.status(400).json({ message: "User already exists" });
-      return;
+      return res.status(400).json({ message: "User already exists" });
     }
 
     const passwordHash = await bcrypt.hash(password, 10);
@@ -34,7 +32,7 @@ export const signup = async (req: Request, res: Response) => {
 
     await user.save();
 
-    res.status(201).json({
+    return res.status(201).json({
       message: "User created",
       user: {
         id: user._id,
@@ -43,8 +41,8 @@ export const signup = async (req: Request, res: Response) => {
       }
     });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server error" });
+    console.error("[signup] error:", err);
+    return res.status(500).json({ message: "Server error" });
   }
 };
 
