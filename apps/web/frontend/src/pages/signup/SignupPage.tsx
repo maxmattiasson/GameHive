@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import { useSignup } from "../../hooks/useSignup";
 
+// kontrollera att alla fält är ifyllda, att username är i gilltigt format och längd, att password är minst 6 tecken och matchar, ett unikt username, epost i gilltigt format
+
 export function SignupPage() {
   const {
     username,
