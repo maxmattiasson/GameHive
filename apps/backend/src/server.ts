@@ -1,3 +1,10 @@
+// Global error handlers för att fånga oväntade fel
+process.on("uncaughtException", (err) => {
+  console.error("Uncaught Exception:", err);
+});
+process.on("unhandledRejection", (err) => {
+  console.error("Unhandled Rejection:", err);
+});
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
@@ -44,6 +51,7 @@ app.use(errorMiddleware); // för fel i routes
 
 async function main() {
   await connectDB();
+
   app.listen(3000, () => {
     console.log("Server running on http://localhost:3000");
   });
