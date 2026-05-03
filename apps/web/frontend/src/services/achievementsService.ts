@@ -9,7 +9,3 @@ export const getAllAchievements = async (): Promise<Achievement[]> => {
   return achievements;
 };
 
-// Fetch the provided achievements IDs and return the corresponding achievement objects
-export const getAchievementsByIds = async (ids: string[]): Promise<Achievement[]> => {
-  const response = await fetch(`${API_URL}/ 
-const 

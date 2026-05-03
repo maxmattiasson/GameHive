@@ -8,7 +8,7 @@ import { useGames } from "./hooks/useGames";
 import DevProfilePage from "./pages/DevProfilePage";
 import { PlayerProfile } from "./pages/playerPage/PlayerProfilePage";
 import { PlayerLibraryPage } from "./pages/playerPage/PlayerLibraryPage";
-import { PlayerAchivementsPage } from "./pages/playerPage/PlayerAchivementsPage";
+import { PlayerAchivementsPage } from "./pages/playerPage/PlayerAchievementsPage";
 import { PlayerFriendsPage } from "./pages/playerPage/PlayerFriendsPage";
 import { SignupPage } from "./pages/signup/SignupPage";
 
