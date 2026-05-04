@@ -1,5 +1,7 @@
 import mongoose, { InferSchemaType, model } from "mongoose";
 
+// MongoDB model / schema
+// Defines how game data is stored
 const LibrarySchema = new mongoose.Schema(
   {
     userId: {
