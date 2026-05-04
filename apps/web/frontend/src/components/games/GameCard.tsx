@@ -2,19 +2,26 @@ import type { Game } from "../../types/game";
 import { Badge } from "../ui/Badge";
 import "./GameCard.css";
 import "../ui/ArrowButton.css";
+import { StarButton } from "../ui/StarButton";
+import { useLibrary } from "../../hooks/useLibrary";
 
 interface Props {
   game: Game;
 }
 
 export function GameCard({ game }: Props) {
+  const { data: playerLibrary, loading } = useLibrary();
   console.log(game._id);
   return (
     <div className="game-card-small">
-      <div>
+      <div className="image-wrapper">
+        <StarButton game={game} playerLibrary={playerLibrary} />
         <img
-          src={game.thumb || "https://gaming-cdn.com/images/products/20970/616x353/mimesis-pc-steam-cover.jpg?v=1761750647"}
-          alt="Game Cover"  
+          src={
+            game.thumb ||
+            "https://gaming-cdn.com/images/products/20970/616x353/mimesis-pc-steam-cover.jpg?v=1761750647"
+          }
+          alt="Game Cover"
         />
       </div>
       <div className="inner">

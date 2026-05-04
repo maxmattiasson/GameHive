@@ -27,11 +27,6 @@ export function GamesPage() {
       .toLocaleLowerCase()
       .includes(activeFilters.dev.toLocaleLowerCase().trim());
 
-    // const releaseYear = new Date(game.release).getFullYear().toString();
-    // const releaseMatch =
-    //   activeFilters?.release.trim() === "" ||
-    //   releaseYear.includes(activeFilters.release.trim());
-
     const genreMatch =
       activeFilters?.genre.length === 0 ||
       activeFilters?.genre.some((selectedGenre) =>

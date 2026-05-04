@@ -1,0 +1,23 @@
+.star-button {
+  background: var(--theme-bg, #232946);
+  border: 2px solid rgb(56, 173, 134);
+  border-radius: 50%;
+  font-size: 1rem;
+  color: var(--white-100);
+  cursor: pointer;
+  padding: 0.3em 0.5em;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+}
+
+.star-button.in-library {
+  color: gold;
+  background: var(--theme-bg, #232946);
+  border-color: gold;
+}
+
+.star-button:hover {
+  background: var(--theme-bg, #232946);
+  color: gold;
+  background: var(--theme-bg, #232946);
+  border-color: gold;
+}

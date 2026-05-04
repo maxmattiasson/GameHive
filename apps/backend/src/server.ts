@@ -10,8 +10,10 @@ import cors from "cors";
 import dotenv from "dotenv";
 import { connectDB } from "./config/db.js";
 import gamesRoutes from "./routes/gamesRoutes.js";
-import rawgRoutes from "./routes/rawgRoutes.js"
-import authRoutes from "./auth/authRoutes.js"
+import rawgRoutes from "./routes/rawgRoutes.js";
+import authRoutes from "./auth/authRoutes.js";
+import friendshipRoutes from "./routes/friendshipRoutes.js";
+
 import achievementsRoutes from "./routes/achievementsRoutes.js";
 import cookieParser from "cookie-parser";
 import "./models/Genre.js";
@@ -29,8 +31,8 @@ const app = express();
 app.use(
   cors({
     origin: ["http://localhost:5173", "http://127.0.0.1:5173"],
-    credentials: true
-  })
+    credentials: true,
+  }),
 );
 app.use(express.json());
 app.use(cookieParser());
@@ -41,8 +43,9 @@ app.use("/api", libraryRoutes);
 app.use("/api/rawg", rawgRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/profile", profileRoutes);
-app.use("/api/genres", genresRoutes)
-app.use("/api/achievements", achievementsRoutes)
+app.use("/api/friends", friendshipRoutes);
+app.use("/api/genres", genresRoutes);
+app.use("/api/achievements", achievementsRoutes);
 
 app.get("/", (req, res) => {
   res.send("funking tjoho");
