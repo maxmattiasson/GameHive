@@ -1,0 +1,13 @@
+.DevListCont {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.title {
+  margin: 0;
+}
+.DevGameItem {
+  border: 2px solid var(--accent-500);
+  border-radius: 10px;
+  width: 300px;
+}

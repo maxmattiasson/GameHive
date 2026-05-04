@@ -1,13 +1,13 @@
 import { Request, Response, NextFunction } from "express";
 import Game from "../models/Game.js";
+import { AuthRequest } from "../auth/authMiddleware.js";
 
 // List all games
 export const getAllGames = async (
   req: Request,
   res: Response,
-  next: NextFunction,
+  next: NextFunction
 ) => {
-  console.log("funkar");
   try {
     const { title, genre, release, dev, multiplayer } = req.query as {
       title?: string;
@@ -25,7 +25,7 @@ export const getAllGames = async (
     if (dev) filter.dev = { $regex: dev, $options: "i" };
     if (multiplayer !== undefined) filter.multiplayer = multiplayer === "true";
 
-    const games = await Game.find(filter);
+    const games = await Game.find(filter).populate("genres");
     res.json(games);
   } catch (error) {
     next(error);
@@ -39,16 +39,18 @@ export const getGamebyId = (req: Request, res: Response) => {
 
 // Add new game
 export const addNewGame = async (
-  req: Request,
+  req: AuthRequest,
   res: Response,
-  next: NextFunction,
+  next: NextFunction
 ) => {
-  console.log("funkar?");
+  if (!req.user) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
 
   const game = new Game({
     title: req.body.title,
     release: req.body.release,
-    dev: req.body.dev,
+    dev: req.user.username,
     genres: req.body.genres,
     platforms: req.body.platforms,
     desc: req.body.desc,
@@ -56,6 +58,7 @@ export const addNewGame = async (
     multiplayer: req.body.multiplayer,
     avg_rating: req.body.avg_rating,
     review: req.body.review,
+    ownerUserId: req.user.userId
   });
 
   try {
@@ -70,14 +73,14 @@ export const addNewGame = async (
 export const updateGame = async (
   req: Request,
   res: Response,
-  next: NextFunction,
+  next: NextFunction
 ) => {
   try {
     const game = res.locals.game;
 
     if (req.body.title !== undefined) game.title = req.body.title;
     if (req.body.release !== undefined) game.release = req.body.release;
-    if (req.body.dev !== undefined) game.dev = req.body.dev;
+    // if (req.body.dev !== undefined) game.dev = req.body.dev;
     if (req.body.genres !== undefined) game.genres = req.body.genres;
     if (req.body.platforms !== undefined) game.platforms = req.body.platforms;
     if (req.body.desc !== undefined) game.desc = req.body.desc;
@@ -99,12 +102,32 @@ export const updateGame = async (
 export const deleteGame = async (
   req: Request,
   res: Response,
-  next: NextFunction,
+  next: NextFunction
 ) => {
   try {
     const game = res.locals.game;
     await game.deleteOne();
     return res.status(200).json({ message: "Spelet togs bort", game });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getOwnersGames = async (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const ownerId = req.user.userId;
+
+    const games = await Game.find({ ownerUserId: ownerId }).populate("genres");
+
+    return res.status(200).json(games);
   } catch (error) {
     next(error);
   }

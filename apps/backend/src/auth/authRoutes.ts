@@ -1,12 +1,19 @@
 import { Router } from "express";
-import { login, signup } from "./authController.js" 
+import { login, signup, logout } from "./authController.js" 
 import { authMiddleware, AuthRequest } from "./authMiddleware.js";
+import { checkLoginCount } from "../middleware/achievementMiddleware.js";
 import UserModel from "../models/User.js";
  
 const router = Router();
 
-router.post("/login", login);
+router.post("/login", login, checkLoginCount, (req, res) => {
+  res.status(200).json({
+      message: "Login successful",
+      user: { ...req.body.user }
+  });
+});
 router.post("/signup", signup);
+router.post("/logout", logout);
 
 
 // Protected route
@@ -25,7 +32,7 @@ router.get("/me", authMiddleware, async (req: AuthRequest, res) => {
           res.status(404).json({ message: "User not found" });
           return;
         }
-    
+        
         res.status(200).json(user);
       } catch (err) {
         console.error(err);
