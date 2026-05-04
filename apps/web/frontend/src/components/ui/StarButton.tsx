@@ -15,13 +15,14 @@ interface StarButtonProps {
 export function StarButton({ game, playerLibrary }: StarButtonProps) {
   const [isInLibrary, setIsInLibrary] = useState(false);
 
-  // If there is any entry in playerLibrary where entry.gameId._id match game._id, .some() returns true, otherwise false.
+  // Check if the game is already in the player's library
   useEffect(() => {
     const found = playerLibrary.some((entry) => entry.gameId._id === game._id);
     setIsInLibrary(found);
   }, [playerLibrary, game._id]);
 
   const handleClick = async () => {
+    // warning for removing game
     if (isInLibrary) {
       const confirmed = window.confirm(
         "You are about to remove this game from your library, do you want to continue?"

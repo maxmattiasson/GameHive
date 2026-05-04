@@ -11,10 +11,10 @@ const toObjectId = (value: string) => {
   return new mongoose.Types.ObjectId(value);
 };
 
-// only returns choosen fields from Game-model
+// only returns choosen fields from Game-model, for speed.
 const GAME_POPULATE_FIELDS = "title thumb dev genres release multiplayer";
 
-// validates userId from JWT(req.user)
+// validates userId from JWT(req.user), if user is not logged in
 const getUserObjectId = (req: AuthRequest, res: Response) => {
   const userId = req.user?.userId;
   if (!userId) {
@@ -47,7 +47,7 @@ const getGameObjectId = (gameId: unknown, res: Response) => {
   return gameObjectId;
 };
 
-// get all the games in logedin player library
+// get all the games in logged in player library
 export const getPlayerLibrary = async (
   req: AuthRequest,
   res: Response,
@@ -71,7 +71,7 @@ export const getPlayerLibrary = async (
   }
 };
 
-// add to logedin player library
+// add to logged in player library
 export const addToLibrary = async (
   req: AuthRequest,
   res: Response,

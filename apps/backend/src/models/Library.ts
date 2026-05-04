@@ -28,6 +28,7 @@ LibrarySchema.index({ userId: 1, gameId: 1 }, { unique: true });
 
 export type LibraryDocument = InferSchemaType<typeof LibrarySchema>;
 
+// mongoose-model named Library with librarySchema
 const LibraryModel = model<LibraryDocument>("Library", LibrarySchema);
 
 export default LibraryModel;

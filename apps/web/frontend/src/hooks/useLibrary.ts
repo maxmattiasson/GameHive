@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-
 import {
   getPlayerLibrary,
   type LibraryEntry
 } from "../services/libraryService";
 
+// get all player library games, show status and throw errors
 export function useLibrary() {
   const [data, setData] = useState<LibraryEntry[]>([]);
   const [loading, setLoading] = useState(true);

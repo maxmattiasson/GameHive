@@ -24,6 +24,7 @@ const parseApiError = async (res: Response, fallback: string) => {
   return fallback;
 };
 
+// wait for logged in players library from server
 export const getPlayerLibrary = async (): Promise<LibraryEntry[]> => {
   const res = await fetch(API_URL, {
     method: "GET",
