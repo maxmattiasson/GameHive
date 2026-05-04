@@ -1,3 +1,10 @@
+// Global error handlers för att fånga oväntade fel
+process.on("uncaughtException", (err) => {
+  console.error("Uncaught Exception:", err);
+});
+process.on("unhandledRejection", (err) => {
+  console.error("Unhandled Rejection:", err);
+});
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
@@ -9,7 +16,8 @@ import achievementsRoutes from "./routes/achievementsRoutes.js";
 import cookieParser from "cookie-parser";
 import "./models/Genre.js";
 import profileRoutes from "./routes/profileRoutes.js";
-import genresRoutes from "./routes/genresRoutes.js"
+import genresRoutes from "./routes/genresRoutes.js";
+import libraryRoutes from "./routes/libraryRoutes.js";
 
 import { errorMiddleware } from "./middleware/errorMiddleware.js";
 import { notFoundMiddleware } from "./middleware/notFoundMiddleware.js";
@@ -21,13 +29,14 @@ const app = express();
 app.use(
   cors({
     origin: ["http://localhost:5173", "http://127.0.0.1:5173"],
-    credentials: true,
-  }),
+    credentials: true
+  })
 );
 app.use(express.json());
 app.use(cookieParser());
 
 app.use("/api", gamesRoutes);
+app.use("/api", libraryRoutes);
 
 app.use("/api/rawg", rawgRoutes);
 app.use("/api/auth", authRoutes);
@@ -44,6 +53,7 @@ app.use(errorMiddleware); // för fel i routes
 
 async function main() {
   await connectDB();
+
   app.listen(3000, () => {
     console.log("Server running on http://localhost:3000");
   });

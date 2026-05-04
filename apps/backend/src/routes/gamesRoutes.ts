@@ -6,6 +6,7 @@ import {
   addNewGame,
   updateGame,
   deleteGame,
+  getOwnersGames
 } from "../controllers/gameController.js";
 import { authMiddleware } from "../auth/authMiddleware.js";
 import { requireRole } from "../auth/requireRole.js";
@@ -16,11 +17,15 @@ const router = Router();
 // list all games
 router.get("/games", getAllGames);
 
+// Get list of games by ownerId (en devs egna games)
+router.get("/games/my-games", authMiddleware, requireRole("dev"), getOwnersGames);
+
 //GET by id
 router.get("/games/:id", getGame, getGamebyId);
 
 // Add game
 router.post("/games", authMiddleware, requireRole("dev", "admin"), addNewGame);
+
 
 //Patch
 //Finds game by id and updates fields sent in the body

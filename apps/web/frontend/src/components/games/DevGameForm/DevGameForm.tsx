@@ -1,16 +1,28 @@
 import React, { useEffect, useState } from "react";
-import styles from "./CreateGameForm.module.css"
+import styles from "./DevGameForm.module.css"
 import getGenres from "../../../services/genreService";
 import type { Genre } from "../../../types/genre";
+import type { Game } from "../../../types/game";
+import { createGame, updateGame } from "../../../services/gameService";
 
-export default function CreateGameForm(){
-    const [title, setTitle] = useState("")
-    const [release, setRelease] = useState("")
-    const [platforms, setPlatforms] = useState<string[]>([]);
-    const [multiplayer, setMultiplayer] = useState(false);
-    const [desc, setDesc] = useState("");
+type Props = {
+    selectedGame: Game | null;
+  };
+
+export default function DevGameForm({ selectedGame }: Props) {
+    const [title, setTitle] = useState(selectedGame?.title ?? "");
+    const [release, setRelease] = useState(
+        selectedGame?.release
+          ? new Date(selectedGame.release).toISOString().slice(0, 10)
+          : ""
+      );
+    const [platforms, setPlatforms] = useState(selectedGame?.platforms ?? []);
+    const [multiplayer, setMultiplayer] = useState(selectedGame?.multiplayer ?? false);
+    const [desc, setDesc] = useState(selectedGame?.desc ?? "");
     const [genreList, setGenreList] = useState<Genre[]>([]);
-    const [selectedGenres, setSelectedGenres] = useState<string[]>([])
+    const [selectedGenres, setSelectedGenres] = useState(
+        selectedGame?.genres.map((g) => g._id) ?? []
+      );
 
     const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -23,23 +35,17 @@ export default function CreateGameForm(){
           platforms,
           multiplayer,
         };
-      
+    
         try {
-          const res = await fetch("http://localhost:3000/api/games", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            credentials: "include",
-            body: JSON.stringify(newGame),
-          });
+            let data;
       
-          if (!res.ok) {
-            throw new Error("Failed to create game");
-          }
-      
-          const data = await res.json();
-          console.log("Created game", data);
+            if (selectedGame) {
+              data = await updateGame(selectedGame._id, newGame);
+              console.log("Updated game", data);
+            } else {
+              data = await createGame(newGame);
+              console.log("Created game", data);
+            }
       
           setTitle("");
           setDesc("");
@@ -71,7 +77,8 @@ export default function CreateGameForm(){
     return (
         <>
             <form className={styles.devUploadForm} onSubmit={handleSubmit}>
-                <h3>Upload game</h3>
+            <h3>{selectedGame ? "Edit game" : "Upload game"}</h3>                
+            
                 <label>
                     <span>Title</span>
                 <input

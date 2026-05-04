@@ -1,9 +1,6 @@
 .search-filter-container label {
-  font-size: 0.7em;
+  font-size: 0.8em;
 }
-.multiplayer-box {
-  font-size: 0.2em;
-}
-.genre-wrapper input {
-  font-size: 0.2em;
+/* .multiplayer-box {
+  font-size: 0.3em;
 }
