@@ -12,7 +12,7 @@ export function GameCard({ game }: Props) {
   console.log(game._id);
   return (
     <div className="game-card-small">
-      <div>
+      <div className="image-wrapper">
         <StarButton />
         <img
           src={

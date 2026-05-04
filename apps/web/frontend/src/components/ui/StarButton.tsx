@@ -4,6 +4,7 @@ export const StarButton = () => {
   const [filled, setFilled] = useState(false);
   return (
     <button
+      className="star-button"
       onClick={() => setFilled(!filled)}
       aria-label={filled ? "remove from library" : "add to library"}
     >
