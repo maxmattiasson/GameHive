@@ -8,7 +8,9 @@
   "devDependencies": {
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
-    "concurrently": "^9.2.1"
+    "concurrently": "^9.2.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^6.0.3"
   },
   "scripts": {
     "dev:web": "npm run dev -w @gamehive/web",

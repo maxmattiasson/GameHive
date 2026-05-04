@@ -19,7 +19,7 @@ export function SignupPage() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("hallå?");
+
     await signup();
   };
 
