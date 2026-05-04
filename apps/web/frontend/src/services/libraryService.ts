@@ -9,11 +9,9 @@ type LibraryEntry = {
   userId: string;
   gameId: Game;
   playtimeMinutes: number;
-  createdAt: string;
-  updatedAt: string;
 };
 
-// extracts error messages from API
+// Extracts error messages from the library API response
 const parseApiError = async (res: Response, fallback: string) => {
   try {
     const data = await res.json();

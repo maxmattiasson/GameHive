@@ -19,8 +19,8 @@ const LibrarySchema = new mongoose.Schema(
       required: true
     }
   },
-  // timestamp to get entry createdAt and updatedAt, for future filtering and tracking
-  { collection: "library", timestamps: true }
+
+  { collection: "library" }
 );
 
 // there can only be one of the same game in library
