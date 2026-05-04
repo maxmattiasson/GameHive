@@ -57,9 +57,17 @@ const LoginForm = () => {
         setErrorMessage("Session failed, cookie not set");
         return;
       }
-      const checkedUser = await me.json();
+      const checkedUser = await me.json(); //
       setUser(checkedUser);
-    } catch {
+      console.log("Logged in user:", checkedUser);
+
+      const unlocked = data.user.newUnlocks || null
+      if (unlocked[0]) {
+        alert(`Achievement unlocked: ${unlocked.length} new achievement(s) unlocked!`)
+      }
+
+    } catch(err) {
+      console.error("Login error:", err);
       setErrorMessage("Kunde inte ansluta till servern");
     } finally {
       setIsLoading(false);
