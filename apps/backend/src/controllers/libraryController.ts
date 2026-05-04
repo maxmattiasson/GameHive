@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import LibraryModel from "../models/Library.js";
 import { AuthRequest } from "../auth/authMiddleware.js";
 
-// validates string to mongoDb
+// Converts a string to a MongoDB ObjectId if valid, otherwise returns null, ensures that only valid ObjectIds are used in database queries.
 const toObjectId = (value: string) => {
   if (!mongoose.Types.ObjectId.isValid(value)) {
     return null;

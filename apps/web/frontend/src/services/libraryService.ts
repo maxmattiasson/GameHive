@@ -1,7 +1,8 @@
 import type { Game } from "../types/game";
+import { API_BASE_URL } from "../config/api";
 
-// base-adress
-const API_URL = "http://localhost:3000/api/library";
+// Base URL for the library API
+const API_URL = `${API_BASE_URL}/library`;
 
 // Library entry has to have it
 type LibraryEntry = {
