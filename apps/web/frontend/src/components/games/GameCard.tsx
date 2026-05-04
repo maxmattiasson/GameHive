@@ -2,18 +2,20 @@ import type { Game } from "../../types/game";
 import { Badge } from "../ui/Badge";
 import "./GameCard.css";
 import "../ui/ArrowButton.css";
-import AddToLibraryButton, { StarButton } from "../ui/StarButton";
+import { StarButton } from "../ui/StarButton";
+import { useLibrary } from "../../hooks/useLibrary";
 
 interface Props {
   game: Game;
 }
 
 export function GameCard({ game }: Props) {
+  const { data: playerLibrary, loading } = useLibrary();
   console.log(game._id);
   return (
     <div className="game-card-small">
       <div className="image-wrapper">
-        <StarButton />
+        <StarButton game={game} playerLibrary={playerLibrary} />
         <img
           src={
             game.thumb ||
