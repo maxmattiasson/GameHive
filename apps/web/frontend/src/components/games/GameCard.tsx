@@ -13,8 +13,8 @@ export function GameCard({ game }: Props) {
     <div className="game-card-small">
       <div>
         <img
-          src="https://gaming-cdn.com/images/products/20970/616x353/mimesis-pc-steam-cover.jpg?v=1761750647"
-          alt="Game Cover"
+          src={game.thumb || "https://gaming-cdn.com/images/products/20970/616x353/mimesis-pc-steam-cover.jpg?v=1761750647"}
+          alt="Game Cover"  
         />
       </div>
       <div className="inner">
