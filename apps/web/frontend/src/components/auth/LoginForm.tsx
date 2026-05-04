@@ -64,8 +64,6 @@ const LoginForm = () => {
       const unlocked = data.user.newUnlocks || null
       if (unlocked[0]) {
         alert(`Achievement unlocked: ${unlocked.length} new achievement(s) unlocked!`)
-        console.log("Achievement unlocked!");
-        console.log(unlocked);
       }
 
     } catch(err) {

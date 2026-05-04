@@ -25,7 +25,7 @@ export const checkLoginCount = async (req: Request, res: Response, next: NextFun
     req.body.user.userAchievements = [...(userAchievements || []), ...unlockedAchievements.map(ach => ach._id.toString())]
     // För att frontend ska kunna visa vilka nya achievements som låstes upp vid inloggningen
     req.body.user.newUnlocks = unlockedAchievements.map(ach => ach._id.toString()) 
-    console.log("req.body.user from checkLoginCount:", req.body.user)
+
     next()
 }
 
