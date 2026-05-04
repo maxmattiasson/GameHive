@@ -67,3 +67,14 @@
   color: white;
   text-decoration: none;
 }
+
+.image-wrapper {
+  position: relative;
+}
+
+.image-wrapper .star-button {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 2;
+}
