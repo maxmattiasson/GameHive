@@ -25,7 +25,7 @@ export function StarButton({ game, playerLibrary }: StarButtonProps) {
     // warning for removing game
     if (isInLibrary) {
       const confirmed = window.confirm(
-        "You are about to remove this game from your library, do you want to continue?"
+        "You are about to remove this game from your library, all your playtime will be lost. Do you want to continue?"
       );
       if (!confirmed) return;
       await removeFromLibrary(game._id);

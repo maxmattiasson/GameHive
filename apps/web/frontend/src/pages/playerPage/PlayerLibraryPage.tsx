@@ -24,6 +24,7 @@ export function PlayerLibraryPage() {
     <section>
       <h1>Player Library</h1>
       <GameSort sortBy={sortBy} order={order} onSortChange={handleSortChange} />
+
       <GameList games={sortedGames} />
       <br />
       <Link to="/profile">Back to profile</Link>

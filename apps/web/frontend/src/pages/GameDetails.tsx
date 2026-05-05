@@ -3,10 +3,13 @@ import { useGame } from "../hooks/useGame";
 import { Badge } from "../components/ui/Badge";
 import "./GameDetails.css";
 import { InfoCard } from "../components/ui/InfoCard";
+import { updateLibraryEntry } from "../services/libraryService";
+import { usePlaytime } from "../hooks/usePlaytime";
 
 export function GameDetails() {
   const { id } = useParams();
   const { data, loading, error } = useGame(id!);
+  const { playtime, setPlaytime } = usePlaytime(id);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
@@ -14,7 +17,7 @@ export function GameDetails() {
 
   return (
     <div className="container">
-      <div className="header" style={{backgroundImage: `url(${data.thumb})`,}}>
+      <div className="header" style={{ backgroundImage: `url(${data.thumb})` }}>
         <h1>{data.title}</h1>
         <p>Rating: {data.avg_rating}/10</p>
         <p>
@@ -49,6 +52,31 @@ export function GameDetails() {
               <Badge key={genre._id} label={genre.name} />
             ))}
             {data.multiplayer && <Badge label="Multiplayer" />}
+          </div>
+          <div className="play-time">
+            <InfoCard>
+              <p>Time Played</p>
+              <p>{playtime} min</p>
+              <button
+                onClick={async () => {
+                  const newTime = playtime - 30;
+                  setPlaytime(newTime);
+                  await updateLibraryEntry(id!, newTime);
+                }}
+                disabled={playtime === 0}
+              >
+                -
+              </button>
+              <button
+                onClick={async () => {
+                  const newTime = playtime + 30;
+                  setPlaytime(newTime);
+                  await updateLibraryEntry(id!, newTime);
+                }}
+              >
+                +
+              </button>
+            </InfoCard>
           </div>
         </div>
         <div className="col-2">
