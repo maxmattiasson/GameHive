@@ -16,7 +16,7 @@ export function PlayerLibraryPage() {
     setOrder(newOrder);
   };
 
-  // extractes games from library-entries
+  // extracts games-objects from library-entries, maps all games
   const games = data.map((library) => library.gameId);
   const sortedGames = useSort(games, sortBy, order);
 
