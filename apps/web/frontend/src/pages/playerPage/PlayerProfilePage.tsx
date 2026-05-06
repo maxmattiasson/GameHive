@@ -1,29 +1,34 @@
-import { Link, Outlet } from "react-router-dom";
+import { Outlet, NavLink } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import "./PlayerProfilePage.css";
 
 export function PlayerProfile() {
   const { user } = useAuth();
   return (
-    <div className="player-profile">
-      <h1>Player Profile</h1>
-      <p>Welcome {user?.username}</p>
-      <div>
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfJ09O7DcXW62RYeG11IAOVukc5tNBerllXA&s" />
+    <div className="player-profile section">
+      <div className="player-header border-10">
+        <div>
+          <h1>{user?.username}</h1>
+          <p>Player Profile</p>
+        </div>
+        <div className="player-img">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfJ09O7DcXW62RYeG11IAOVukc5tNBerllXA&s" />
+        </div>
       </div>
-      <br />
       <ul>
         <li>
-          <Link to="/profile/friends">Friends</Link>
+          <NavLink to="/profile/friends">Friends</NavLink>
         </li>
         <li>
-          <Link to="/profile/achivements">Achivements</Link>
+          <NavLink to="/profile/achivements">Achivements</NavLink>
         </li>
         <li>
-          <Link to="/profile/library">Library</Link>
+          <NavLink to="/profile/library">Library</NavLink>
         </li>
       </ul>
-      <Outlet />
+      <div className="profile-section border-10">
+        <Outlet />
+      </div>
     </div>
   );
 }
