@@ -51,7 +51,7 @@ export function PlayerAchivementsPage() {
           ))}
       </div>
 
-      <h2>Achievements to strive for</h2>
+      <h3>Achievements to strive for:</h3>
       <ul>
         {lockedAchievements.map((ach) => (
           <li key={ach._id}>
