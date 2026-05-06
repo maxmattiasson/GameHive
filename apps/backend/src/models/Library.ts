@@ -25,7 +25,7 @@ const LibrarySchema = new mongoose.Schema(
   { collection: "library" }
 );
 
-// there can only be one of the same game in library
+// there can only be one of the same gameId in library
 LibrarySchema.index({ userId: 1, gameId: 1 }, { unique: true });
 
 export type LibraryDocument = InferSchemaType<typeof LibrarySchema>;
