@@ -24,6 +24,8 @@ import libraryRoutes from "./routes/libraryRoutes.js";
 import { errorMiddleware } from "./middleware/errorMiddleware.js";
 import { notFoundMiddleware } from "./middleware/notFoundMiddleware.js";
 
+import usersRoutes from "./routes/usersRoutes.js";
+
 dotenv.config();
 
 const app = express();
@@ -36,6 +38,8 @@ app.use(
 );
 app.use(express.json());
 app.use(cookieParser());
+
+app.use("/api/users", usersRoutes);
 
 app.use("/api", gamesRoutes);
 app.use("/api", libraryRoutes);

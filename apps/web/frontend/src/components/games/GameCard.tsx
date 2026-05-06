@@ -11,7 +11,6 @@ interface Props {
 
 export function GameCard({ game }: Props) {
   const { data: playerLibrary, loading } = useLibrary();
-  console.log(game._id);
   return (
     <div className="game-card-small">
       <div className="image-wrapper">

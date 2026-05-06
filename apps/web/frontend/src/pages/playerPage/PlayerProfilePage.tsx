@@ -1,14 +1,16 @@
-import { Outlet, NavLink } from "react-router-dom";
+import { Outlet, NavLink, useParams } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import "./PlayerProfilePage.css";
 
 export function PlayerProfile() {
   const { user } = useAuth();
+  const { id } = useParams();
+  console.log(id);
   return (
     <div className="player-profile section">
       <div className="player-header border-10">
         <div>
-          <h1>{user?.username}</h1>
+          {id ? <h1>{id}</h1> : <h1>{user?.username}</h1>}
           <p>Player Profile</p>
         </div>
         <div className="player-img">

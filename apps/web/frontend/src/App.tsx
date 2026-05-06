@@ -19,7 +19,6 @@ function App() {
   return (
     <>
       <Header />
-
       <main>
         <Routes>
           <Route
@@ -37,6 +36,13 @@ function App() {
 
           {/* Profile */}
           <Route path="/profile" element={<PlayerProfile />}>
+            <Route path="library" element={<PlayerLibraryPage />} />
+            <Route path="achivements" element={<PlayerAchivementsPage />} />
+            <Route path="friends" element={<PlayerFriendsPage />} />
+          </Route>
+
+          {/* Other player profile */}
+          <Route path="/players/:id" element={<PlayerProfile />}>
             <Route path="library" element={<PlayerLibraryPage />} />
             <Route path="achivements" element={<PlayerAchivementsPage />} />
             <Route path="friends" element={<PlayerFriendsPage />} />
