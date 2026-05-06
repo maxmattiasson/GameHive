@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 
 export function PlayerProfile() {
@@ -17,6 +17,7 @@ export function PlayerProfile() {
       <p>
         <Link to="/profile/library">Library</Link>
       </p>
+      <Outlet />
     </div>
   );
 }

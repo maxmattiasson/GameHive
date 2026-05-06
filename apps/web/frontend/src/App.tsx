@@ -13,7 +13,7 @@ import { PlayerFriendsPage } from "./pages/playerPage/PlayerFriendsPage";
 import { SignupPage } from "./pages/signup/SignupPage";
 
 function App() {
-  const { data} = useGames();
+  const { data } = useGames();
 
   const games = data.slice(0, 3); //slice array to limit, otherwise return all
   return (
@@ -34,13 +34,13 @@ function App() {
           <Route path="/games" element={<GamesPage />} />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/dev/profile" element={<DevProfilePage />} />
-          <Route path="/profile" element={<PlayerProfile />} />
-          <Route path="/profile/library" element={<PlayerLibraryPage />} />
-          <Route
-            path="/profile/achivements"
-            element={<PlayerAchivementsPage />}
-          />
-          <Route path="/profile/friends" element={<PlayerFriendsPage />} />
+
+          {/* Profile */}
+          <Route path="/profile" element={<PlayerProfile />}>
+            <Route path="library" element={<PlayerLibraryPage />} />
+            <Route path="achivements" element={<PlayerAchivementsPage />} />
+            <Route path="friends" element={<PlayerFriendsPage />} />
+          </Route>
         </Routes>
       </main>
 
