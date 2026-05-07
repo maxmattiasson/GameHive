@@ -5,7 +5,11 @@ import {
 } from "../services/libraryService";
 
 // get all player library games, show status and throw errors
-export function useLibrary() {
+export function useLibrary(): {
+  data: LibraryEntry[];
+  loading: boolean;
+  error: string | null;
+} {
   const [data, setData] = useState<LibraryEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

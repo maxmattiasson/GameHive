@@ -17,8 +17,8 @@ export function StarButton({ game, playerLibrary }: StarButtonProps) {
 
   // Check if the game is already in the player's library
   useEffect(() => {
-    const found = playerLibrary.some((entry) => entry.gameId._id === game._id);
-    setIsInLibrary(found);
+    const found = playerLibrary.find((entry) => entry.gameId._id === game._id);
+    setIsInLibrary(!!found);
   }, [playerLibrary, game._id]);
 
   const handleClick = async () => {

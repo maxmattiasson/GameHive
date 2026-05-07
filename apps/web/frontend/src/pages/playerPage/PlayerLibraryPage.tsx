@@ -7,7 +7,7 @@ import { useState } from "react";
 import type { Game } from "../../types/game";
 
 export function PlayerLibraryPage() {
-  const { data } = useLibrary();
+  const { data: libraryData, loading, error } = useLibrary();
   const [sortBy, setSortBy] = useState<keyof Game>("title");
   const [order, setOrder] = useState<"asc" | "desc">("asc");
 
@@ -17,15 +17,22 @@ export function PlayerLibraryPage() {
   };
 
   // extracts games-objects from library-entries, maps all games
-  const games = data.map((library) => library.gameId);
+  const games = libraryData.map((library) => library.gameId);
   const sortedGames = useSort(games, sortBy, order);
 
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p>Error: {error}</p>;
+  }
   return (
     <section>
       <h2>Library</h2>
       <GameSort sortBy={sortBy} order={order} onSortChange={handleSortChange} />
 
-      <GameList games={sortedGames} />
+      <GameList games={sortedGames} playerLibrary={libraryData} />
       <br />
       <Link to="/profile">Back to profile</Link>
     </section>

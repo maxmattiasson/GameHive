@@ -26,7 +26,7 @@ function App() {
             path="/"
             element={
               <div className="center">
-                <GameList games={games} />
+                <GameList games={games} playerLibrary={[]} />
               </div>
             }
           />
