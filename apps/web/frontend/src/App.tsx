@@ -13,7 +13,7 @@ import { PlayerFriendsPage } from "./pages/playerPage/PlayerFriendsPage";
 import { SignupPage } from "./pages/signup/SignupPage";
 
 function App() {
-  const { data} = useGames();
+  const { data } = useGames();
 
   const games = data.slice(0, 3); //slice array to limit, otherwise return all
   return (
@@ -26,7 +26,7 @@ function App() {
             path="/"
             element={
               <div className="center">
-                <GameList games={games} />
+                <GameList games={games} playerLibrary={[]} />
               </div>
             }
           />

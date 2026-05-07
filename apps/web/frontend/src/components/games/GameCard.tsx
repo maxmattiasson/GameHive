@@ -3,14 +3,15 @@ import { Badge } from "../ui/Badge";
 import "./GameCard.css";
 import "../ui/ArrowButton.css";
 import { StarButton } from "../ui/StarButton";
-import { useLibrary } from "../../hooks/useLibrary";
+
+import type { LibraryEntry } from "../../services/libraryService";
 
 interface Props {
   game: Game;
+  playerLibrary: LibraryEntry[];
 }
 
-export function GameCard({ game }: Props) {
-  const { data: playerLibrary, loading } = useLibrary();
+export function GameCard({ game, playerLibrary }: Props) {
   console.log(game._id);
   return (
     <div className="game-card-small">
