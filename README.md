@@ -1,32 +1,147 @@
 # GameHive
 
-GameHive is built as a fullstack GameVault project: a mini-Steam style platform where users can manage a personal game library, track playtime, unlock achievements, connect with friends, write reviews, and compete on leaderboards.
+GameHive is a fullstack "mini-Steam" platform where users can manage their game library, track playtime, unlock achievements, connect with friends, write reviews, and compete on leaderboards.
 
-This application is developed as part of the Fullstack JavaScript / JavaScript-utvecklarprogrammet at Chas Academy.
+Developed as part of the Fullstack JavaScript program at Chas Academy.
 
-## What The Application Is For
+## Quick Overview
 
-The purpose of the app is to provide a domain-specific fullstack gaming platform that handles ownership, progression, social features, and discovery in one system.
+- Personal game library and playtime tracking
+- Achievements and progression
+- Friend system
+- Reviews and ratings
+- Per-game leaderboards
+- Role-based login (player/developer/admin)
 
-Instead of spreading game data across disconnected tools, users and developers get one structured platform for:
+## Folder Structure
 
-- game metadata and catalog management
-- personal library ownership and playtime tracking
-- social interaction through friendships and reviews
-- competitive progression with achievements and leaderboards
+```text
+GameHive/
+  apps/
+    backend/      # REST API, database, authentication, seeders
+    web/frontend/ # React UI, pages, components, hooks
+```
 
-## Functionality
+**backend/**: Node.js/Express, MongoDB, authentication, API, data models, seeders
 
-### Core Functional Requirements
+**web/frontend/**: React, TypeScript, Vite, UI components, hooks, pages
 
-- Game catalog with genres, platforms, and metadata
-- User library with owned games and playtime tracking
-- Achievement system with rules and progress tracking
-- Friend system with requests.
-- Per-game leaderboards with ranking and filtering
-- Reviews and ratings with helpful/not-helpful voting
-- User registration and login flow with Player as the default role
-- Developer login with permission to upload and manage published games
+## Installation & Getting Started
+
+### 1. Clone the repo and install dependencies
+
+```bash
+git clone <repo-url>
+cd GameHive
+npm install
+```
+
+### 2. Environment variables
+
+Create a `.env` file in `apps/backend`:
+
+```env
+MONGO_URI=your_mongodb_url
+NODE_ENV=development
+PORT=3000
+```
+
+### 3. Start the project
+
+Start both backend and frontend:
+
+```bash
+npm run dev:both
+```
+
+Backend only:
+
+```bash
+npm run dev:backend
+```
+
+Frontend only:
+
+```bash
+npm run dev:web
+```
+
+**Default URLs:**
+
+- Backend: http://localhost:3000
+- Frontend: http://localhost:5173
+
+## Test the API
+
+Example with [route.rest](apps/backend/route.rest) or curl:
+
+```bash
+curl http://localhost:3000/api/games
+```
+
+Example routes:
+
+- GET /api/games
+- GET /api/games/:id
+- POST /api/games
+- PATCH /api/games/:id
+- DELETE /api/games/:id
+
+Filtering on GET /games: `title`, `genre`, `created`, `dev`, `multiplayer`
+
+## Features
+
+- Game catalog with genres and metadata
+- Personal library and playtime
+- Achievements and progression
+- Friend system and friend requests
+- Per-game leaderboards
+- Reviews and ratings
+- Role-based login (player/developer/admin)
+
+## Roles (RBAC)
+
+- Admin
+- Developer
+- Player
+
+## Data Models
+
+- User
+- Game
+- Genre
+- Library
+- Achievement
+- UserAchievement
+- Friendship
+- Review
+- Leaderboard
+
+## GDPR
+
+- User data (games, friends, profile) is treated as personal data
+- Users can export and delete their game history
+
+## Tech Stack
+
+- **Frontend:** React, TypeScript, Vite
+- **Backend:** Node.js, Express, TypeScript
+- **Database:** MongoDB, Mongoose
+- **Repo:** npm workspaces (monorepo)
+
+## Contributing
+
+1. Fork and create a new branch
+2. Make your changes and commit
+3. Submit a Pull Request
+
+## Contact
+
+Questions or bugs? Create an issue or contact the project owner via GitHub.
+
+---
+
+_See also [DOKUMENTATION.md](DOKUMENTATION.md) and [PROJEKTBESKRIVNING.md](PROJEKTBESKRIVNING.md) for more info._
 
 ## Getting Started Locally
 
@@ -154,21 +269,21 @@ Available filters on GET /games:
 
 ### Planned Backend
 
-- Full achievement flow: definitions, unlock rules, and user progress endpoints
-- Library ownership and playtime tracking per user
-- Friendship requests and friend status management
+- Friendship requests and friend management
 - Review system with helpful/not-helpful voting
-- Per-game leaderboard endpoints with ranking and filtering logic
+- Per-game leaderboard endpoints with ranking
 - Complete RBAC enforcement for Admin, Developer, and Player actions
 - GDPR tools for data export and account/game-history deletion requests
 
 ### Planned Frontend
 
 - Player dashboard for library, playtime, and achievement progress
-- Friends UI for requests, accepted friends.
+- Friends UI for requests, accepted friends
 - Review and rating interface with helpful/not-helpful actions
-- Leaderboard pages with sorting and filter controls
-- Developer portal for uploading and managing published games end-to-end
+- Leaderboard pages
+- **Admin profile page** with:
+  - Form to add new achievements
+  - Ability to remove users from the platform
 
 ## Contributors
 

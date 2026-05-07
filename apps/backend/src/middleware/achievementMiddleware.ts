@@ -1,11 +1,13 @@
 import { Request, Response, NextFunction } from "express"
 import Achievements from "../models/Achievements.js"
 import UserModel from "../models/User.js"
+import { ObjectId } from "mongodb"
 
 export const checkLoginCount = async (req: Request, res: Response, next: NextFunction) => {
     let { loginCount, userAchievements } = req.body.user
     loginCount = (loginCount || 0) + 1
-
+    userAchievements = userAchievements.map((ach: ObjectId) => ach.toString())
+    
     // Uppfyller användaren kriterierna för några nya achievements?
     const achievementsMeetingCriteria = await Achievements.find({ category: "loginCount", criteria: { $lte: loginCount } })
     const unlockedAchievements = achievementsMeetingCriteria.filter(ach => !userAchievements.includes(ach._id.toString()))

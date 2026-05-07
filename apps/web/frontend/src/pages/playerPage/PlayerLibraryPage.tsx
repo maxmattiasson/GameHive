@@ -29,7 +29,7 @@ export function PlayerLibraryPage() {
   }
   return (
     <section>
-      <h1>Player Library</h1>
+      <h2>Library</h2>
       <GameSort sortBy={sortBy} order={order} onSortChange={handleSortChange} />
 
       <GameList games={sortedGames} playerLibrary={libraryData} />

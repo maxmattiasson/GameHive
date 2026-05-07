@@ -1,3 +1,4 @@
+import { Schema, ObjectId } from "mongoose";
 export type UserRole = "user" | "admin" | "dev";
 
 export interface User {
@@ -6,7 +7,7 @@ export interface User {
   email: string;
   role: UserRole;
   loginCount: number;
-  userAchievements: string[];  
+  userAchievements: string[];
   createdAt: Date;
   updatedAt: Date;
 }
