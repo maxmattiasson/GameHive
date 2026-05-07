@@ -20,6 +20,13 @@ export function PlayerLibraryPage() {
   const games = libraryData.map((library) => library.gameId);
   const sortedGames = useSort(games, sortBy, order);
 
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p>Error: {error}</p>;
+  }
   return (
     <section>
       <h1>Player Library</h1>
