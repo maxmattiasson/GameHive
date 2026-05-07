@@ -1,22 +1,34 @@
-import { Link } from "react-router-dom";
+import { Outlet, NavLink } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
+import "./PlayerProfilePage.css";
 
 export function PlayerProfile() {
   const { user } = useAuth();
   return (
-    <div>
-      <h1>Player Profile</h1>
-      <p>Welcome {user?.username}</p>
-      <br />
-      <p>
-        <Link to="/profile/friends">Friends</Link>
-      </p>
-      <p>
-        <Link to="/profile/achivements">Achivements</Link>
-      </p>
-      <p>
-        <Link to="/profile/library">Library</Link>
-      </p>
+    <div className="player-profile section">
+      <div className="player-header border-10">
+        <div>
+          <h1>{user?.username}</h1>
+          <p>Player Profile</p>
+        </div>
+        <div className="player-img">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfJ09O7DcXW62RYeG11IAOVukc5tNBerllXA&s" />
+        </div>
+      </div>
+      <ul>
+        <li>
+          <NavLink to="/profile/friends">Friends</NavLink>
+        </li>
+        <li>
+          <NavLink to="/profile/achivements">Achivements</NavLink>
+        </li>
+        <li>
+          <NavLink to="/profile/library">Library</NavLink>
+        </li>
+      </ul>
+      <div className="profile-section border-10">
+        <Outlet />
+      </div>
     </div>
   );
 }
