@@ -1,7 +1,7 @@
 import "./App.css";
 import { Header } from "./components/layout/Header";
 import { GameList } from "./components/games/GameList";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import { GameDetails } from "./pages/GameDetails";
 import { GamesPage } from "./pages/GamesPage";
 import { useGames } from "./hooks/useGames";
@@ -37,6 +37,7 @@ function App() {
 
           {/* Profile */}
           <Route path="/profile" element={<PlayerProfile />}>
+            <Route index element={<Navigate to="library" replace />} />
             <Route path="library" element={<PlayerLibraryPage />} />
             <Route path="achivements" element={<PlayerAchivementsPage />} />
             <Route path="friends" element={<PlayerFriendsPage />} />
