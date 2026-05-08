@@ -47,7 +47,7 @@ const getGameObjectId = (gameId: unknown, res: Response) => {
   return gameObjectId;
 };
 
-// get all the games in logged in player library
+// get all the games in logged in player library from server, sends API
 export const getPlayerLibrary = async (
   req: AuthRequest,
   res: Response,
@@ -89,6 +89,8 @@ export const addToLibrary = async (
       gameId: gameObjectId
     });
 
+    // Populates the gameId field with selected fields from the Game model and genre names,
+    // so the frontend immediately receives all relevant game data in the response.
     const populated = await entry.populate({
       path: "gameId",
       select: GAME_POPULATE_FIELDS,
@@ -117,7 +119,7 @@ export const updateLibraryEntry = async (
     if (!gameObjectId) return;
 
     const { playtimeMinutes } = req.body;
-    // playtimeMinutes is requierd and cant be a negative number
+    // playtimeMinutes is requierd and can't be a negative number
     if (
       typeof playtimeMinutes !== "number" ||
       Number.isNaN(playtimeMinutes) ||

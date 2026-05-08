@@ -1,7 +1,7 @@
 import "./App.css";
 import { Header } from "./components/layout/Header";
 import { GameList } from "./components/games/GameList";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import { GameDetails } from "./pages/GameDetails";
 import { GamesPage } from "./pages/GamesPage";
 import { useGames } from "./hooks/useGames";
@@ -11,6 +11,7 @@ import { PlayerLibraryPage } from "./pages/playerPage/PlayerLibraryPage";
 import { PlayerAchivementsPage } from "./pages/playerPage/PlayerAchievementsPage";
 import { PlayerFriendsPage } from "./pages/playerPage/PlayerFriendsPage";
 import { SignupPage } from "./pages/signup/SignupPage";
+import { LibraryProvider } from "./contexts/LibraryContext";
 
 function App() {
   const { data } = useGames();
@@ -18,43 +19,47 @@ function App() {
   const games = data.slice(0, 3); //slice array to limit, otherwise return all
   return (
     <>
-      <Header />
-      <main>
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <div className="center">
-                <GameList games={games} />
-              </div>
-            }
-          />
-          <Route path="/games/:id" element={<GameDetails />} />
-          <Route path="/games" element={<GamesPage />} />
-          <Route path="/signup" element={<SignupPage />} />
-          <Route path="/dev/profile" element={<DevProfilePage />} />
+      <LibraryProvider>
+        <Header />
 
-          {/* Profile */}
-          <Route path="/profile" element={<PlayerProfile />}>
-            <Route path="library" element={<PlayerLibraryPage />} />
-            <Route path="achivements" element={<PlayerAchivementsPage />} />
-            <Route path="friends" element={<PlayerFriendsPage />} />
-          </Route>
+        <main>
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <div className="center">
+                  <GameList games={games} />
+                </div>
+              }
+            />
+            <Route path="/games/:id" element={<GameDetails />} />
+            <Route path="/games" element={<GamesPage />} />
+            <Route path="/signup" element={<SignupPage />} />
+            <Route path="/dev/profile" element={<DevProfilePage />} />
 
-          {/* Other player profile */}
-          <Route path="/players/:id" element={<PlayerProfile />}>
-            <Route path="library" element={<PlayerLibraryPage />} />
-            <Route path="achivements" element={<PlayerAchivementsPage />} />
-            <Route path="friends" element={<PlayerFriendsPage />} />
-          </Route>
-        </Routes>
-      </main>
+            {/* Profile */}
+            <Route path="/profile" element={<PlayerProfile />}>
+              <Route index element={<Navigate to="library" replace />} />
+              <Route path="library" element={<PlayerLibraryPage />} />
+              <Route path="achivements" element={<PlayerAchivementsPage />} />
+              <Route path="friends" element={<PlayerFriendsPage />} />
+            </Route>
 
-      <footer>
-        {/* About: List of links to info articles */}
+            {/* Other player profile */}
+            <Route path="/players/:id" element={<PlayerProfile />}>
+              <Route path="library" element={<PlayerLibraryPage />} />
+              <Route path="achivements" element={<PlayerAchivementsPage />} />
+              <Route path="friends" element={<PlayerFriendsPage />} />
+            </Route>
+          </Routes>
+        </main>
 
-        {/* Contact: List of contact paths to the site developers */}
-      </footer>
+        <footer>
+          {/* About: List of links to info articles */}
+
+          {/* Contact: List of contact paths to the site developers */}
+        </footer>
+      </LibraryProvider>
     </>
   );
 }
