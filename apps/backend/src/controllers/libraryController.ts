@@ -89,6 +89,9 @@ export const addToLibrary = async (
       gameId: gameObjectId
     });
 
+    // TODO: Use the library achievement helper to potentially add a new achievement to the user
+    
+
     // Populates the gameId field with selected fields from the Game model and genre names,
     // so the frontend immediately receives all relevant game data in the response.
     const populated = await entry.populate({
