@@ -1,5 +1,6 @@
 import { Router } from "express";
 import UserModel from "../models/User.js";
+import LibraryModel from "../models/Library.js";
 
 const router = Router();
 
@@ -9,6 +10,15 @@ router.get("/:id", async (req, res) => {
   );
 
   res.json(user);
+});
+
+router.get("/:id/library", async (req, res) => {
+  const library = await LibraryModel.find({ userId: req.params.id }).populate({
+    path: "gameId",
+    select: "title thumb dev genres release multiplayer",
+    populate: { path: "genres", select: "name" },
+  });
+  res.json(library);
 });
 
 export default router;
