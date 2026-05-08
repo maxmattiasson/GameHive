@@ -12,7 +12,7 @@ interface Props {
 }
 
 export function GameCard({ game, playerLibrary }: Props) {
-  console.log(game._id);
+  // console.log(game._id);
   return (
     <div className="game-card-small">
       <div className="image-wrapper">
