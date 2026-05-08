@@ -1,19 +1,16 @@
 import { useEffect, useState } from "react";
 import "./StarButton.css";
-import {
-  addToLibrary,
-  removeFromLibrary,
-  type LibraryEntry
-} from "../../services/libraryService";
+import { addToLibrary, removeFromLibrary } from "../../services/libraryService";
 import type { Game } from "../../types/game";
+import { useLibrary } from "../../contexts/LibraryContext";
 
 interface StarButtonProps {
   game: Game;
-  playerLibrary: LibraryEntry[];
 }
 
-export function StarButton({ game, playerLibrary }: StarButtonProps) {
+export function StarButton({ game }: StarButtonProps) {
   const [isInLibrary, setIsInLibrary] = useState(false);
+  const { data: playerLibrary, refetch } = useLibrary();
 
   // Check if the game is already in the player's library
   useEffect(() => {
@@ -29,10 +26,10 @@ export function StarButton({ game, playerLibrary }: StarButtonProps) {
       );
       if (!confirmed) return;
       await removeFromLibrary(game._id);
-      setIsInLibrary(false);
+      refetch();
     } else {
       await addToLibrary(game._id);
-      setIsInLibrary(true);
+      refetch();
     }
   };
 

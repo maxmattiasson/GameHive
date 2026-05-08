@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import GameSort from "../../components/games/gameSort/GameSort";
 import { useSort } from "../../hooks/useSort";
-import { useLibrary } from "../../hooks/useLibrary";
+import { useLibrary } from "../../contexts/LibraryContext";
 import { GameList } from "../../components/games/GameList";
 import { useState } from "react";
 import type { Game } from "../../types/game";
@@ -32,7 +32,7 @@ export function PlayerLibraryPage() {
       <h2>Library</h2>
       <GameSort sortBy={sortBy} order={order} onSortChange={handleSortChange} />
 
-      <GameList games={sortedGames} playerLibrary={libraryData} />
+      <GameList games={sortedGames} />
       <br />
       <Link to="/profile">Back to profile</Link>
     </section>
