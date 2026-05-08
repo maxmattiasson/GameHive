@@ -35,13 +35,13 @@ const LoginForm = () => {
       const response = await fetch("http://localhost:3000/api/auth/login", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/json"
         },
         credentials: "include",
         body: JSON.stringify({
           email: email.trim(),
-          password: password.trim(),
-        }),
+          password: password.trim()
+        })
       });
 
       const data = await response.json();
@@ -51,16 +51,23 @@ const LoginForm = () => {
         return;
       }
       const me = await fetch("http://localhost:3000/api/auth/me", {
-        credentials: "include",
+        credentials: "include"
       });
       if (!me.ok) {
         setErrorMessage("Session failed, cookie not set");
         return;
       }
-      const checkedUser = await me.json();
+      const checkedUser = await me.json(); //
       setUser(checkedUser);
       console.log("Logged in user:", checkedUser);
-    } catch {
+
+      const unlocked = data.user.newUnlocks || null
+      if (unlocked[0]) {
+        alert(`Achievement unlocked: ${unlocked.length} new achievement(s) unlocked!`)
+      }
+
+    } catch(err) {
+      console.error("Login error:", err);
       setErrorMessage("Kunde inte ansluta till servern");
     } finally {
       setIsLoading(false);

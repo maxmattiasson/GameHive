@@ -6,9 +6,8 @@ import { AuthRequest } from "../auth/authMiddleware.js";
 export const getAllGames = async (
   req: Request,
   res: Response,
-  next: NextFunction,
+  next: NextFunction
 ) => {
-  console.log("funkar");
   try {
     const { title, genre, release, dev, multiplayer } = req.query as {
       title?: string;
@@ -42,10 +41,8 @@ export const getGamebyId = (req: Request, res: Response) => {
 export const addNewGame = async (
   req: AuthRequest,
   res: Response,
-  next: NextFunction,
+  next: NextFunction
 ) => {
-  console.log("funkar");
-
   if (!req.user) {
     return res.status(401).json({ message: "Unauthorized" });
   }
@@ -61,7 +58,7 @@ export const addNewGame = async (
     multiplayer: req.body.multiplayer,
     avg_rating: req.body.avg_rating,
     review: req.body.review,
-    ownerUserId: req.user.userId,
+    ownerUserId: req.user.userId
   });
 
   try {
@@ -76,7 +73,7 @@ export const addNewGame = async (
 export const updateGame = async (
   req: Request,
   res: Response,
-  next: NextFunction,
+  next: NextFunction
 ) => {
   try {
     const game = res.locals.game;
@@ -105,7 +102,7 @@ export const updateGame = async (
 export const deleteGame = async (
   req: Request,
   res: Response,
-  next: NextFunction,
+  next: NextFunction
 ) => {
   try {
     const game = res.locals.game;
@@ -119,7 +116,7 @@ export const deleteGame = async (
 export const getOwnersGames = async (
   req: AuthRequest,
   res: Response,
-  next: NextFunction,
+  next: NextFunction
 ) => {
   try {
     if (!req.user) {
@@ -128,10 +125,10 @@ export const getOwnersGames = async (
 
     const ownerId = req.user.userId;
 
-    const games = await Game.find({ ownerUserId: ownerId }).populate('genres');
+    const games = await Game.find({ ownerUserId: ownerId }).populate("genres");
 
     return res.status(200).json(games);
   } catch (error) {
     next(error);
   }
-}
+};

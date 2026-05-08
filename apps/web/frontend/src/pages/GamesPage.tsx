@@ -3,19 +3,21 @@ import GameFilter from "../components/games/gameFilter/GameFilter";
 import { GameList } from "../components/games/GameList";
 import type { GameFilterValues } from "../types/gameFilter";
 import { useGames } from "../hooks/useGames";
+import { useLibrary } from "../hooks/useLibrary";
 
 const initialFilters: GameFilterValues = {
   title: "",
   genre: [],
   dev: "",
   release: "",
-  multiplayer: false,
+  multiplayer: false
 };
 
 export function GamesPage() {
   const [activeFilters, setActiveFilters] =
     useState<GameFilterValues>(initialFilters);
-  const { data, loading, error } = useGames();
+  const { data } = useGames();
+  const { data: playerLibrary } = useLibrary();
 
   // filters values and returns boolean
   const filteredGames = data.filter((game) => {
@@ -27,15 +29,10 @@ export function GamesPage() {
       .toLocaleLowerCase()
       .includes(activeFilters.dev.toLocaleLowerCase().trim());
 
-    // const releaseYear = new Date(game.release).getFullYear().toString();
-    // const releaseMatch =
-    //   activeFilters?.release.trim() === "" ||
-    //   releaseYear.includes(activeFilters.release.trim());
-
     const genreMatch =
       activeFilters?.genre.length === 0 ||
       activeFilters?.genre.some((selectedGenre) =>
-        game.genres.some((g) => g.name === selectedGenre),
+        game.genres.some((g) => g.name === selectedGenre)
       );
 
     const multiplayerMatch = !activeFilters?.multiplayer || game.multiplayer;
@@ -45,12 +42,10 @@ export function GamesPage() {
   return (
     <>
       <p>Hush! 🤫 You're in a library... </p>
-      <h1>OUR GAMES LIBRARY!! 🥳🎮🕹️👾</h1>
-
-      <p>(Tons and tons of games here....)</p>
+      <h1>A GAME LIBRARY!! 🎮🕹️👾</h1>
       <div className="game-filter-wrapper">
         <GameFilter onSearch={setActiveFilters} />
-        <GameList games={filteredGames} />
+        <GameList games={filteredGames} playerLibrary={playerLibrary} />
       </div>
     </>
   );

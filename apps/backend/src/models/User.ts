@@ -1,5 +1,6 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 import type { User } from "../types/userType.js";
+import AchievementsModel from "./Achievements.js";
 
 const UserSchema = new mongoose.Schema(
   {
@@ -25,8 +26,16 @@ const UserSchema = new mongoose.Schema(
       enum: ["user", "admin", "dev"],
       default: "user",
     },
-  },
-  {
+    loginCount: {
+        type: Number,
+        required: false,
+        default: 0,
+    },
+    userAchievements: [{
+        type: Schema.Types.ObjectId,
+        ref: AchievementsModel,
+    }]
+}, {
     collection: "users",
     timestamps: true,
   },

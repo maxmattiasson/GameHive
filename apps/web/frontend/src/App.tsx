@@ -1,19 +1,19 @@
 import "./App.css";
 import { Header } from "./components/layout/Header";
 import { GameList } from "./components/games/GameList";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import { GameDetails } from "./pages/GameDetails";
 import { GamesPage } from "./pages/GamesPage";
 import { useGames } from "./hooks/useGames";
 import DevProfilePage from "./pages/DevProfilePage";
 import { PlayerProfile } from "./pages/playerPage/PlayerProfilePage";
 import { PlayerLibraryPage } from "./pages/playerPage/PlayerLibraryPage";
-import { PlayerAchivementsPage } from "./pages/playerPage/PlayerAchivementsPage";
+import { PlayerAchivementsPage } from "./pages/playerPage/PlayerAchievementsPage";
 import { PlayerFriendsPage } from "./pages/playerPage/PlayerFriendsPage";
 import { SignupPage } from "./pages/signup/SignupPage";
 
 function App() {
-  const { data} = useGames();
+  const { data } = useGames();
 
   const games = data.slice(0, 3); //slice array to limit, otherwise return all
   return (
@@ -26,7 +26,7 @@ function App() {
             path="/"
             element={
               <div className="center">
-                <GameList games={games} />
+                <GameList games={games} playerLibrary={[]} />
               </div>
             }
           />
@@ -34,13 +34,14 @@ function App() {
           <Route path="/games" element={<GamesPage />} />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/dev/profile" element={<DevProfilePage />} />
-          <Route path="/profile" element={<PlayerProfile />} />
-          <Route path="/profile/library" element={<PlayerLibraryPage />} />
-          <Route
-            path="/profile/achivements"
-            element={<PlayerAchivementsPage />}
-          />
-          <Route path="/profile/friends" element={<PlayerFriendsPage />} />
+
+          {/* Profile */}
+          <Route path="/profile" element={<PlayerProfile />}>
+            <Route index element={<Navigate to="library" replace />} />
+            <Route path="library" element={<PlayerLibraryPage />} />
+            <Route path="achivements" element={<PlayerAchivementsPage />} />
+            <Route path="friends" element={<PlayerFriendsPage />} />
+          </Route>
         </Routes>
       </main>
 
