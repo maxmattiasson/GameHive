@@ -3,6 +3,7 @@ import UserModel from "../models/User.js";
 import LibraryModel from "../models/Library.js";
 
 const router = Router();
+2;
 
 router.get("/:id", async (req, res) => {
   const user = await UserModel.findById(req.params.id).select(
