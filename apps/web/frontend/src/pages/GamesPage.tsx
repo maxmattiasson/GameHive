@@ -43,7 +43,7 @@ export function GamesPage() {
       <h1>A GAME LIBRARY!! 🎮🕹️👾</h1>
       <div className="game-filter-wrapper">
         <GameFilter onSearch={setActiveFilters} />
-        <GameList games={filteredGames} playerLibrary={[]} />
+        <GameList games={filteredGames} />
       </div>
     </>
   );
