@@ -21,4 +21,11 @@ router.get("/:id/library", async (req, res) => {
   res.json(library);
 });
 
+router.get("/:id/achievements", async (req, res) => {
+  const user = await UserModel.findById(req.params.id).populate(
+    "userAchievements",
+  );
+  res.json(user?.userAchievements);
+});
+
 export default router;
