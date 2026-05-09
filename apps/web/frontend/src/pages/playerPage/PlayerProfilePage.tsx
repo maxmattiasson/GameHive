@@ -30,13 +30,13 @@ export function PlayerProfile() {
       </div>
       <ul>
         <li>
-          <NavLink to="/profile/friends">Friends</NavLink>
+          <NavLink to="library">Library</NavLink>
         </li>
         <li>
-          <NavLink to="/profile/achievements">achievements</NavLink>
+          <NavLink to="friends">Friends</NavLink>
         </li>
         <li>
-          <NavLink to="/profile/library">Library</NavLink>
+          <NavLink to="achievements">Achievements</NavLink>
         </li>
       </ul>
       <div className="profile-section border-10">
