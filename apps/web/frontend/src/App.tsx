@@ -46,7 +46,7 @@ function App() {
             </Route>
 
             {/* Other player profile */}
-            <Route path="/players/:id" element={<PlayerProfile />}>
+            <Route path="/users/:id" element={<PlayerProfile />}>
               <Route path="library" element={<PlayerLibraryPage />} />
               <Route path="achievements" element={<PlayerachievementsPage />} />
               <Route path="friends" element={<PlayerFriendsPage />} />

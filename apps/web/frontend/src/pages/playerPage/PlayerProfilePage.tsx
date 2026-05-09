@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import "./PlayerProfilePage.css";
 
 export function PlayerProfile() {
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const { id } = useParams();
 
   const [otherUser, setOtherUser] = useState<any>(null);
@@ -17,7 +17,7 @@ export function PlayerProfile() {
       .then((data) => setOtherUser(data));
   }, [id]);
 
-  if (id && !user) {
+  if (id && !authLoading && !user) {
     return (
       <div className="player-profile section">
         <div className="player-header border-10">
