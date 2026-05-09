@@ -17,6 +17,16 @@ export function PlayerProfile() {
       .then((data) => setOtherUser(data));
   }, [id]);
 
+  if (id && !user) {
+    return (
+      <div className="player-profile section">
+        <div className="player-header border-10">
+          <p>Log in to view other players' profiles.</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="player-profile section">
       <div className="player-header border-10">
