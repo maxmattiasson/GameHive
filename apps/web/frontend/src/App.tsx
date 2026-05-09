@@ -47,6 +47,7 @@ function App() {
 
             {/* Other player profile */}
             <Route path="/users/:id" element={<PlayerProfile />}>
+              <Route index element={<Navigate to="library" replace />} />
               <Route path="library" element={<PlayerLibraryPage />} />
               <Route path="achievements" element={<PlayerachievementsPage />} />
               <Route path="friends" element={<PlayerFriendsPage />} />
