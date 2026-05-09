@@ -21,7 +21,11 @@ export function PlayerProfile() {
     <div className="player-profile section">
       <div className="player-header border-10">
         <div>
-          {id ? <h1>{otherUser?.username}</h1> : <h1>{user?.username}</h1>}
+          {id ? (
+            <h1>{otherUser?.username ?? "Loading..."}</h1>
+          ) : (
+            <h1>{user?.username}</h1>
+          )}
           <p>Player Profile</p>
         </div>
         <div className="player-img">
