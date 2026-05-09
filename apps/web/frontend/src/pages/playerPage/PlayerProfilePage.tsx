@@ -33,7 +33,7 @@ export function PlayerProfile() {
           <NavLink to="/profile/friends">Friends</NavLink>
         </li>
         <li>
-          <NavLink to="/profile/achivements">Achivements</NavLink>
+          <NavLink to="/profile/achievements">achievements</NavLink>
         </li>
         <li>
           <NavLink to="/profile/library">Library</NavLink>
