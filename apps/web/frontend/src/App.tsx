@@ -8,7 +8,7 @@ import { useGames } from "./hooks/useGames";
 import DevProfilePage from "./pages/DevProfilePage";
 import { PlayerProfile } from "./pages/playerPage/PlayerProfilePage";
 import { PlayerLibraryPage } from "./pages/playerPage/PlayerLibraryPage";
-import { PlayerAchivementsPage } from "./pages/playerPage/PlayerAchievementsPage";
+import { PlayerachievementsPage } from "./pages/playerPage/PlayerAchievementsPage";
 import { PlayerFriendsPage } from "./pages/playerPage/PlayerFriendsPage";
 import { SignupPage } from "./pages/signup/SignupPage";
 import { LibraryProvider } from "./contexts/LibraryContext";
@@ -41,7 +41,15 @@ function App() {
             <Route path="/profile" element={<PlayerProfile />}>
               <Route index element={<Navigate to="library" replace />} />
               <Route path="library" element={<PlayerLibraryPage />} />
-              <Route path="achivements" element={<PlayerAchivementsPage />} />
+              <Route path="achievements" element={<PlayerachievementsPage />} />
+              <Route path="friends" element={<PlayerFriendsPage />} />
+            </Route>
+
+            {/* Other player profile */}
+            <Route path="/users/:id" element={<PlayerProfile />}>
+              <Route index element={<Navigate to="library" replace />} />
+              <Route path="library" element={<PlayerLibraryPage />} />
+              <Route path="achievements" element={<PlayerachievementsPage />} />
               <Route path="friends" element={<PlayerFriendsPage />} />
             </Route>
           </Routes>

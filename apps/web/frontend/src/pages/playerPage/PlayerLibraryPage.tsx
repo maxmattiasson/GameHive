@@ -1,13 +1,21 @@
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import GameSort from "../../components/games/gameSort/GameSort";
 import { useSort } from "../../hooks/useSort";
 import { useLibrary } from "../../contexts/LibraryContext";
 import { GameList } from "../../components/games/GameList";
 import { useState } from "react";
 import type { Game } from "../../types/game";
+import { useUserLibrary } from "../../hooks/useUserLibrary";
 
 export function PlayerLibraryPage() {
-  const { data: libraryData, loading, error } = useLibrary();
+  const ownLibrary = useLibrary();
+  const { id } = useParams();
+  const userLibrary = useUserLibrary(id);
+
+  const libraryData = id ? userLibrary.data : ownLibrary.data;
+  const loading = id ? userLibrary.loading : ownLibrary.loading;
+  const error = id ? null : ownLibrary.error;
+
   const [sortBy, setSortBy] = useState<keyof Game>("title");
   const [order, setOrder] = useState<"asc" | "desc">("asc");
 

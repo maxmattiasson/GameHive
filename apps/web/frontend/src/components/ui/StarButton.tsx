@@ -3,12 +3,16 @@ import "./StarButton.css";
 import { addToLibrary, removeFromLibrary } from "../../services/libraryService";
 import type { Game } from "../../types/game";
 import { useLibrary } from "../../contexts/LibraryContext";
+import { useParams } from "react-router-dom";
 
 interface StarButtonProps {
   game: Game;
 }
 
 export function StarButton({ game }: StarButtonProps) {
+  const { id } = useParams();
+  if (id) return null;
+
   const [isInLibrary, setIsInLibrary] = useState(false);
   const { data: playerLibrary, refetch } = useLibrary();
 
@@ -22,7 +26,7 @@ export function StarButton({ game }: StarButtonProps) {
     // warning for removing game
     if (isInLibrary) {
       const confirmed = window.confirm(
-        "You are about to remove this game from your library, all your playtime will be lost. Do you want to continue?"
+        "You are about to remove this game from your library, all your playtime will be lost. Do you want to continue?",
       );
       if (!confirmed) return;
       await removeFromLibrary(game._id);
