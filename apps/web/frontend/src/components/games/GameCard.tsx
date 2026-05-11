@@ -4,11 +4,8 @@ import "./GameCard.css";
 import "../ui/ArrowButton.css";
 import { StarButton } from "../ui/StarButton";
 
-import type { LibraryEntry } from "../../services/libraryService";
-
 interface Props {
   game: Game;
-  playerLibrary: LibraryEntry[];
 }
 
 export function GameCard({ game, playerLibrary }: Props) {
@@ -16,7 +13,7 @@ export function GameCard({ game, playerLibrary }: Props) {
   return (
     <div className="game-card-small">
       <div className="image-wrapper">
-        <StarButton game={game} playerLibrary={playerLibrary} />
+        <StarButton game={game} />
         <img
           src={
             game.thumb ||

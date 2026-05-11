@@ -3,7 +3,6 @@ import GameFilter from "../components/games/gameFilter/GameFilter";
 import { GameList } from "../components/games/GameList";
 import type { GameFilterValues } from "../types/gameFilter";
 import { useGames } from "../hooks/useGames";
-import { useLibrary } from "../hooks/useLibrary";
 
 const initialFilters: GameFilterValues = {
   title: "",
@@ -17,7 +16,6 @@ export function GamesPage() {
   const [activeFilters, setActiveFilters] =
     useState<GameFilterValues>(initialFilters);
   const { data } = useGames();
-  const { data: playerLibrary } = useLibrary();
 
   // filters values and returns boolean
   const filteredGames = data.filter((game) => {
@@ -45,7 +43,7 @@ export function GamesPage() {
       <h1>A GAME LIBRARY!! 🎮🕹️👾</h1>
       <div className="game-filter-wrapper">
         <GameFilter onSearch={setActiveFilters} />
-        <GameList games={filteredGames} playerLibrary={playerLibrary} />
+        <GameList games={filteredGames} />
       </div>
     </>
   );
