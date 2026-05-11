@@ -32,7 +32,8 @@ export function StarButton({ game }: StarButtonProps) {
       await removeFromLibrary(game._id);
       refetch();
     } else {
-      await addToLibrary(game._id);
+      const apiResponse = await addToLibrary(game._id);
+      console.log(apiResponse);
       refetch();
     }
   };
