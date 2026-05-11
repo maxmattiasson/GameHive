@@ -1,9 +1,28 @@
 import express from "express"
 import { authMiddleware } from "../auth/authMiddleware.js";
-import { getAllGamesReviews } from "../controllers/reviewController.js";
+import { voteReview, deleteReview, removeReviewVote } from "../controllers/reviewController.js";
 
 const router = express.Router();
 
-router.get("/", authMiddleware, getAllGamesReviews)
+// Delete one review
+router.delete(
+  "/:reviewId",
+  authMiddleware,
+  deleteReview
+);
+
+// Vote helpful / not helpful
+router.post(
+  "/:reviewId/vote",
+  authMiddleware,
+  voteReview
+);
+
+// Remove own vote
+router.delete(
+  "/:reviewId/vote",
+  authMiddleware,
+  removeReviewVote
+);
 
 export default router

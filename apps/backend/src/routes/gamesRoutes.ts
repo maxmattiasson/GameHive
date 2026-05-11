@@ -11,7 +11,7 @@ import {
 import { authMiddleware } from "../auth/authMiddleware.js";
 import { requireRole } from "../auth/requireRole.js";
 import { canEditGame } from "../middleware/canEditGame.js";
-import { createReview } from "../controllers/reviewController.js";
+import { createReview, getAllGamesReviews } from "../controllers/reviewController.js";
 
 const router = Router();
 
@@ -35,8 +35,11 @@ router.patch("/games/:id", authMiddleware, getGame, canEditGame, updateGame);
 //Delete
 router.delete("/games/:id", authMiddleware, getGame, canEditGame, deleteGame);
 
+// Reviews on one game
+router.get("/games/:gameId/reviews", getAllGamesReviews);
+
 // REVIEWS! Create review on game
-router.post("/games/:gameId/review", authMiddleware, createReview)
+router.post("/games/:gameId/reviews", authMiddleware, createReview)
 
 // Get all reviews on a game
 // router.get("/games/:gameId/review", authMiddleware, getAllGamesReviews)

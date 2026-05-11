@@ -52,7 +52,7 @@ app.use("/api/profile", profileRoutes);
 app.use("/api/friends", friendshipRoutes);
 app.use("/api/genres", genresRoutes);
 app.use("/api/achievements", achievementsRoutes);
-app.use("/api", reviewRoutes);
+app.use("/api/reviews", reviewRoutes);
 
 app.get("/", (req, res) => {
   res.send("funking tjoho");
