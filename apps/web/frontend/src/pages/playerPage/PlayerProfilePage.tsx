@@ -52,6 +52,9 @@ export function PlayerProfile() {
         <li>
           <NavLink to="achievements">Achievements</NavLink>
         </li>
+        <li>
+          <NavLink to="reviews">Reviews</NavLink>
+        </li>
       </ul>
       <div className="profile-section border-10">
         <Outlet />

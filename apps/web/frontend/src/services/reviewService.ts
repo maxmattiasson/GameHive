@@ -71,3 +71,15 @@ export const deleteReview = async (reviewId: string) => {
 
   return res.json();
 };
+
+export const getUserReviews = async (userId: string) => {
+  const res = await fetch(`${API_BASE_URL}/users/${userId}/reviews`, {
+    credentials: "include",
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch user reviews");
+  }
+
+  return res.json();
+};

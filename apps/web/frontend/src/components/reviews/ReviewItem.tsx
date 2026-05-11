@@ -1,4 +1,5 @@
 import type { Review } from "../../types/review";
+import styles from "./ReviewItem.module.css";
 
 type ReviewItemProps = {
   review: Review;
@@ -26,7 +27,7 @@ export default function ReviewItem({
   const isOwnReview = review.user._id === currentUserId;
 
   return (
-    <article>
+    <article className={styles.reviewCont}>
       {showGameTitle && review.game && (
         <h3>{review.game.title}</h3>
       )}
