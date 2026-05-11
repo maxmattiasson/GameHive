@@ -2,7 +2,7 @@ import { Response, NextFunction } from "express";
 import mongoose from "mongoose";
 import LibraryModel from "../models/Library.js";
 import { AuthRequest } from "../auth/authMiddleware.js";
-import { checkPlayerLibrary } from "../helpers/achievementsChecker.js";
+import { checkPlayerLibraryAchievements } from "../helpers/achievementsChecker.js";
 
 // Converts a string to a MongoDB ObjectId if valid, otherwise returns null, ensures that only valid ObjectIds are used in database queries.
 const toObjectId = (value: string) => {
@@ -90,7 +90,7 @@ export const addToLibrary = async (
       gameId: gameObjectId
     });
 
-    const newUnlocks: string[] | null = await checkPlayerLibrary(userObjectId.toString());
+    const newUnlocks: string[] | null = await checkPlayerLibraryAchievements(userObjectId.toString());
 
     // Populates the gameId field with selected fields from the Game model and genre names,
     // so the frontend immediately receives all relevant game data in the response.

@@ -3,7 +3,7 @@ import User from "../models/User.js"
 import Library from "../models/Library.js"
 import { ObjectId } from "mongodb"
 
-export const checkPlayerLibrary = async (userId: string): Promise<string[] | null> => {
+export const checkPlayerLibraryAchievements = async (userId: string): Promise<string[] | null> => {
     const user = await User.findById(userId)
     if (!user) return null
 
