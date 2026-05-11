@@ -2,6 +2,7 @@ import { Response, NextFunction } from "express";
 import mongoose from "mongoose";
 import LibraryModel from "../models/Library.js";
 import { AuthRequest } from "../auth/authMiddleware.js";
+import { checkPlayerLibrary } from "../helpers/achievementsChecker.js";
 
 // Converts a string to a MongoDB ObjectId if valid, otherwise returns null, ensures that only valid ObjectIds are used in database queries.
 const toObjectId = (value: string) => {
@@ -89,8 +90,7 @@ export const addToLibrary = async (
       gameId: gameObjectId
     });
 
-    // TODO: Use the library achievement helper to potentially add a new achievement to the user
-    
+    const newUnlocks: string[] | null = await checkPlayerLibrary(userObjectId.toString());
 
     // Populates the gameId field with selected fields from the Game model and genre names,
     // so the frontend immediately receives all relevant game data in the response.
@@ -99,7 +99,7 @@ export const addToLibrary = async (
       select: GAME_POPULATE_FIELDS,
       populate: { path: "genres", select: "name" }
     });
-    return res.status(201).json(populated);
+    return res.status(201).json({populated, newUnlocks });
   } catch (error: any) {
     if (error.code === 11000) {
       return res.status(409).json({ message: "Game is already in library" });
