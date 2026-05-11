@@ -104,7 +104,7 @@ export default function DevGameForm({ selectedGame }: Props) {
                 </label>
                 <label>
                     <span>Game description</span>
-                    <textarea className={styles.textArea} value={desc} onChange={(e) => setDesc(e.target.value)} />
+                    <textarea className={styles.textArea} minLength={20} value={desc} onChange={(e) => setDesc(e.target.value)} />
                 </label>
                 <label>
                     <span>Multiplayer</span> 

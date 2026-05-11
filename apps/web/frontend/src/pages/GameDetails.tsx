@@ -6,10 +6,36 @@ import { InfoCard } from "../components/ui/InfoCard";
 import { updateLibraryEntry } from "../services/libraryService";
 import { usePlaytime } from "../hooks/usePlaytime";
 
+import { useCallback, useState } from "react";
+import { getGameReviews } from "../services/reviewService";
+import type { Review } from "../types/review";
+import ReviewForm from "../components/reviews/ReviewForm";
+
 export function GameDetails() {
   const { id } = useParams();
   const { data, loading, error } = useGame(id!);
   const { playtime, setPlaytime } = usePlaytime(id);
+
+  const [reviews, setReviews] = useState<Review[]>([]);
+  const [reviewsLoading, setReviewsLoading] = useState(false);
+  const [reviewsError, setReviewsError] = useState("");
+
+  const fetchReviews = useCallback(async () => {
+    if (!id) return;
+  
+    try {
+      setReviewsLoading(true);
+      setReviewsError("");
+  
+      const data = await getGameReviews(id);
+      setReviews(data);
+    } catch (error) {
+      console.error(error);
+      setReviewsError("Could not load reviews");
+    } finally {
+      setReviewsLoading(false);
+    }
+  }, [id]);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
@@ -88,26 +114,29 @@ export function GameDetails() {
             </p>
           </InfoCard>
           <div className="reviews-container">
-            <p>Recent Reviews</p>
-            <InfoCard>
-              <p>Oskar</p>
-              <p>Lorem ipsum dolor sit amet.</p>
-            </InfoCard>
-            <InfoCard>
-              <p>Pelle</p>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Corrupti quas praesentium ipsam, veritatis voluptatem sint.
-              </p>
-            </InfoCard>
-            <InfoCard>
-              <p>Klas</p>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem
-                soluta in architecto eius.
-              </p>
-            </InfoCard>
-          </div>
+          <p>Recent Reviews</p>
+
+<ReviewForm gameId={id!} onReviewCreated={fetchReviews} />
+
+{reviewsLoading && <p>Loading reviews...</p>}
+{reviewsError && <p>{reviewsError}</p>}
+
+{!reviewsLoading && reviews.length === 0 && (
+  <p>No reviews yet. Be the first to review this game.</p>
+)}
+
+{reviews.map((review) => (
+  <InfoCard key={review._id}>
+    <p className="bold">{review.user.username}</p>
+
+    {review.rating !== undefined && <p>Rating: {review.rating}/10</p>}
+
+    <p>{review.text}</p>
+
+    <small>{new Date(review.createdAt).toLocaleDateString()}</small>
+  </InfoCard>
+))}
+</div>
         </div>
         <div className="col-3">
           <InfoCard>
