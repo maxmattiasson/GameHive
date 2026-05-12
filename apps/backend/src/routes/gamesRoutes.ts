@@ -6,11 +6,13 @@ import {
   addNewGame,
   updateGame,
   deleteGame,
-  getOwnersGames
+  getOwnersGames,
 } from "../controllers/gameController.js";
 import { authMiddleware } from "../auth/authMiddleware.js";
 import { requireRole } from "../auth/requireRole.js";
 import { canEditGame } from "../middleware/canEditGame.js";
+import { createGameSchema } from "../schemas/games.schemas.js";
+import { validateRequest } from "../middleware/validate.js";
 import { createReview, getAllGamesReviews } from "../controllers/reviewController.js";
 
 const router = Router();
@@ -19,14 +21,24 @@ const router = Router();
 router.get("/games", getAllGames);
 
 // Get list of games by ownerId (en devs egna games)
-router.get("/games/my-games", authMiddleware, requireRole("dev"), getOwnersGames);
+router.get(
+  "/games/my-games",
+  authMiddleware,
+  requireRole("dev"),
+  getOwnersGames,
+);
 
 //GET by id
 router.get("/games/:id", getGame, getGamebyId);
 
 // Add game
-router.post("/games", authMiddleware, requireRole("dev", "admin"), addNewGame);
-
+router.post(
+  "/games",
+  authMiddleware,
+  requireRole("dev", "admin"),
+  validateRequest({ body: createGameSchema }),
+  addNewGame,
+);
 
 //Patch
 //Finds game by id and updates fields sent in the body
