@@ -5,61 +5,31 @@ import "./GameDetails.css";
 import { InfoCard } from "../components/ui/InfoCard";
 import { updateLibraryEntry } from "../services/libraryService";
 import { usePlaytime } from "../hooks/usePlaytime";
-
-import { useCallback, useEffect, useState } from "react";
-import { getGameReviews } from "../services/reviewService";
-import type { Review } from "../types/review";
+import { useState } from "react";
 import ReviewForm from "../components/reviews/ReviewForm";
 import ReviewList from "../components/reviews/ReviewList";
-import { voteReview } from "../services/reviewService";
 import { useAuth } from "../hooks/useAuth";
-
+import { useReviews } from "../hooks/useReviews";
+  
 export function GameDetails() {
-  const { id } = useParams();
-  const { data, loading, error } = useGame(id!);
-  const { playtime, setPlaytime } = usePlaytime(id);
-  const { user } = useAuth();
-
-  const [reviews, setReviews] = useState<Review[]>([]);
-  const [reviewsLoading, setReviewsLoading] = useState(false);
-  const [reviewsError, setReviewsError] = useState("");
-  const [showReviewForm, setShowReviewForm] = useState(false);
-
-
-  const myReview = reviews.find(
-    (review) => review.user._id === user?._id
-  );
-
-  const fetchReviews = useCallback(async () => {
-    if (!id) return;
+    const { id } = useParams();
+    const { data, loading, error } = useGame(id!);
+    const { playtime, setPlaytime } = usePlaytime(id);
+    const { user } = useAuth();
   
-    try {
-      setReviewsLoading(true);
-      setReviewsError("");
+    const [showReviewForm, setShowReviewForm] = useState(false);
   
-      const data = await getGameReviews(id);
-      setReviews(data);
-    } catch (error) {
-      console.error(error);
-      setReviewsError("Could not load reviews");
-    } finally {
-      setReviewsLoading(false);
-    }
-  }, [id]);
-
-  useEffect(() => {
-    fetchReviews();
-  }, [fetchReviews]);
-
-  const handleVote = async (reviewId: string, value: 1 | -1) => {
-    try {
-      await voteReview(reviewId, value);
-      await fetchReviews();
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
+    const {
+      reviews,
+      reviewsLoading,
+      reviewsError,
+      refetchReviews,
+      handleVote,
+    } = useReviews(id);
+  
+    const myReview = reviews.find(
+      (review) => review.user._id === user?._id
+    );
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
   if (!data) return <p>Game not found</p>;
@@ -145,7 +115,7 @@ export function GameDetails() {
     gameId={id!}
     existingReview={myReview}
     onReviewCreated={() => {
-      fetchReviews();
+      refetchReviews();
       setShowReviewForm(false);
     }}
   />
