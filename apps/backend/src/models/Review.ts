@@ -5,7 +5,7 @@ interface ReviewVote {
   value: 1 | -1;
 }
 
-export interface ReviewDocument extends Document {
+export interface ReviewDocument {
   game: Types.ObjectId;
   user: Types.ObjectId;
   text: string;
