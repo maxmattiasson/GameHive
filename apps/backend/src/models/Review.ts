@@ -29,7 +29,6 @@ const reviewSchema = new Schema<ReviewDocument>(
     },
     text: {
       type: String,
-      required: true,
       trim: true,
       maxlength: 1000,
     },

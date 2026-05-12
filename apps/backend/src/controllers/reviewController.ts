@@ -19,15 +19,19 @@ export const createReview = async (req: AuthRequest, res: Response, next: NextFu
       return res.status(400).json({ message: "Invalid game id" });
     }
 
-    if (!text || text.trim().length === 0) {
-        return res.status(400).json({ message: "Review text required" });
-      }
+    const hasText = typeof text === "string" && text.trim().length > 0;
+    const hasRating = rating !== undefined;
+
+    if (!hasText && !hasRating) {
+      return res.status(400).json({ message: "Review text or rating required" });
+    }
+
       
       if (text.length > 1000) {
         return res.status(400).json({ message: "Review too long" });
       }
       
-      if (rating !== undefined && (rating < 0 || rating > 5)) {
+      if (rating !== undefined && (rating < 1 || rating > 5)) {
         return res.status(400).json({ message: "Invalid rating" });
       }
 
@@ -206,6 +210,42 @@ export const getUserReviews = async (
       .sort({ createdAt: -1 });
 
     res.json(reviews);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const updateReview = async (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const userId = req.user?.userId;
+
+    if (!userId) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const { reviewId } = req.params;
+    const { text, rating } = req.body;
+
+    const review = await Review.findById(reviewId);
+
+    if (!review) {
+      return res.status(404).json({ message: "Review not found" });
+    }
+
+    if (review.user.toString() !== userId && req.user?.role !== "admin") {
+      return res.status(403).json({ message: "Forbidden" });
+    }
+
+    review.text = text;
+    review.rating = rating;
+
+    const updatedReview = await review.save();
+
+    res.json(updatedReview);
   } catch (error) {
     next(error);
   }

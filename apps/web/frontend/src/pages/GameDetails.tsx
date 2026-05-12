@@ -12,15 +12,23 @@ import type { Review } from "../types/review";
 import ReviewForm from "../components/reviews/ReviewForm";
 import ReviewList from "../components/reviews/ReviewList";
 import { voteReview } from "../services/reviewService";
+import { useAuth } from "../hooks/useAuth";
 
 export function GameDetails() {
   const { id } = useParams();
   const { data, loading, error } = useGame(id!);
   const { playtime, setPlaytime } = usePlaytime(id);
+  const { user } = useAuth();
 
   const [reviews, setReviews] = useState<Review[]>([]);
   const [reviewsLoading, setReviewsLoading] = useState(false);
   const [reviewsError, setReviewsError] = useState("");
+  const [showReviewForm, setShowReviewForm] = useState(false);
+
+
+  const myReview = reviews.find(
+    (review) => review.user._id === user?._id
+  );
 
   const fetchReviews = useCallback(async () => {
     if (!id) return;
@@ -132,7 +140,20 @@ export function GameDetails() {
   <div className="reviews-container">
     <p>Recent Reviews</p>
 
-    <ReviewForm gameId={id!} onReviewCreated={fetchReviews} />
+    {showReviewForm ? (
+  <ReviewForm
+    gameId={id!}
+    existingReview={myReview}
+    onReviewCreated={() => {
+      fetchReviews();
+      setShowReviewForm(false);
+    }}
+  />
+) : (
+  <button type="button" onClick={() => setShowReviewForm(true)}>
+    Write a review
+  </button>
+)}
 
     {reviewsLoading && <p>Loading reviews...</p>}
     {reviewsError && <p>{reviewsError}</p>}

@@ -83,3 +83,23 @@ export const getUserReviews = async (userId: string) => {
 
   return res.json();
 };
+export async function updateReview(
+  reviewId: string,
+  text: string,
+  rating?: number
+) {
+  const response = await fetch(`${API_BASE_URL}/reviews/${reviewId}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+    body: JSON.stringify({ text, rating }),
+  });
+
+  if (!response.ok) {
+    throw new Error("Could not update review");
+  }
+
+  return response.json();
+}

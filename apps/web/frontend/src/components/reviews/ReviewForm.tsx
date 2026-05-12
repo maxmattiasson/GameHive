@@ -1,37 +1,52 @@
 import { useState } from "react";
-import { createReview } from "../../services/reviewService";
+import { createReview, updateReview} from "../../services/reviewService";
+import styles from "./ReviewForm.module.css"
+import type { Review } from "../../types/review";
 
 type ReviewFormProps = {
   gameId: string;
+  existingReview?: Review;
   onReviewCreated?: () => void;
 };
 
 export default function ReviewForm({
   gameId,
+  existingReview,
   onReviewCreated,
 }: ReviewFormProps) {
-  const [text, setText] = useState("");
-  const [rating, setRating] = useState("");
+  const [text, setText] = useState(existingReview?.text ?? "");
+  const [rating, setRating] = useState(
+    existingReview?.rating?.toString() ?? ""
+  );
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  
 
   const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
     setErrorMessage("");
 
-    if (!text.trim()) {
-      setErrorMessage("Review text is required");
-      return;
-    }
-
     try {
       setIsLoading(true);
 
-      await createReview(
-        gameId,
-        text.trim(),
-        rating ? Number(rating) : undefined
-      );
+      if (!text.trim() && !rating) {
+        setErrorMessage("Write a review or choose a rating");
+        return;
+      }
+      
+      if (existingReview) {
+        await updateReview(
+          existingReview._id,
+          text.trim(),
+          rating ? Number(rating) : undefined
+        );
+      } else {
+        await createReview(
+          gameId,
+          text.trim(),
+          rating ? Number(rating) : undefined
+        );
+      }
 
       setText("");
       setRating("");
@@ -59,12 +74,13 @@ export default function ReviewForm({
         onChange={(e) => setRating(e.target.value)}
       >
         <option value="">No rating</option>
-        {[10, 9, 8, 7, 6, 5, 4, 3, 2, 1].map((score) => (
+        {[5, 4, 3, 2, 1].map((score) => (
           <option key={score} value={score}>
-            {score} / 10
+            {score} / 5
           </option>
         ))}
       </select>
+      <div className={styles.reviewCont}>
 
       <label htmlFor="reviewText">Your review</label>
       <textarea
@@ -76,9 +92,14 @@ export default function ReviewForm({
         rows={5}
       />
 
-      <button type="submit" disabled={isLoading}>
-        {isLoading ? "Submitting..." : "Submit review"}
-      </button>
+<button type="submit" disabled={isLoading}>
+  {isLoading
+    ? "Submitting..."
+    : existingReview
+    ? "Update review"
+    : "Submit review"}
+</button>
+      </div>
     </form>
   );
 }

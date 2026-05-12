@@ -1,6 +1,6 @@
 import express from "express"
 import { authMiddleware } from "../auth/authMiddleware.js";
-import { voteReview, deleteReview, removeReviewVote } from "../controllers/reviewController.js";
+import { voteReview, deleteReview, removeReviewVote, updateReview } from "../controllers/reviewController.js";
 
 const router = express.Router();
 
@@ -9,6 +9,13 @@ router.delete(
   "/:reviewId",
   authMiddleware,
   deleteReview
+);
+
+// Update review 
+router.patch(
+  "/:reviewId",
+  authMiddleware,
+  updateReview
 );
 
 // Vote helpful / not helpful
