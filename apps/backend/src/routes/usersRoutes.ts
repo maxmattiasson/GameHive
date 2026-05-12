@@ -2,6 +2,7 @@ import { Router } from "express";
 import UserModel from "../models/User.js";
 import LibraryModel from "../models/Library.js";
 import { authMiddleware, AuthRequest } from "../auth/authMiddleware.js";
+import { getUserReviews } from "../controllers/reviewController.js";
 import mongoose from "mongoose";
 
 const router = Router();
@@ -59,5 +60,7 @@ router.get(
     res.json(user.userAchievements);
   },
 );
+
+router.get("/:id/reviews", authMiddleware, getUserReviews);
 
 export default router;
