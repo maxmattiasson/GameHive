@@ -20,6 +20,10 @@ import {
   createReview,
   getAllGamesReviews,
 } from "../controllers/reviewController.js";
+import {
+  gameIdParamsSchema,
+  idParamSchema,
+} from "../schemas/common.schemas.js";
 
 const router = Router();
 
@@ -35,7 +39,12 @@ router.get(
 );
 
 //GET by id
-router.get("/games/:id", getGame, getGamebyId);
+router.get(
+  "/games/:id",
+  validateRequest({ params: idParamSchema }),
+  getGame,
+  getGamebyId,
+);
 
 // Add game
 router.post(
@@ -51,20 +60,36 @@ router.post(
 router.patch(
   "/games/:id",
   authMiddleware,
+  validateRequest({ body: updateGameSchema, params: idParamSchema }),
   getGame,
   canEditGame,
-  validateRequest({ body: updateGameSchema }),
   updateGame,
 );
 
 //Delete
-router.delete("/games/:id", authMiddleware, getGame, canEditGame, deleteGame);
+router.delete(
+  "/games/:id",
+  authMiddleware,
+  validateRequest({ params: idParamSchema }),
+  getGame,
+  canEditGame,
+  deleteGame,
+);
 
 // Reviews on one game
-router.get("/games/:gameId/reviews", getAllGamesReviews);
+router.get(
+  "/games/:gameId/reviews",
+  validateRequest({ params: gameIdParamsSchema }),
+  getAllGamesReviews,
+);
 
 // REVIEWS! Create review on game
-router.post("/games/:gameId/reviews", authMiddleware, createReview);
+router.post(
+  "/games/:gameId/reviews",
+  authMiddleware,
+  validateRequest({ params: gameIdParamsSchema }),
+  createReview,
+);
 
 // Get all reviews on a game
 // router.get("/games/:gameId/review", authMiddleware, getAllGamesReviews)

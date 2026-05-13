@@ -3,7 +3,7 @@ import UserModel from "../models/User.js";
 import LibraryModel from "../models/Library.js";
 import { authMiddleware, AuthRequest } from "../auth/authMiddleware.js";
 import { getUserReviews } from "../controllers/reviewController.js";
-import { userIdParamSchema } from "../schemas/user.schemas.js";
+import { idParamSchema } from "../schemas/common.schemas.js";
 import { validateRequest } from "../middleware/validate.js";
 import { NotFoundError } from "../errors/AppError.js";
 import { Response, NextFunction } from "express";
@@ -13,7 +13,7 @@ const router = Router();
 router.get(
   "/:id",
   authMiddleware,
-  validateRequest({ params: userIdParamSchema }),
+  validateRequest({ params: idParamSchema }),
   async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
       const id = req.params.id as string;
@@ -36,7 +36,7 @@ router.get(
 router.get(
   "/:id/library",
   authMiddleware,
-  validateRequest({ params: userIdParamSchema }),
+  validateRequest({ params: idParamSchema }),
   async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
       const id = req.params.id as string;
@@ -56,7 +56,7 @@ router.get(
 router.get(
   "/:id/achievements",
   authMiddleware,
-  validateRequest({ params: userIdParamSchema }),
+  validateRequest({ params: idParamSchema }),
   async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
       const id = req.params.id as string;
