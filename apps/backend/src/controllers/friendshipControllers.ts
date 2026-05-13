@@ -3,7 +3,11 @@ import { AuthRequest } from "../auth/authMiddleware.js";
 import FriendshipModel from "../models/Friendship.js";
 import { ConflictError } from "../errors/AppError.js";
 
-async function sendFriendRequest(req: AuthRequest, res: Response, next: NextFunction) {
+async function sendFriendRequest(
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction,
+) {
   const requester = req.user!.userId;
   const recipient = req.body.recipient;
 
@@ -17,17 +21,18 @@ async function sendFriendRequest(req: AuthRequest, res: Response, next: NextFunc
   } catch (err: any) {
     if (err.code === 11000) // duplicate key
     {
-      return next( new ConflictError());
-    } 
-    next(err)
+      return next(new ConflictError());
+    }
+    next(err);
+  }
 }
 
-async function getPendingRequests(req: AuthRequest, res: Response) {
-  const userId = req.user?.userId;
-
-  if (!userId) {
-    return res.status(401).json({ message: "Unauthorized" });
-  }
+async function getPendingRequests(
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction,
+) {
+  const userId = req.user!.userId;
 
   try {
     const requests = await FriendshipModel.find({
@@ -37,7 +42,7 @@ async function getPendingRequests(req: AuthRequest, res: Response) {
 
     return res.status(200).json(requests);
   } catch (err) {
-    return res.status(500).json({ message: "Something went wrong" });
+    next(err);
   }
 }
 
