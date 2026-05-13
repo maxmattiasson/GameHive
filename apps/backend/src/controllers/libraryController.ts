@@ -2,6 +2,12 @@ import { Response, NextFunction } from "express";
 import mongoose from "mongoose";
 import LibraryModel from "../models/Library.js";
 import { AuthRequest } from "../auth/authMiddleware.js";
+import { 
+  ValidationError, 
+  UnauthorizedError, 
+  NotFoundError,
+  ConflictError, 
+} from "../errors/index.js";
 
 // Converts a string to a MongoDB ObjectId if valid, otherwise returns null, ensures that only valid ObjectIds are used in database queries.
 const toObjectId = (value: string) => {
@@ -18,14 +24,12 @@ const GAME_POPULATE_FIELDS = "title thumb dev genres release multiplayer";
 const getUserObjectId = (req: AuthRequest, res: Response) => {
   const userId = req.user?.userId;
   if (!userId) {
-    res.status(401).json({ message: "Unauthorized" });
-    return null;
+    throw new UnauthorizedError();
   }
 
   const userObjectId = toObjectId(userId);
   if (!userObjectId) {
-    res.status(400).json({ message: "Invalid authenticated user id" });
-    return null;
+    throw new ValidationError("Invalid authenticated user id");
   }
 
   return userObjectId;
@@ -34,13 +38,12 @@ const getUserObjectId = (req: AuthRequest, res: Response) => {
 // validates and converts gameId from request
 const getGameObjectId = (gameId: unknown, res: Response) => {
   if (typeof gameId !== "string") {
-    res.status(400).json({ message: "gameId is required" });
-    return null;
+    throw new ValidationError("gameId is required");
   }
 
   const gameObjectId = toObjectId(gameId);
   if (!gameObjectId) {
-    res.status(400).json({ message: "Invalid gameId" });
+    throw new ValidationError("Invalid gameId");
     return null;
   }
 
@@ -99,7 +102,7 @@ export const addToLibrary = async (
     return res.status(201).json(populated);
   } catch (error: any) {
     if (error.code === 11000) {
-      return res.status(409).json({ message: "Game is already in library" });
+      throw new ConflictError("Game is already in library");
     }
     next(error);
   }
@@ -125,9 +128,7 @@ export const updateLibraryEntry = async (
       Number.isNaN(playtimeMinutes) ||
       playtimeMinutes < 0
     ) {
-      return res.status(400).json({
-        message: "playtimeMinutes is required and must be a non-negative number"
-      });
+      throw new ValidationError("playtimeMinutes is required and must be a non-negative number");
     }
 
     const updated = await LibraryModel.findOneAndUpdate(
@@ -144,7 +145,7 @@ export const updateLibraryEntry = async (
     });
 
     if (!updated)
-      return res.status(404).json({ message: "Library entry not found" });
+      throw new NotFoundError("Library entry not found");
 
     return res.json(updated);
   } catch (error) {
@@ -171,7 +172,7 @@ export const removeFromLibrary = async (
     });
 
     if (!removed) {
-      return res.status(404).json({ message: "Library entry not found" });
+      throw new NotFoundError("Library entry not found");
     }
 
     return res.status(200).json({ message: "Library entry removed" });
