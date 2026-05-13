@@ -5,7 +5,7 @@ import { authMiddleware, AuthRequest } from "../auth/authMiddleware.js";
 import { getUserReviews } from "../controllers/reviewController.js";
 import { userIdParamSchema } from "../schemas/user.schemas.js";
 import { validateRequest } from "../middleware/validate.js";
-import { NotFoundError, ValidationError } from "../errors/AppError.js";
+import { NotFoundError } from "../errors/AppError.js";
 import { Response, NextFunction } from "express";
 
 const router = Router();
