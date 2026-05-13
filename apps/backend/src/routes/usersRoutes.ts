@@ -3,27 +3,35 @@ import UserModel from "../models/User.js";
 import LibraryModel from "../models/Library.js";
 import { authMiddleware, AuthRequest } from "../auth/authMiddleware.js";
 import { getUserReviews } from "../controllers/reviewController.js";
-import mongoose from "mongoose";
+import { userIdParamSchema } from "../schemas/user.schemas.js";
+import { validateRequest } from "../middleware/validate.js";
+import { NotFoundError } from "../errors/AppError.js";
+import { Response, NextFunction } from "express";
 
 const router = Router();
 
-router.get("/:id", authMiddleware, async (req: AuthRequest, res) => {
-  const id = req.params.id as string;
+router.get(
+  "/:id",
+  authMiddleware,
+  validateRequest({ params: userIdParamSchema }),
+  async (req: AuthRequest, res: Response, next: NextFunction) => {
+    try {
+      const id = req.params.id as string;
 
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(400).json({ message: "Invalid user id" });
-  }
+      const user = await UserModel.findById(id).select(
+        "username role userAchievements createdAt",
+      );
 
-  const user = await UserModel.findById(id).select(
-    "username role userAchievements createdAt",
-  );
+      if (!user) {
+        throw new NotFoundError();
+      }
 
-  if (!user) {
-    return res.status(404).json({ message: "User not found" });
-  }
-
-  res.json(user);
-});
+      res.json(user);
+    } catch (err) {
+      next(err);
+    }
+  },
+);
 
 router.get("/:id/library", authMiddleware, async (req: AuthRequest, res) => {
   const id = req.params.id as string;
