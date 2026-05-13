@@ -11,7 +11,10 @@ import {
 import { authMiddleware } from "../auth/authMiddleware.js";
 import { requireRole } from "../auth/requireRole.js";
 import { canEditGame } from "../middleware/canEditGame.js";
-import { createGameSchema } from "../schemas/games.schemas.js";
+import {
+  createGameSchema,
+  updateGameSchema,
+} from "../schemas/games.schemas.js";
 import { validateRequest } from "../middleware/validate.js";
 import {
   createReview,
@@ -45,7 +48,14 @@ router.post(
 
 //Patch
 //Finds game by id and updates fields sent in the body
-router.patch("/games/:id", authMiddleware, getGame, canEditGame, updateGame);
+router.patch(
+  "/games/:id",
+  authMiddleware,
+  getGame,
+  canEditGame,
+  validateRequest({ body: updateGameSchema }),
+  updateGame,
+);
 
 //Delete
 router.delete("/games/:id", authMiddleware, getGame, canEditGame, deleteGame);
