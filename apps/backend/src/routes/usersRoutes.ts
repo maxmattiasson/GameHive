@@ -56,20 +56,21 @@ router.get(
 router.get(
   "/:id/achievements",
   authMiddleware,
-  async (req: AuthRequest, res) => {
-    const id = req.params.id as string;
+  validateRequest({ params: userIdParamSchema }),
+  async (req: AuthRequest, res: Response, next: NextFunction) => {
+    try {
+      const id = req.params.id as string;
 
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-      return res.status(400).json({ message: "Invalid user id" });
+      const user = await UserModel.findById(id).populate("userAchievements");
+
+      if (!user) {
+        throw new NotFoundError();
+      }
+
+      res.json(user.userAchievements);
+    } catch (err) {
+      next(err);
     }
-
-    const user = await UserModel.findById(id).populate("userAchievements");
-
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    res.json(user.userAchievements);
   },
 );
 
