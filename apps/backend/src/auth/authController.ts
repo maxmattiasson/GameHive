@@ -2,17 +2,10 @@ import bcrypt from "bcrypt";
 import UserModel from "../models/User.js";
 import { NextFunction, Request, Response } from "express";
 import jwt  from "jsonwebtoken";
-import { validateSignup } from "../helpers/validators.js";
 
 export const signup = async (req: Request, res: Response) => {
     try {
     const { username, email, password }= req.body;
-
-    const validationResult = validateSignup({ username, email, password });
-
-    if (validationResult !== true) {
-      return res.status(400).json({ message: validationResult });
-    }
 
     const existingUser = await UserModel.findOne({
       email: email.toLowerCase()
@@ -49,16 +42,7 @@ export const signup = async (req: Request, res: Response) => {
 export const login = async (req: Request, res: Response, next: NextFunction ) => {
   try {
     const { email, password } = req.body;
-    if (
-      typeof email !== "string" ||
-      typeof password !== "string" ||
-      !email.trim() ||
-      !password.trim()
-    ) {
-      res.status(400).json({ message: "Missing or invalid fields" });
-      return;
-    }
-
+    
     const normalizedEmail = email.toLowerCase().trim();
 
     const user = await UserModel.findOne({ email: normalizedEmail });
