@@ -11,29 +11,6 @@ export const createReview = async (req: AuthRequest, res: Response, next: NextFu
     if (!userId) {
       return res.status(401).json({ message: "Unauthorized" });
     }
-    if (!gameId || Array.isArray(gameId)) {
-      return res.status(400).json({ message: "Invalid game id" });
-    }
-    
-    if (!mongoose.Types.ObjectId.isValid(gameId)) {
-      return res.status(400).json({ message: "Invalid game id" });
-    }
-
-    const hasText = typeof text === "string" && text.trim().length > 0;
-    const hasRating = rating !== undefined;
-
-    if (!hasText && !hasRating) {
-      return res.status(400).json({ message: "Review text or rating required" });
-    }
-
-      
-      if (text.length > 1000) {
-        return res.status(400).json({ message: "Review too long" });
-      }
-      
-      if (rating !== undefined && (rating < 1 || rating > 5)) {
-        return res.status(400).json({ message: "Invalid rating" });
-      }
 
       const review = new Review({
         game: gameId,
@@ -57,15 +34,7 @@ export const getAllGamesReviews = async (
 ) => {
   try {
     const gameId = req.params.gameId;
-
-    if (!gameId || Array.isArray(gameId)) {
-      return res.status(400).json({ message: "Invalid game id" });
-    }
-
-    if (!mongoose.Types.ObjectId.isValid(gameId)) {
-      return res.status(400).json({ message: "Invalid game id" });
-    }
-
+    
     const reviews = await Review.find({
       game: new mongoose.Types.ObjectId(gameId),
     })
@@ -117,13 +86,8 @@ export const voteReview = async (
   try {
     const userId = req.user?.userId;
     const reviewId = req.params.reviewId;
-    const rawValue = Number(req.body.value);
-
-    if (rawValue !== 1 && rawValue !== -1) {
-      return res.status(400).json({ message: "Vote must be 1 or -1" });
-    }
+    const value = req.body.value as 1 | -1;
     
-    const value: 1 | -1 = rawValue;    
     if (!userId) {
       return res.status(401).json({ message: "Unauthorized" });
     }
