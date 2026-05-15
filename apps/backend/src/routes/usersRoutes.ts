@@ -3,61 +3,74 @@ import UserModel from "../models/User.js";
 import LibraryModel from "../models/Library.js";
 import { authMiddleware, AuthRequest } from "../auth/authMiddleware.js";
 import { getUserReviews } from "../controllers/reviewController.js";
-import mongoose from "mongoose";
+import { idParamSchema } from "../schemas/common.schemas.js";
+import { validateRequest } from "../middleware/validate.js";
+import { NotFoundError } from "../errors/AppError.js";
+import { Response, NextFunction } from "express";
 
 const router = Router();
 
-router.get("/:id", authMiddleware, async (req: AuthRequest, res) => {
-  const id = req.params.id as string;
+router.get(
+  "/:id",
+  authMiddleware,
+  validateRequest({ params: idParamSchema }),
+  async (req: AuthRequest, res: Response, next: NextFunction) => {
+    try {
+      const id = req.params.id as string;
 
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(400).json({ message: "Invalid user id" });
-  }
+      const user = await UserModel.findById(id).select(
+        "username role userAchievements createdAt",
+      );
 
-  const user = await UserModel.findById(id).select(
-    "username role userAchievements createdAt",
-  );
+      if (!user) {
+        throw new NotFoundError();
+      }
 
-  if (!user) {
-    return res.status(404).json({ message: "User not found" });
-  }
+      res.json(user);
+    } catch (err) {
+      next(err);
+    }
+  },
+);
 
-  res.json(user);
-});
+router.get(
+  "/:id/library",
+  authMiddleware,
+  validateRequest({ params: idParamSchema }),
+  async (req: AuthRequest, res: Response, next: NextFunction) => {
+    try {
+      const id = req.params.id as string;
+      const library = await LibraryModel.find({ userId: id }).populate({
+        path: "gameId",
+        select: "title thumb dev genres release multiplayer",
+        populate: { path: "genres", select: "name" },
+      });
 
-router.get("/:id/library", authMiddleware, async (req: AuthRequest, res) => {
-  const id = req.params.id as string;
-
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(400).json({ message: "Invalid user id" });
-  }
-
-  const library = await LibraryModel.find({ userId: id }).populate({
-    path: "gameId",
-    select: "title thumb dev genres release multiplayer",
-    populate: { path: "genres", select: "name" },
-  });
-
-  res.json(library);
-});
+      res.json(library);
+    } catch (err) {
+      next(err);
+    }
+  },
+);
 
 router.get(
   "/:id/achievements",
   authMiddleware,
-  async (req: AuthRequest, res) => {
-    const id = req.params.id as string;
+  validateRequest({ params: idParamSchema }),
+  async (req: AuthRequest, res: Response, next: NextFunction) => {
+    try {
+      const id = req.params.id as string;
 
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-      return res.status(400).json({ message: "Invalid user id" });
+      const user = await UserModel.findById(id).populate("userAchievements");
+
+      if (!user) {
+        throw new NotFoundError();
+      }
+
+      res.json(user.userAchievements);
+    } catch (err) {
+      next(err);
     }
-
-    const user = await UserModel.findById(id).populate("userAchievements");
-
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    res.json(user.userAchievements);
   },
 );
 
