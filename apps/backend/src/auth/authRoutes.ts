@@ -5,6 +5,7 @@ import { checkLoginCount } from "../middleware/achievementMiddleware.js";
 import UserModel from "../models/User.js";
 import { validateRequest } from "../middleware/validate.js";
 import { loginSchema, signupSchema } from "../schemas/auth.schema.js";
+import mongoose from "mongoose";
  
 const router = Router();
 
@@ -27,7 +28,11 @@ router.get("/me", authMiddleware, async (req: AuthRequest, res) => {
           res.status(401).json({ message: "Unauthorized" });
           return;
         }
+        if (!mongoose.Types.ObjectId.isValid(userId)) {
+          return res.status(400).json({ message: "Invalid user ID" });
+        }
     
+
         const user = await UserModel.findById(userId).select("-passwordHash");
     
         if (!user) {
