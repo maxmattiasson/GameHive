@@ -137,7 +137,7 @@ export const updateLibraryEntry = async (
         gameId: gameObjectId
       },
       { playtimeMinutes },
-      { new: true, runValidators: true }
+      { returnDocument: "after", runValidators: true }
     ).populate({
       path: "gameId",
       select: GAME_POPULATE_FIELDS,
