@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const createGameSchema = z.object({
-  title: z.string().min(0).max(100).trim(),
+  title: z.string().max(100).trim(),
   release: z.coerce.date(),
   genres: z.array(z.string().regex(/^[0-9a-fA-F]{24}$/)),
   platforms: z.array(
@@ -23,3 +23,6 @@ export const createGameSchema = z.object({
   thumb: z.string(),
   multiplayer: z.boolean(),
 });
+
+//the same as createGame but all fields are optional
+export const updateGameSchema = createGameSchema.partial();

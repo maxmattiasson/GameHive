@@ -1,5 +1,8 @@
-export function validate(schema) {
-  return (req, res, next) => {
+import { Request, Response, NextFunction } from "express";
+import { ZodSchema } from "zod";
+
+export function validate(schema: ZodSchema) {
+  return (req: Request, res: Response, next: NextFunction) => {
     const result = schema.safeParse(req.body);
 
     if (!result.success) {
@@ -13,14 +16,20 @@ export function validate(schema) {
     }
 
     // Save the validate data for route handler
-    req.validatedBody = result.data;
+    (req as any).validatedBody = result.data;
     next();
   };
 }
 
-export function validateRequest(schema) {
-  return (req, res, next) => {
-    const errors = [];
+interface RequestSchemas {
+  body?: ZodSchema;
+  params?: ZodSchema;
+  query?: ZodSchema;
+}
+
+export function validateRequest(schema: RequestSchemas) {
+  return (req: Request, res: Response, next: NextFunction) => {
+    const errors: any[] = [];
 
     if (schema.body) {
       const rBody = schema.body.safeParse(req.body);
@@ -34,7 +43,7 @@ export function validateRequest(schema) {
           })),
         );
       } else {
-        req.validatedBody = rBody.data;
+        (req as any).validatedBody = rBody.data;
       }
     }
     // E.g /api/v1/products/:id
@@ -50,7 +59,7 @@ export function validateRequest(schema) {
           })),
         );
       } else {
-        req.validatedParams = rParams.data;
+        (req as any).validatedParams = rParams.data;
       }
     }
     // E.g /api/v1/products?name=laptop&category=electronics
@@ -66,7 +75,7 @@ export function validateRequest(schema) {
           })),
         );
       } else {
-        req.validateQuery = rQuery.data;
+        (req as any).validateQuery = rQuery.data;
       }
     }
 

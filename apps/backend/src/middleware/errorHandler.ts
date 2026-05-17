@@ -1,6 +1,12 @@
-const { AppError } = require("../errors/AppError");
+import { Request, Response, NextFunction } from "express";
+import { AppError } from "../errors/AppError.js";
 
-function errorHandler(err, req, res, next) {
+export function errorHandler(
+  err: any,
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): void {
   const isDevelopment = process.env.NODE_ENV === "development";
 
   // 1. Internal logging - allways verbose
@@ -23,25 +29,28 @@ function errorHandler(err, req, res, next) {
 
   // 2. Expected application errors - respond with their messages
   if (err instanceof AppError) {
-    return res.status(err.statusCode).json({
+    res.status(err.statusCode).json({
       message: err.message,
       errors: err.errors,
       ...(isDevelopment && { stack: err.stack }),
     });
+    return;
   }
 
   // 3. Mongoose ValdationErrror - translated to our format
   if (err.name === "ValidaionError") {
-    const errprs = Object.values(err.errors).map((e) => ({
+    const errors = Object.values(err.errors).map((e: any) => ({
       field: e.path,
       message: e.message,
     }));
-    return res.status(400).json({ message: "Validation error", errors });
+    res.status(400).json({ message: "Validation error", errors });
+    return;
   }
 
   // 4. Mongoose CastError - Invalid objectId Format
   if (err.name === "CastError") {
-    return res.status(400).json({ message: "Invalid ID-Format" });
+    res.status(400).json({ message: "Invalid ID-Format" });
+    return;
   }
 
   // 5. Anything else - unexpected 500 error
@@ -50,5 +59,3 @@ function errorHandler(err, req, res, next) {
     ...(isDevelopment && { stack: err.stack }),
   });
 }
-
-module.exports = errorHandler;
