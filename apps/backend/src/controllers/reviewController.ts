@@ -4,6 +4,7 @@ import Review from "../models/Review.js";
 import mongoose from "mongoose";
 
 export const createReview = async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
     const { text, rating } = req.body;
     const gameId = req.params.gameId;
     const userId = req.user?.userId;
@@ -12,20 +13,19 @@ export const createReview = async (req: AuthRequest, res: Response, next: NextFu
       return res.status(401).json({ message: "Unauthorized" });
     }
 
-      const review = new Review({
-        game: gameId,
-        user: userId,
-        text: text,
-        rating,
-      });
+    const review = new Review({
+      game: gameId,
+      user: userId,
+      text,
+      rating,
+    });
 
-      try {
-        const newReview = await review.save();
-        res.status(201).json(newReview);
-      } catch (error) {
-        next(error);
-      }
-}
+    const newReview = await review.save();
+    res.status(201).json(newReview);
+  } catch (error) {
+    next(error);
+  }
+};
 
 export const getAllGamesReviews = async (
   req: AuthRequest,
@@ -86,7 +86,7 @@ export const voteReview = async (
   try {
     const userId = req.user?.userId;
     const reviewId = req.params.reviewId;
-    const value = req.body.value as 1 | -1;
+    const { value } = req.body;
     
     if (!userId) {
       return res.status(401).json({ message: "Unauthorized" });
@@ -138,9 +138,9 @@ export const removeReviewVote = async (
       return res.status(404).json({ message: "Review not found" });
     }
 
-review.votes = review.votes.filter(
-  (vote) => vote.user.toString() !== userId
-) as any;
+    review.votes = review.votes.filter(
+      (vote) => vote.user.toString() !== userId
+    );
 
     const updatedReview = await review.save();
 
@@ -157,14 +157,6 @@ export const getUserReviews = async (
 ) => {
   try {
     const userId = req.params.id;
-
-    if (!userId || Array.isArray(userId)) {
-      return res.status(400).json({ message: "Invalid user id" });
-    }
-
-    if (!mongoose.Types.ObjectId.isValid(userId)) {
-      return res.status(400).json({ message: "Invalid user id" });
-    }
 
     const reviews = await Review.find({
       user: new mongoose.Types.ObjectId(userId),
@@ -204,8 +196,8 @@ export const updateReview = async (
       return res.status(403).json({ message: "Forbidden" });
     }
 
-    review.text = text;
-    review.rating = rating;
+    if (text !== undefined) review.text = text;
+    if (rating !== undefined) review.rating = rating;
 
     const updatedReview = await review.save();
 

@@ -1,5 +1,6 @@
 import { Router } from "express";
 import getGame from "../middleware/idMiddleware.js";
+
 import {
   getAllGames,
   getGamebyId,
@@ -8,24 +9,27 @@ import {
   deleteGame,
   getOwnersGames,
 } from "../controllers/gameController.js";
-import { authMiddleware } from "../auth/authMiddleware.js";
-import { requireRole } from "../auth/requireRole.js";
-import { canEditGame } from "../middleware/canEditGame.js";
-import {
-  createGameSchema,
-  updateGameSchema,
-} from "../schemas/games.schemas.js";
-import { createGameSchema } from "../schemas/games.schemas.js";
-import { validateRequest } from "../middleware/validate.js";
+
 import {
   createReview,
   getAllGamesReviews,
 } from "../controllers/reviewController.js";
+
+import { authMiddleware } from "../auth/authMiddleware.js";
+import { requireRole } from "../auth/requireRole.js";
+import { canEditGame } from "../middleware/canEditGame.js";
+
+import {
+  createGameSchema,
+  updateGameSchema,
+} from "../schemas/games.schemas.js";
+
 import {
   gameIdParamsSchema,
   idParamSchema,
 } from "../schemas/common.schemas.js";
-import { createReview, getAllGamesReviews } from "../controllers/reviewController.js";
+
+import { validateRequest } from "../middleware/validate.js";
 
 const router = Router();
 
