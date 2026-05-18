@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import Game from "../models/Game.js";
 import { AuthRequest } from "../auth/authMiddleware.js";
-import { Mongoose } from "mongoose";
 import { ConflictError } from "../errors/AppError.js";
 
 // List all games
@@ -69,7 +68,7 @@ export const addNewGame = async (
     const existingGame = await Game.findOne({ title: req.body.title });
 
     if (existingGame) {
-      throw new ConflictError();
+      throw new ConflictError("Game already exists");
     }
 
     res.status(201).json(newGame);
