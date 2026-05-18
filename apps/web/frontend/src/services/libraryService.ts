@@ -1,7 +1,8 @@
 import type { Game } from "../types/game";
+import { API_BASE_URL } from "../config/api";
 
-// base-adress
-const API_URL = "http://localhost:3000/api/library";
+// Base URL for the library API
+const API_URL = `${API_BASE_URL}/library`;
 
 // Library entry has to have it
 type LibraryEntry = {
@@ -9,11 +10,9 @@ type LibraryEntry = {
   userId: string;
   gameId: Game;
   playtimeMinutes: number;
-  createdAt: string;
-  updatedAt: string;
 };
 
-// extracts error messages from API
+// Extracts error messages from the library API response
 const parseApiError = async (res: Response, fallback: string) => {
   try {
     const data = await res.json();
@@ -26,6 +25,7 @@ const parseApiError = async (res: Response, fallback: string) => {
   return fallback;
 };
 
+// wait for logged in players library with API from server
 export const getPlayerLibrary = async (): Promise<LibraryEntry[]> => {
   const res = await fetch(API_URL, {
     method: "GET",

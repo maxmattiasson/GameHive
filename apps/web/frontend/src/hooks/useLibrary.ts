@@ -1,21 +1,29 @@
-import { useEffect, useState } from "react";
-
+import { useCallback, useEffect, useState } from "react";
 import {
   getPlayerLibrary,
   type LibraryEntry
 } from "../services/libraryService";
 
-export function useLibrary() {
+// get all player library games, show status and throw errors
+function useLibrary(): {
+  data: LibraryEntry[];
+  loading: boolean;
+  error: string | null;
+  refetch: () => void;
+} {
   const [data, setData] = useState<LibraryEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [refreshCount, setRefreshCount] = useState(0);
+
+  const refetch = useCallback(() => setRefreshCount((c) => c + 1), []);
 
   useEffect(() => {
     getPlayerLibrary()
       .then(setData)
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
-  }, []);
+  }, [refreshCount]);
 
-  return { data, loading, error };
+  return { data, loading, error, refetch };
 }

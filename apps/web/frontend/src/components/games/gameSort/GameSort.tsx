@@ -6,6 +6,7 @@ type GameSortProps = {
   onSortChange: (sortBy: string, order: "asc" | "desc") => void;
 };
 
+// Sort by alphabetical order or release date, ascending or descending.
 const GameSort: React.FC<GameSortProps> = ({ sortBy, order, onSortChange }) => (
   <div>
     <label>

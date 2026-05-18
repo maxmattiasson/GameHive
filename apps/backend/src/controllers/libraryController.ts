@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import LibraryModel from "../models/Library.js";
 import { AuthRequest } from "../auth/authMiddleware.js";
 
-// validates string to mongoDb
+// Converts a string to a MongoDB ObjectId if valid, otherwise returns null, ensures that only valid ObjectIds are used in database queries.
 const toObjectId = (value: string) => {
   if (!mongoose.Types.ObjectId.isValid(value)) {
     return null;
@@ -11,10 +11,10 @@ const toObjectId = (value: string) => {
   return new mongoose.Types.ObjectId(value);
 };
 
-// only returns choosen fields from Game-model
+// only returns choosen fields from Game-model, for speed.
 const GAME_POPULATE_FIELDS = "title thumb dev genres release multiplayer";
 
-// validates userId from JWT(req.user)
+// validates userId from JWT(req.user), if user is not logged in
 const getUserObjectId = (req: AuthRequest, res: Response) => {
   const userId = req.user?.userId;
   if (!userId) {
@@ -47,7 +47,7 @@ const getGameObjectId = (gameId: unknown, res: Response) => {
   return gameObjectId;
 };
 
-// get all the games in logedin player library
+// get all the games in logged in player library from server, sends API
 export const getPlayerLibrary = async (
   req: AuthRequest,
   res: Response,
@@ -71,7 +71,7 @@ export const getPlayerLibrary = async (
   }
 };
 
-// add to logedin player library
+// add to logged in player library
 export const addToLibrary = async (
   req: AuthRequest,
   res: Response,
@@ -89,6 +89,8 @@ export const addToLibrary = async (
       gameId: gameObjectId
     });
 
+    // Populates the gameId field with selected fields from the Game model and genre names,
+    // so the frontend immediately receives all relevant game data in the response.
     const populated = await entry.populate({
       path: "gameId",
       select: GAME_POPULATE_FIELDS,
@@ -117,7 +119,7 @@ export const updateLibraryEntry = async (
     if (!gameObjectId) return;
 
     const { playtimeMinutes } = req.body;
-    // playtimeMinutes is requierd and cant be a negative number
+    // playtimeMinutes is requierd and can't be a negative number
     if (
       typeof playtimeMinutes !== "number" ||
       Number.isNaN(playtimeMinutes) ||
