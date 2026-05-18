@@ -1,9 +1,5 @@
 import { z } from "zod";
 
-export const idParamSchema = z.object({
-    gameId: z.string().regex(/^[0-9a-fA-F]{24}$/, "Invalid ID-format"), // check if ID is 24 HEX
-})
-
 export const addToLibrarySchema = z.object({
   gameId: z.string().regex(/^[0-9a-fA-F]{24}$/),
 })

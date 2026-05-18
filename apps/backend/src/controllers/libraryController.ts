@@ -120,23 +120,26 @@ export const updateLibraryEntry = async (
     const userObjectId = getUserObjectId(req, res);
     if (!userObjectId) return;
 
-    const gameObjectId = getGameObjectId(req.params.gameId, res);
-    if (!gameObjectId) return;
+    const {gameId} = req.validatedParams as {gameId: ObjectIdQueryTypeCasting}
+    const {playtimeMinutes} = req.validatedBody as {playtimeMinutes: Number}
 
-    const { playtimeMinutes } = req.body;
+    // const gameObjectId = getGameObjectId(req.params.gameId, res);
+    // if (!gameObjectId) return;
+
+    // const { playtimeMinutes } = req.body;
     // playtimeMinutes is requierd and can't be a negative number
-    if (
-      typeof playtimeMinutes !== "number" ||
-      Number.isNaN(playtimeMinutes) ||
-      playtimeMinutes < 0
-    ) {
-      throw new ValidationError("playtimeMinutes is required and must be a non-negative number");
-    }
+    // if (
+    //   typeof playtimeMinutes !== "number" ||
+    //   Number.isNaN(playtimeMinutes) ||
+    //   playtimeMinutes < 0
+    // ) {
+    //   throw new ValidationError("playtimeMinutes is required and must be a non-negative number");
+    // }
 
     const updated = await LibraryModel.findOneAndUpdate(
       {
         userId: userObjectId,
-        gameId: gameObjectId
+        gameId: gameId
       },
       { playtimeMinutes },
       { returnDocument: "after", runValidators: true }
