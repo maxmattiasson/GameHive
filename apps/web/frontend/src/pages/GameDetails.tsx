@@ -28,10 +28,10 @@ export function GameDetails() {
 
   const myReview = reviews.find((review) => review.user._id === user?._id);
 
-  const handleDelete = async (revievId: string) => {
+  const handleDelete = async (reviewId: string) => {
     try {
-      await deleteReview(revievId);
-      await fetchReviews();
+      await deleteReview(reviewId);
+      setReviews((prev) => prev.filter((r) => r._id !== reviewId));
     } catch (error) {
       console.error("Could not remove review", error);
     }

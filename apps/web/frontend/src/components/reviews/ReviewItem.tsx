@@ -33,10 +33,11 @@ export default function ReviewItem({
   return (
     <article className={styles.reviewCont}>
       {showGameTitle && review.game && <h3>{review.game.title}</h3>}
-      {(isOwnReview || isAdmin) && onDelete && (
-        <RemoveReviewButton reviewId={review._id} onDelete={onDelete} />
-      )}
-
+      <div className={styles.reviewHeader}>
+        {(isOwnReview || isAdmin) && onDelete && (
+          <RemoveReviewButton reviewId={review._id} onDelete={onDelete} />
+        )}
+      </div>
       <p className={styles.reviewerName}>{review.user.username}</p>
 
       {review.rating !== undefined && <p>Rating: {review.rating}/5</p>}
