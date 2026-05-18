@@ -7,6 +7,7 @@
   --white-100: #efe;
   --accent-500: rgb(56, 173, 134);
   --accent-600: rgb(60, 139, 113);
+  --accent-700: rgb(76, 126, 109);
 
   /* Typography */
   --font-sans: "Sora", "Space Grotesk", "Segoe UI", sans-serif;
@@ -144,4 +145,14 @@ a {
 
 .border-10 {
   border-radius: 10px;
+}
+
+.btn-secondary {
+  padding: 0.5rem 2rem;
+  border-radius: var(--radius-round);
+  border: 0.5px solid var(--gray-600);
+  background: transparent;
+  color: var(--white-100);
+  cursor: pointer;
+  font-size: var(--fs-2);
 }

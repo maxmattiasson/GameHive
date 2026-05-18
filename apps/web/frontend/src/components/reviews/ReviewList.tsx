@@ -38,11 +38,15 @@ export default function ReviewList({
 
   const paginatedReviews = sortedReviews.slice(
     (page - 1) * REVIEWS_PER_PAGE,
-    page * REVIEWS_PER_PAGE
+    page * REVIEWS_PER_PAGE,
   );
 
   if (reviews.length === 0) {
-    return <p>No reviews yet.</p>;
+    return (
+      <div className="info-card">
+        <p>No reviews yet.</p>
+      </div>
+    );
   }
 
   return (

@@ -2,6 +2,7 @@ import "./Header.css";
 import LoginForm from "../auth/LoginForm";
 import { useAuth } from "../../hooks/useAuth";
 import { Link, NavLink } from "react-router-dom";
+import Button from "../ui/Button";
 
 export function Header() {
   const { user, loading, logout } = useAuth();
@@ -38,7 +39,9 @@ export function Header() {
             <NavLink to={profilePath} className="profile-link">
               {user.username}
             </NavLink>
-            <button onClick={handleLogout}>Logout</button>
+            <Button color="vote" onClick={handleLogout}>
+              Log out
+            </Button>
           </div>
         ) : (
           <div className="login-container">

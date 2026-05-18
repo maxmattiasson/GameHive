@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useGame } from "../hooks/useGame";
 import { Badge } from "../components/ui/Badge";
+import Button from "../components/ui/Button";
 import "./GameDetails.css";
 import { InfoCard } from "../components/ui/InfoCard";
 import { updateLibraryEntry } from "../services/libraryService";
@@ -25,18 +26,15 @@ export function GameDetails() {
   const [reviewsError, setReviewsError] = useState("");
   const [showReviewForm, setShowReviewForm] = useState(false);
 
-
-  const myReview = reviews.find(
-    (review) => review.user._id === user?._id
-  );
+  const myReview = reviews.find((review) => review.user._id === user?._id);
 
   const fetchReviews = useCallback(async () => {
     if (!id) return;
-  
+
     try {
       setReviewsLoading(true);
       setReviewsError("");
-  
+
       const data = await getGameReviews(id);
       setReviews(data);
     } catch (error) {
@@ -106,7 +104,8 @@ export function GameDetails() {
             <InfoCard>
               <p>Time Played</p>
               <p>{playtime} min</p>
-              <button
+              <Button
+                color="vote"
                 onClick={async () => {
                   const newTime = playtime - 30;
                   setPlaytime(newTime);
@@ -114,9 +113,10 @@ export function GameDetails() {
                 }}
                 disabled={playtime === 0}
               >
-                -
-              </button>
-              <button
+                −
+              </Button>
+              <Button
+                color="vote"
                 onClick={async () => {
                   const newTime = playtime + 30;
                   setPlaytime(newTime);
@@ -124,47 +124,25 @@ export function GameDetails() {
                 }}
               >
                 +
-              </button>
+              </Button>
             </InfoCard>
           </div>
         </div>
         <div className="col-2">
-  <InfoCard>
-    <p>Dev News</p>
-    <p>
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi,
-      eaque? Sed sint beatae.
-    </p>
-  </InfoCard>
+          <div className="reviews-container">
+            <p>Recent Reviews</p>
 
-  <div className="reviews-container">
-    <p>Recent Reviews</p>
+            {reviewsLoading && <p>Loading reviews...</p>}
+            {reviewsError && <p>{reviewsError}</p>}
+            {!reviewsLoading && !reviewsError && (
+              <ReviewList reviews={reviews} onVote={handleVote} />
+            )}
+          </div>
+        </div>
 
-    {showReviewForm ? (
-  <ReviewForm
-    gameId={id!}
-    existingReview={myReview}
-    onReviewCreated={() => {
-      fetchReviews();
-      setShowReviewForm(false);
-    }}
-  />
-) : (
-  <button type="button" onClick={() => setShowReviewForm(true)}>
-    Write a review
-  </button>
-)}
-
-    {reviewsLoading && <p>Loading reviews...</p>}
-    {reviewsError && <p>{reviewsError}</p>}
-
-    {!reviewsLoading && !reviewsError && <ReviewList reviews={reviews} onVote={handleVote} />}
-  </div>
-</div>
-
-<div className="col-3">
+        <div className="col-3">
           <InfoCard>
-            <p>Playtime Leaderboard</p>
+            <p className="span-title">Playtime Leaderboard</p>
             <ul>
               <li>1. Snubbe</li>
               <li>2. Klas</li>
@@ -173,11 +151,24 @@ export function GameDetails() {
             </ul>
           </InfoCard>
           <InfoCard>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Est et
-              natus ea sit eos reiciendis voluptas aperiam aliquid deserunt
-              voluptates.
-            </p>
+            {showReviewForm ? (
+              <ReviewForm
+                gameId={id!}
+                existingReview={myReview}
+                onReviewCreated={() => {
+                  fetchReviews();
+                  setShowReviewForm(false);
+                }}
+              />
+            ) : (
+              <Button
+                color="primary"
+                type="button"
+                onClick={() => setShowReviewForm(true)}
+              >
+                Write a review
+              </Button>
+            )}
           </InfoCard>
         </div>
       </div>
