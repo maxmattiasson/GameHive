@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { createReview, updateReview} from "../../services/reviewService";
-import styles from "./ReviewForm.module.css"
+import { createReview, updateReview } from "../../services/reviewService";
+import styles from "./ReviewForm.module.css";
 import type { Review } from "../../types/review";
+import Button from "../ui/Button";
 
 type ReviewFormProps = {
   gameId: string;
@@ -16,11 +17,10 @@ export default function ReviewForm({
 }: ReviewFormProps) {
   const [text, setText] = useState(existingReview?.text ?? "");
   const [rating, setRating] = useState(
-    existingReview?.rating?.toString() ?? ""
+    existingReview?.rating?.toString() ?? "",
   );
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  
 
   const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -33,18 +33,18 @@ export default function ReviewForm({
         setErrorMessage("Write a review or choose a rating");
         return;
       }
-      
+
       if (existingReview) {
         await updateReview(
           existingReview._id,
           text.trim(),
-          rating ? Number(rating) : undefined
+          rating ? Number(rating) : undefined,
         );
       } else {
         await createReview(
           gameId,
           text.trim(),
-          rating ? Number(rating) : undefined
+          rating ? Number(rating) : undefined,
         );
       }
 
@@ -62,43 +62,44 @@ export default function ReviewForm({
 
   return (
     <form onSubmit={handleSubmit}>
-      <h2>Write a review</h2>
+      <h3>Write a review</h3>
 
       {errorMessage && <p>{errorMessage}</p>}
 
-      <label htmlFor="rating">Rating</label>
-      <select
-        id="rating"
-        name="rating"
-        value={rating}
-        onChange={(e) => setRating(e.target.value)}
-      >
-        <option value="">No rating</option>
-        {[5, 4, 3, 2, 1].map((score) => (
-          <option key={score} value={score}>
-            {score} / 5
-          </option>
-        ))}
-      </select>
+      <div className={styles.formRating}>
+        <label htmlFor="rating">Rating</label>
+        <select
+          id="rating"
+          name="rating"
+          value={rating}
+          onChange={(e) => setRating(e.target.value)}
+        >
+          <option value="">No rating</option>
+          {[5, 4, 3, 2, 1].map((score) => (
+            <option key={score} value={score}>
+              {score} / 5
+            </option>
+          ))}
+        </select>
+      </div>
       <div className={styles.reviewCont}>
+        <label htmlFor="reviewText">Your review</label>
+        <textarea
+          id="reviewText"
+          name="reviewText"
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          placeholder="What did you think about the game?"
+          rows={5}
+        />
 
-      <label htmlFor="reviewText">Your review</label>
-      <textarea
-        id="reviewText"
-        name="reviewText"
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-        placeholder="What did you think about the game?"
-        rows={5}
-      />
-
-<button type="submit" disabled={isLoading}>
-  {isLoading
-    ? "Submitting..."
-    : existingReview
-    ? "Update review"
-    : "Submit review"}
-</button>
+        <Button color="vote" type="submit" disabled={isLoading}>
+          {isLoading
+            ? "Submitting..."
+            : existingReview
+              ? "Update review"
+              : "Submit review"}
+        </Button>
       </div>
     </form>
   );
