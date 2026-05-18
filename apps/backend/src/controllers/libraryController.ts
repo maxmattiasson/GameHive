@@ -35,20 +35,20 @@ const getUserObjectId = (req: AuthRequest, res: Response) => {
   return userObjectId;
 };
 
-// validates and converts gameId from request
-const getGameObjectId = (gameId: unknown, res: Response) => {
-  if (typeof gameId !== "string") {
-    throw new ValidationError("gameId is required");
-  }
+// validates and converts gameId from request 
+// const getGameObjectId = (gameId: unknown, res: Response) => {
+//   if (typeof gameId !== "string") {
+//     throw new ValidationError("gameId is required");
+//   }
 
-  const gameObjectId = toObjectId(gameId);
-  if (!gameObjectId) {
-    throw new ValidationError("Invalid gameId");
-    return null;
-  }
+//   const gameObjectId = toObjectId(gameId);
+//   if (!gameObjectId) {
+//     throw new ValidationError("Invalid gameId");
+//     return null;
+//   }
 
-  return gameObjectId;
-};
+//   return gameObjectId;
+// };
 
 // get all the games in logged in player library from server, sends API
 export const getPlayerLibrary = async (
@@ -168,12 +168,14 @@ export const removeFromLibrary = async (
     const userObjectId = getUserObjectId(req, res);
     if (!userObjectId) return;
 
-    const gameObjectId = getGameObjectId(req.params.gameId, res);
-    if (!gameObjectId) return;
+    const {gameId} = req.validatedParams as {gameId: ObjectIdQueryTypeCasting}
+
+    // const gameObjectId = getGameObjectId(req.params.gameId, res);
+    // if (!gameObjectId) return;
 
     const removed = await LibraryModel.findOneAndDelete({
       userId: userObjectId,
-      gameId: gameObjectId
+      gameId: gameId
     });
 
     if (!removed) {
