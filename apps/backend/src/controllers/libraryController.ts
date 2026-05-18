@@ -1,5 +1,5 @@
 import { Response, NextFunction } from "express";
-import mongoose from "mongoose";
+import mongoose, { ObjectId, ObjectIdQueryTypeCasting } from "mongoose";
 import LibraryModel from "../models/Library.js";
 import { AuthRequest } from "../auth/authMiddleware.js";
 import { 
@@ -84,12 +84,14 @@ export const addToLibrary = async (
     const userObjectId = getUserObjectId(req, res);
     if (!userObjectId) return;
 
-    const gameObjectId = getGameObjectId(req.body.gameId, res);
-    if (!gameObjectId) return;
+    const {gameId} = req.validatedBody as {gameId: ObjectIdQueryTypeCasting}
+
+    // const gameObjectId = getGameObjectId(req.body.gameId, res);
+    // if (!gameObjectId) return;
 
     const entry = await LibraryModel.create({
       userId: userObjectId,
-      gameId: gameObjectId
+      gameId: gameId
     });
 
     // Populates the gameId field with selected fields from the Game model and genre names,
