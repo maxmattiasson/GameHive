@@ -1,6 +1,21 @@
 .reviewCont {
-  border: 2px solid white;
+  background: rgba(255, 255, 255, 0.04);
+  border: 2px solid var(--gray-600);
+  font-size: var(--fs-1);
   border-radius: 10px;
   padding: 1rem;
-  margin-bottom: 5px;
+  margin-bottom: 1rem;
+  border: 1px solid var(--gray-600);
+
+  position: relative;
+}
+
+.reviewerName {
+  color: var(--accent-700);
+}
+
+.reviewHeader {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
 }
