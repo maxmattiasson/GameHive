@@ -15,7 +15,12 @@ export function Header() {
   const navClass = ({ isActive }: { isActive: boolean }) =>
     `nav-link ${isActive ? "nav-link-active" : ""}`;
 
-  const profilePath = user?.role === "dev" ? "/dev/profile" : "/profile";
+  const profilePath =
+    user?.role === "admin"
+      ? "/admin"
+      : user?.role === "dev"
+        ? "/dev/profile"
+        : "/profile";
 
   if (loading) return <p>Loading...</p>;
 

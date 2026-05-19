@@ -1,6 +1,8 @@
 import type { Review } from "../../types/review";
 import styles from "./ReviewItem.module.css";
 import Button from "../ui/Button";
+import RemoveReviewButton from "../ui/RemoveReviewButton";
+import { useAuth } from "../../hooks/useAuth";
 
 type ReviewItemProps = {
   review: Review;
@@ -15,20 +17,27 @@ export default function ReviewItem({
   currentUserId,
   onVote,
   onDelete,
-  showGameTitle = false,
+  showGameTitle = false
 }: ReviewItemProps) {
+  const { user } = useAuth();
+
   const helpfulCount = review.votes.filter((vote) => vote.value === 1).length;
 
   const notHelpfulCount = review.votes.filter(
-    (vote) => vote.value === -1,
+    (vote) => vote.value === -1
   ).length;
 
   const isOwnReview = review.user._id === currentUserId;
+  const isAdmin = user?.role === "admin";
 
   return (
     <article className={styles.reviewCont}>
       {showGameTitle && review.game && <h3>{review.game.title}</h3>}
-
+      <div className={styles.reviewHeader}>
+        {(isOwnReview || isAdmin) && onDelete && (
+          <RemoveReviewButton reviewId={review._id} onDelete={onDelete} />
+        )}
+      </div>
       <p className={styles.reviewerName}>{review.user.username}</p>
 
       {review.rating !== undefined && <p>Rating: {review.rating}/5</p>}

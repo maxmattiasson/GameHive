@@ -6,7 +6,7 @@ import "./GameDetails.css";
 import { InfoCard } from "../components/ui/InfoCard";
 import { updateLibraryEntry } from "../services/libraryService";
 import { usePlaytime } from "../hooks/usePlaytime";
-
+import { deleteReview } from "../services/reviewService";
 import { useCallback, useEffect, useState } from "react";
 import { getGameReviews } from "../services/reviewService";
 import type { Review } from "../types/review";
@@ -27,6 +27,15 @@ export function GameDetails() {
   const [showReviewForm, setShowReviewForm] = useState(false);
 
   const myReview = reviews.find((review) => review.user._id === user?._id);
+
+  const handleDelete = async (reviewId: string) => {
+    try {
+      await deleteReview(reviewId);
+      setReviews((prev) => prev.filter((r) => r._id !== reviewId));
+    } catch (error) {
+      console.error("Could not remove review", error);
+    }
+  };
 
   const fetchReviews = useCallback(async () => {
     if (!id) return;
@@ -135,7 +144,12 @@ export function GameDetails() {
             {reviewsLoading && <p>Loading reviews...</p>}
             {reviewsError && <p>{reviewsError}</p>}
             {!reviewsLoading && !reviewsError && (
-              <ReviewList reviews={reviews} onVote={handleVote} />
+              <ReviewList
+                reviews={reviews}
+                onVote={handleVote}
+                currentUserId={user?._id}
+                onDelete={handleDelete}
+              />
             )}
           </div>
         </div>
