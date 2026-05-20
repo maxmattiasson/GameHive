@@ -174,10 +174,11 @@ export function GameDetails() {
           <InfoCard>
             <p className="span-title">Playtime Leaderboard</p>
             <ul>
-              <li>1. Snubbe</li>
+              <li>1. Sascha</li>
               <li>2. Klas</li>
               <li>3. Mira</li>
               <li>4. oskar</li>
+              <li>999. DU</li>
             </ul>
           </InfoCard>
           <InfoCard>
