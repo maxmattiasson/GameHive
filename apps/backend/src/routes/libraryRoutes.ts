@@ -6,19 +6,22 @@ import {
   removeFromLibrary
 } from "../controllers/libraryController.js";
 import { authMiddleware } from "../auth/authMiddleware.js";
+import { validateRequest } from "../middleware/validate.js";
+import { addToLibrarySchema, updateLibraryEntrySchema } from "../schemas/library.schemas.js";
+import { gameIdParamsSchema } from "../schemas/common.schemas.js";
 
 const router = Router();
 
 // list players library games
-router.get("/library", authMiddleware, getPlayerLibrary);
+router.get("/", authMiddleware, getPlayerLibrary);
 
 // add to players library
-router.post("/library", authMiddleware, addToLibrary);
+router.post("/", authMiddleware, validateRequest({body: addToLibrarySchema}), addToLibrary);
 
 // edit players game in library
-router.patch("/library/:gameId", authMiddleware, updateLibraryEntry);
+router.patch("/:gameId", authMiddleware, validateRequest({body: updateLibraryEntrySchema, params: gameIdParamsSchema}), updateLibraryEntry);
 
 // remove game from players library
-router.delete("/library/:gameId", authMiddleware, removeFromLibrary);
+router.delete("/:gameId", authMiddleware, validateRequest({ params: gameIdParamsSchema}), removeFromLibrary);
 
 export default router;
