@@ -34,7 +34,7 @@ export default function ReviewItem({
     <article className={styles.reviewCont}>
       {showGameTitle && review.game && <h3>{review.game.title}</h3>}
       <div className={styles.reviewHeader}>
-        {(isOwnReview || isAdmin) && onDelete && (
+        {isAdmin && onDelete && (
           <RemoveButton reviewId={review._id} onDelete={onDelete}>
             X
           </RemoveButton>
