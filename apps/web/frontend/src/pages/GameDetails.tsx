@@ -14,6 +14,9 @@ import ReviewForm from "../components/reviews/ReviewForm";
 import ReviewList from "../components/reviews/ReviewList";
 import { voteReview } from "../services/reviewService";
 import { useAuth } from "../hooks/useAuth";
+import RemoveButton from "../components/ui/RemoveButton";
+import { deleteGame } from "../services/gameService";
+import { useNavigate } from "react-router-dom";
 
 export function GameDetails() {
   const { id } = useParams();
@@ -25,6 +28,8 @@ export function GameDetails() {
   const [reviewsLoading, setReviewsLoading] = useState(false);
   const [reviewsError, setReviewsError] = useState("");
   const [showReviewForm, setShowReviewForm] = useState(false);
+
+  const navigate = useNavigate();
 
   const myReview = reviews.find((review) => review.user._id === user?._id);
 
@@ -70,6 +75,17 @@ export function GameDetails() {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
   if (!data) return <p>Game not found</p>;
+
+  const isAdmin = user?.role === "admin";
+
+  const handleDeleteGame = async (gameId: string) => {
+    try {
+      await deleteGame(gameId);
+      navigate("/games");
+    } catch (error) {
+      console.error("Could not remove game", error);
+    }
+  };
 
   return (
     <div className="container">
@@ -158,10 +174,11 @@ export function GameDetails() {
           <InfoCard>
             <p className="span-title">Playtime Leaderboard</p>
             <ul>
-              <li>1. Snubbe</li>
+              <li>1. Sascha</li>
               <li>2. Klas</li>
               <li>3. Mira</li>
               <li>4. oskar</li>
+              <li>999. DU</li>
             </ul>
           </InfoCard>
           <InfoCard>
@@ -186,6 +203,11 @@ export function GameDetails() {
           </InfoCard>
         </div>
       </div>
+      {isAdmin && (
+        <RemoveButton gameId={data._id} onDelete={handleDeleteGame}>
+          Remove Game
+        </RemoveButton>
+      )}
     </div>
   );
 }
