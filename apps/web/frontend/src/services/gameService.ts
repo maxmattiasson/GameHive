@@ -1,7 +1,8 @@
+import { API_BASE_URL } from "../config/api";
 import type { Game } from "../types/game";
 import type { GamePayload } from "../types/gamePayload";
 
-const API_URL = "http://localhost:3000/api/games";
+const API_URL = `${API_BASE_URL}/games`;
 
 export const getAllGames = async (): Promise<Game[]> => {
   const res = await fetch(API_URL);
@@ -17,21 +18,21 @@ export const getGameById = async (id: string): Promise<Game> => {
 
 export const getDevsOwnGames = async () => {
   const res = await fetch(`${API_URL}/my-games`, {
-    credentials: "include",
+    credentials: "include"
   });
-  
-  if (!res.ok) throw new Error("Couldnt fetch devs own games")
+
+  if (!res.ok) throw new Error("Couldnt fetch devs own games");
   return res.json();
-}
+};
 
 export const createGame = async (newGame: GamePayload) => {
   const res = await fetch(API_URL, {
     method: "POST",
     headers: {
-      "Content-Type": "application/json",
+      "Content-Type": "application/json"
     },
     credentials: "include",
-    body: JSON.stringify(newGame),
+    body: JSON.stringify(newGame)
   });
 
   if (!res.ok) throw new Error("Failed to create game");
@@ -42,10 +43,10 @@ export const updateGame = async (id: string, updatedGame: GamePayload) => {
   const res = await fetch(`${API_URL}/${id}`, {
     method: "PATCH",
     headers: {
-      "Content-Type": "application/json",
+      "Content-Type": "application/json"
     },
     credentials: "include",
-    body: JSON.stringify(updatedGame),
+    body: JSON.stringify(updatedGame)
   });
 
   if (!res.ok) throw new Error("Failed to update game");
@@ -55,7 +56,7 @@ export const updateGame = async (id: string, updatedGame: GamePayload) => {
 export const deleteGame = async (id: string) => {
   const res = await fetch(`${API_URL}/${id}`, {
     method: "DELETE",
-    credentials: "include",
+    credentials: "include"
   });
 
   if (!res.ok) throw new Error("Failed to delete game");

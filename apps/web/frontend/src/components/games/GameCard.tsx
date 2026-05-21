@@ -8,8 +8,8 @@ interface Props {
   game: Game;
 }
 
-export function GameCard({ game }: Props) {
-  console.log(game._id);
+export function GameCard({ game, playerLibrary }: Props) {
+  // console.log(game._id);
   return (
     <div className="game-card-small">
       <div className="image-wrapper">

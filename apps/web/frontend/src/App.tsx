@@ -12,6 +12,8 @@ import { PlayerachievementsPage } from "./pages/playerPage/PlayerAchievementsPag
 import { PlayerFriendsPage } from "./pages/playerPage/PlayerFriendsPage";
 import { SignupPage } from "./pages/signup/SignupPage";
 import { LibraryProvider } from "./contexts/LibraryContext";
+import { PlayerReviewsPage } from "./pages/playerPage/PlayerReviewsPage";
+import AdminPage from "./pages/adminPage/AdminPage";
 
 function App() {
   const { data } = useGames();
@@ -36,6 +38,7 @@ function App() {
             <Route path="/games" element={<GamesPage />} />
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/dev/profile" element={<DevProfilePage />} />
+            <Route path="/admin" element={<AdminPage />} />
 
             {/* Profile */}
             <Route path="/profile" element={<PlayerProfile />}>
@@ -43,6 +46,7 @@ function App() {
               <Route path="library" element={<PlayerLibraryPage />} />
               <Route path="achievements" element={<PlayerachievementsPage />} />
               <Route path="friends" element={<PlayerFriendsPage />} />
+              <Route path="reviews" element={<PlayerReviewsPage />} />
             </Route>
 
             {/* Other player profile */}
@@ -51,6 +55,7 @@ function App() {
               <Route path="library" element={<PlayerLibraryPage />} />
               <Route path="achievements" element={<PlayerachievementsPage />} />
               <Route path="friends" element={<PlayerFriendsPage />} />
+              <Route path="reviews" element={<PlayerReviewsPage />} />
             </Route>
           </Routes>
         </main>
