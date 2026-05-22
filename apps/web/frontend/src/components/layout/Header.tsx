@@ -1,15 +1,17 @@
 import "./Header.css";
 import LoginForm from "../auth/LoginForm";
 import { useAuth } from "../../hooks/useAuth";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import Button from "../ui/Button";
 
 export function Header() {
   const { user, loading, logout } = useAuth();
 
+  const navigate = useNavigate();
+
   const handleLogout = async () => {
     await logout();
-    // navigera någonstans efter logout eller annat  ?
+    navigate("/");
   };
 
   const navClass = ({ isActive }: { isActive: boolean }) =>
