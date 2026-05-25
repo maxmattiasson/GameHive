@@ -204,9 +204,11 @@ export function GameDetails() {
         </div>
       </div>
       {isAdmin && (
-        <RemoveButton gameId={data._id} onDelete={handleDeleteGame}>
-          Remove Game
-        </RemoveButton>
+        <div className="container">
+          <RemoveButton gameId={data._id} onDelete={handleDeleteGame}>
+            Remove Game
+          </RemoveButton>
+        </div>
       )}
     </div>
   );

@@ -45,7 +45,7 @@
 
 html,
 body {
-  height: 100vh;
+  min-height: 100vh;
   margin: 0;
   padding: 0;
 }
@@ -56,7 +56,7 @@ body {
   font-size: var(--fs-2);
   line-height: var(--lh-2);
   color: var(--white-100);
-  background:
+  /*   background:
     radial-gradient(
       600px 400px at 85% 10%,
       var(--gray-800) 0%,
@@ -64,9 +64,14 @@ body {
     ),
     var(--gray-900);
   background-attachment: fixed;
-  background-repeat: no-repeat;
+  background-repeat: no-repeat; */
 }
 
+body {
+  background:
+    linear-gradient(to top, rgba(14, 17, 20, 0.6) 0%, rgba(14, 17, 20, 1) 40%),
+    url("/public/images/honeycomb.jpg") top / cover fixed;
+}
 /* ===== Utilities ===== */
 
 .center {
@@ -76,10 +81,10 @@ body {
 
 /* ===== Elements ===== */
 
-main {
+/* main {
   max-width: 1300px;
   margin: 0 auto;
-}
+} */
 
 .section {
   padding: 5rem 0rem;

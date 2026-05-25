@@ -37,9 +37,9 @@ export function Header() {
           <NavLink to="/games" className={navClass}>
             Games
           </NavLink>
-          <NavLink to="/about" className={navClass}>
+          {/*    <NavLink to="/about" className={navClass}>
             About
-          </NavLink>
+          </NavLink> */}
         </nav>
         {user ? (
           <div>

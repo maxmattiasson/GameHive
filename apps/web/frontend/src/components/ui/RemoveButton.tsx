@@ -14,12 +14,12 @@ export default function RemoveButton({
   gameId,
   onDelete,
   disabled,
-  children
+  children,
 }: RemoveButtonProps) {
   const handleDelete = () => {
     if (gameId) {
       const confirmed = window.confirm(
-        "Are you sure you want to delete this game?"
+        "Are you sure you want to delete this game?",
       );
       if (confirmed) {
         onDelete(gameId);
@@ -28,7 +28,7 @@ export default function RemoveButton({
     }
     if (reviewId) {
       const confirmed = window.confirm(
-        "Are you sure you want to delete this review? This can not be undone!"
+        "Are you sure you want to delete this review? This can not be undone!",
       );
       if (confirmed) {
         onDelete(reviewId);

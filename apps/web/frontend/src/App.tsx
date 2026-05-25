@@ -1,10 +1,9 @@
 import "./App.css";
 import { Header } from "./components/layout/Header";
-import { GameList } from "./components/games/GameList";
 import { Route, Routes, Navigate } from "react-router-dom";
 import { GameDetails } from "./pages/GameDetails";
 import { GamesPage } from "./pages/GamesPage";
-import { useGames } from "./hooks/useGames";
+import { HomePage } from "./pages/homePage/HomePage";
 import DevProfilePage from "./pages/DevProfilePage";
 import { PlayerProfile } from "./pages/playerPage/PlayerProfilePage";
 import { PlayerLibraryPage } from "./pages/playerPage/PlayerLibraryPage";
@@ -16,34 +15,13 @@ import { PlayerReviewsPage } from "./pages/playerPage/PlayerReviewsPage";
 import AdminPage from "./pages/adminPage/AdminPage";
 
 function App() {
-  const { data } = useGames();
-
-  const shuffleGames = <T,>(array: T[]): T[] => {
-    const arr = [...array];
-    for (let i = arr.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [arr[i], arr[j]] = [arr[j], arr[i]];
-    }
-    return arr;
-  };
-
-  const shuffledGames = shuffleGames(data);
-
-  const games = shuffledGames.slice(0, 3); //slice array to limit, otherwise return all
   return (
     <>
       <LibraryProvider>
         <Header />
         <main>
           <Routes>
-            <Route
-              path="/"
-              element={
-                <div className="center">
-                  <GameList games={games} />
-                </div>
-              }
-            />
+            <Route path="/" element={<HomePage />} />
             <Route path="/games/:id" element={<GameDetails />} />
             <Route path="/games" element={<GamesPage />} />
             <Route path="/signup" element={<SignupPage />} />
@@ -72,7 +50,6 @@ function App() {
 
         <footer>
           {/* About: List of links to info articles */}
-
           {/* Contact: List of contact paths to the site developers */}
         </footer>
       </LibraryProvider>

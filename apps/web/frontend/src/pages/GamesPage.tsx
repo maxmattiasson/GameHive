@@ -3,13 +3,14 @@ import GameFilter from "../components/games/gameFilter/GameFilter";
 import { GameList } from "../components/games/GameList";
 import type { GameFilterValues } from "../types/gameFilter";
 import { useGames } from "../hooks/useGames";
+import "./GamePage.css";
 
 const initialFilters: GameFilterValues = {
   title: "",
   genre: [],
   dev: "",
   release: "",
-  multiplayer: false
+  multiplayer: false,
 };
 
 export function GamesPage() {
@@ -18,32 +19,35 @@ export function GamesPage() {
   const { data } = useGames();
 
   // filters values and returns boolean
-  const filteredGames = data.filter((game) => {
-    const titleMatch = game.title
-      .toLowerCase()
-      .includes(activeFilters.title.toLowerCase().trim());
+  const filteredGames = data
+    .filter((game) => {
+      const titleMatch = game.title
+        .toLowerCase()
+        .includes(activeFilters.title.toLowerCase().trim());
 
-    const devMatch = game.dev
-      .toLocaleLowerCase()
-      .includes(activeFilters.dev.toLocaleLowerCase().trim());
+      const devMatch = game.dev
+        .toLocaleLowerCase()
+        .includes(activeFilters.dev.toLocaleLowerCase().trim());
 
-    const genreMatch =
-      activeFilters?.genre.length === 0 ||
-      activeFilters?.genre.some((selectedGenre) =>
-        game.genres.some((g) => g.name === selectedGenre)
-      );
+      const genreMatch =
+        activeFilters?.genre.length === 0 ||
+        activeFilters?.genre.some((selectedGenre) =>
+          game.genres.some((g) => g.name === selectedGenre),
+        );
 
-    const multiplayerMatch = !activeFilters?.multiplayer || game.multiplayer;
+      const multiplayerMatch = !activeFilters?.multiplayer || game.multiplayer;
 
-    return titleMatch && devMatch && genreMatch && multiplayerMatch;
-  });
+      return titleMatch && devMatch && genreMatch && multiplayerMatch;
+    })
+    .slice(0, 15);
   return (
     <>
-      <p>Hush! 🤫 You're in a library... </p>
-      <h1>A GAME LIBRARY!! 🎮🕹️👾</h1>
-      <div className="game-filter-wrapper">
-        <GameFilter onSearch={setActiveFilters} />
-        <GameList games={filteredGames} />
+      <div className="gamepage-container">
+        <h2>Browse Catalogue</h2>
+        <div className="game-filter-wrapper">
+          <GameFilter onSearch={setActiveFilters} />
+          <GameList games={filteredGames} compact />
+        </div>
       </div>
     </>
   );

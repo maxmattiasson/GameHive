@@ -1,6 +1,7 @@
 /* GameDetails.css */
 
 .container {
+  max-width: 1300px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;

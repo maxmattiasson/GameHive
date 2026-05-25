@@ -4,13 +4,14 @@ import "./GameList.css";
 
 interface Props {
   games: Game[];
+  compact?: boolean;
 }
 
-export function GameList({ games }: Props) {
+export function GameList({ games, compact }: Props) {
   return (
     <div className="game-list">
       {games.map((game) => (
-        <GameCard key={game._id} game={game} />
+        <GameCard key={game._id} game={game} compact={compact} />
       ))}
     </div>
   );
