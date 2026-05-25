@@ -1,7 +1,10 @@
 import "./Hero.css";
 import Button from "../ui/Button";
+import { useNavigate } from "react-router-dom";
 
 export default function Hero() {
+  const navigate = useNavigate();
+
   return (
     <div className="hero">
       <div className="hero-left">
@@ -16,7 +19,9 @@ export default function Hero() {
           </p>
         </div>
         <div className="button-group">
-          <Button color="primary">Expore</Button>
+          <Button color="primary" onClick={() => navigate("/games")}>
+            Explore
+          </Button>
           <Button color="secondary">Something</Button>
         </div>
       </div>
