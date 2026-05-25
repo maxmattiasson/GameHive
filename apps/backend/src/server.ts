@@ -44,7 +44,7 @@ app.use(cookieParser());
 app.use("/api/users", usersRoutes);
 
 app.use("/api", gamesRoutes);
-app.use("/api", libraryRoutes);
+app.use("/api/library", libraryRoutes);
 
 app.use("/api/rawg", rawgRoutes);
 app.use("/api/auth", authRoutes);

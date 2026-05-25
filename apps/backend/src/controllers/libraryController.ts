@@ -1,7 +1,13 @@
 import { Response, NextFunction } from "express";
-import mongoose from "mongoose";
+import mongoose, { ObjectId, ObjectIdQueryTypeCasting } from "mongoose";
 import LibraryModel from "../models/Library.js";
 import { AuthRequest } from "../auth/authMiddleware.js";
+import {
+  ValidationError,
+  UnauthorizedError,
+  NotFoundError,
+  ConflictError
+} from "../errors/index.js";
 
 // Converts a string to a MongoDB ObjectId if valid, otherwise returns null, ensures that only valid ObjectIds are used in database queries.
 const toObjectId = (value: string) => {
@@ -18,33 +24,15 @@ const GAME_POPULATE_FIELDS = "title thumb dev genres release multiplayer";
 const getUserObjectId = (req: AuthRequest, res: Response) => {
   const userId = req.user?.userId;
   if (!userId) {
-    res.status(401).json({ message: "Unauthorized" });
-    return null;
+    throw new UnauthorizedError();
   }
 
   const userObjectId = toObjectId(userId);
   if (!userObjectId) {
-    res.status(400).json({ message: "Invalid authenticated user id" });
-    return null;
+    throw new ValidationError("Invalid authenticated user id");
   }
 
   return userObjectId;
-};
-
-// validates and converts gameId from request
-const getGameObjectId = (gameId: unknown, res: Response) => {
-  if (typeof gameId !== "string") {
-    res.status(400).json({ message: "gameId is required" });
-    return null;
-  }
-
-  const gameObjectId = toObjectId(gameId);
-  if (!gameObjectId) {
-    res.status(400).json({ message: "Invalid gameId" });
-    return null;
-  }
-
-  return gameObjectId;
 };
 
 // get all the games in logged in player library from server, sends API
@@ -81,12 +69,13 @@ export const addToLibrary = async (
     const userObjectId = getUserObjectId(req, res);
     if (!userObjectId) return;
 
-    const gameObjectId = getGameObjectId(req.body.gameId, res);
-    if (!gameObjectId) return;
+    const { gameId } = req.validatedBody as {
+      gameId: ObjectIdQueryTypeCasting;
+    };
 
     const entry = await LibraryModel.create({
       userId: userObjectId,
-      gameId: gameObjectId
+      gameId: gameId
     });
 
     // Populates the gameId field with selected fields from the Game model and genre names,
@@ -99,7 +88,7 @@ export const addToLibrary = async (
     return res.status(201).json(populated);
   } catch (error: any) {
     if (error.code === 11000) {
-      return res.status(409).json({ message: "Game is already in library" });
+      throw new ConflictError("Game is already in library");
     }
     next(error);
   }
@@ -115,36 +104,27 @@ export const updateLibraryEntry = async (
     const userObjectId = getUserObjectId(req, res);
     if (!userObjectId) return;
 
-    const gameObjectId = getGameObjectId(req.params.gameId, res);
-    if (!gameObjectId) return;
-
-    const { playtimeMinutes } = req.body;
-    // playtimeMinutes is requierd and can't be a negative number
-    if (
-      typeof playtimeMinutes !== "number" ||
-      Number.isNaN(playtimeMinutes) ||
-      playtimeMinutes < 0
-    ) {
-      return res.status(400).json({
-        message: "playtimeMinutes is required and must be a non-negative number"
-      });
-    }
+    const { gameId } = req.validatedParams as {
+      gameId: ObjectIdQueryTypeCasting;
+    };
+    const { playtimeMinutes } = req.validatedBody as {
+      playtimeMinutes: Number;
+    };
 
     const updated = await LibraryModel.findOneAndUpdate(
       {
         userId: userObjectId,
-        gameId: gameObjectId
+        gameId: gameId
       },
       { playtimeMinutes },
-      { new: true, runValidators: true }
+      { returnDocument: "after", runValidators: true }
     ).populate({
       path: "gameId",
       select: GAME_POPULATE_FIELDS,
       populate: { path: "genres", select: "name" }
     });
 
-    if (!updated)
-      return res.status(404).json({ message: "Library entry not found" });
+    if (!updated) throw new NotFoundError("Library entry not found");
 
     return res.json(updated);
   } catch (error) {
@@ -162,16 +142,17 @@ export const removeFromLibrary = async (
     const userObjectId = getUserObjectId(req, res);
     if (!userObjectId) return;
 
-    const gameObjectId = getGameObjectId(req.params.gameId, res);
-    if (!gameObjectId) return;
+    const { gameId } = req.validatedParams as {
+      gameId: ObjectIdQueryTypeCasting;
+    };
 
     const removed = await LibraryModel.findOneAndDelete({
       userId: userObjectId,
-      gameId: gameObjectId
+      gameId: gameId
     });
 
     if (!removed) {
-      return res.status(404).json({ message: "Library entry not found" });
+      throw new NotFoundError("Library entry not found");
     }
 
     return res.status(200).json({ message: "Library entry removed" });

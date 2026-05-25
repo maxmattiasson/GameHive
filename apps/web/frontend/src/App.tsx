@@ -18,12 +18,22 @@ import AdminPage from "./pages/adminPage/AdminPage";
 function App() {
   const { data } = useGames();
 
-  const games = data.slice(0, 3); //slice array to limit, otherwise return all
+  const shuffleGames = <T,>(array: T[]): T[] => {
+    const arr = [...array];
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  };
+
+  const shuffledGames = shuffleGames(data);
+
+  const games = shuffledGames.slice(0, 3); //slice array to limit, otherwise return all
   return (
     <>
       <LibraryProvider>
         <Header />
-
         <main>
           <Routes>
             <Route

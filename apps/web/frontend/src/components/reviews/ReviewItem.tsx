@@ -1,7 +1,7 @@
 import type { Review } from "../../types/review";
 import styles from "./ReviewItem.module.css";
 import Button from "../ui/Button";
-import RemoveReviewButton from "../ui/RemoveReviewButton";
+import RemoveButton from "../ui/RemoveButton";
 import { useAuth } from "../../hooks/useAuth";
 
 type ReviewItemProps = {
@@ -34,8 +34,10 @@ export default function ReviewItem({
     <article className={styles.reviewCont}>
       {showGameTitle && review.game && <h3>{review.game.title}</h3>}
       <div className={styles.reviewHeader}>
-        {(isOwnReview || isAdmin) && onDelete && (
-          <RemoveReviewButton reviewId={review._id} onDelete={onDelete} />
+        {isAdmin && onDelete && (
+          <RemoveButton reviewId={review._id} onDelete={onDelete}>
+            X
+          </RemoveButton>
         )}
       </div>
       <p className={styles.reviewerName}>{review.user.username}</p>
