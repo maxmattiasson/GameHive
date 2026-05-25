@@ -71,7 +71,7 @@ export function validateRequest(schema: RequestSchemas) {
           ...rQuery.error.issues.map((issue) => ({
             location: "query",
             field: issue.path.join("."),
-            messahe: issue.message,
+            message: issue.message,
           })),
         );
       } else {

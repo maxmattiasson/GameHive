@@ -4,6 +4,7 @@ import { useAuth } from "../../hooks/useAuth";
 import ReviewList from "../../components/reviews/ReviewList";
 import { getUserReviews } from "../../services/reviewService";
 import type { Review } from "../../types/review";
+import { deleteReview } from "../../services/reviewService";
 
 export function PlayerReviewsPage() {
   const { id } = useParams();
@@ -39,11 +40,25 @@ export function PlayerReviewsPage() {
   if (!userId || loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
 
+  const handleDelete = async (reviewId: string) => {
+    try {
+      await deleteReview(reviewId);
+      setReviews((prev) => prev.filter((r) => r._id !== reviewId));
+    } catch (error) {
+      console.error("Could not remove review", error);
+    }
+  };
+
   return (
     <section>
       <h2>Reviews</h2>
 
-      <ReviewList reviews={reviews} showGameTitle />
+      <ReviewList
+        reviews={reviews}
+        currentUserId={user?._id}
+        onDelete={handleDelete}
+        showGameTitle
+      />
 
       <br />
       <Link to="/profile">Back to profile</Link>
