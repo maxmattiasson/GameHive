@@ -143,6 +143,32 @@ a {
   }
 }
 
+select {
+  background: var(--gray-800);
+  color: var(--white-100);
+  border: 1.5px solid var(--accent-500);
+  border-radius: var(--radius-1);
+  padding: var(--space-2);
+  font-family: var(--font-sans);
+  font-size: var(--fs-2);
+  transition:
+    border 0.2s,
+    box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  outline: none;
+  margin: 0 10px;
+}
+
+select:focus {
+  border-color: var(--accent-600);
+  box-shadow: 0 0 0 2px var(--accent-600) 33;
+}
+
+select option {
+  background: var(--gray-700);
+  color: var(--white-100);
+}
+
 .active {
   color: var(--accent-500);
   font-weight: bold;
