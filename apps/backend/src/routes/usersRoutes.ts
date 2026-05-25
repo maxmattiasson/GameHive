@@ -7,6 +7,7 @@ import { idParamSchema } from "../schemas/common.schemas.js";
 import { validateRequest } from "../middleware/validate.js";
 import { NotFoundError } from "../errors/AppError.js";
 import { Response, NextFunction } from "express";
+import { deleteUser } from "../controllers/userController.js";
 
 const router = Router();
 
@@ -19,7 +20,7 @@ router.get(
       const id = req.params.id as string;
 
       const user = await UserModel.findById(id).select(
-        "username role userAchievements createdAt",
+        "username role userAchievements createdAt"
       );
 
       if (!user) {
@@ -30,7 +31,7 @@ router.get(
     } catch (err) {
       next(err);
     }
-  },
+  }
 );
 
 router.get(
@@ -43,14 +44,14 @@ router.get(
       const library = await LibraryModel.find({ userId: id }).populate({
         path: "gameId",
         select: "title thumb dev genres release multiplayer",
-        populate: { path: "genres", select: "name" },
+        populate: { path: "genres", select: "name" }
       });
 
       res.json(library);
     } catch (err) {
       next(err);
     }
-  },
+  }
 );
 
 router.get(
@@ -71,9 +72,15 @@ router.get(
     } catch (err) {
       next(err);
     }
-  },
+  }
 );
 
 router.get("/:id/reviews", authMiddleware, getUserReviews);
 
+router.delete(
+  "/:id",
+  authMiddleware,
+  validateRequest({ params: idParamSchema }),
+  deleteUser
+);
 export default router;

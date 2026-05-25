@@ -22,7 +22,6 @@ import genresRoutes from "./routes/genresRoutes.js";
 import libraryRoutes from "./routes/libraryRoutes.js";
 import reviewRoutes from "./routes/reviewRoutes.js";
 
-
 import { errorMiddleware } from "./middleware/errorMiddleware.js";
 import { notFoundMiddleware } from "./middleware/notFoundMiddleware.js";
 
@@ -35,8 +34,8 @@ const app = express();
 app.use(
   cors({
     origin: ["http://localhost:5173", "http://127.0.0.1:5173"],
-    credentials: true,
-  }),
+    credentials: true
+  })
 );
 app.use(express.json());
 app.use(cookieParser());
