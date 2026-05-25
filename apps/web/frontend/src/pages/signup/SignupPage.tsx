@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useSignup } from "../../hooks/useSignup";
+import Button from "../../components/ui/Button";
 
 export function SignupPage() {
   const {
@@ -65,10 +66,10 @@ export function SignupPage() {
           placeholder="Re-enter password"
         />
 
-        <button type="submit" disabled={loading}>
+        <Button color="primary" type="submit" disabled={loading}>
           {" "}
           {loading ? "Creating account..." : "Sign up"}
-        </button>
+        </Button>
       </form>
       <Link to="/">Back to home</Link>
     </section>
