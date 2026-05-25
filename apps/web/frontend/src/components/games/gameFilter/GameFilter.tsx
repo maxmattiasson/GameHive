@@ -1,6 +1,7 @@
 import { useState } from "react";
 import type { GameFilterValues } from "../../../types/gameFilter";
 import "./GameFilter.css";
+import Button from "../../ui/Button";
 
 type GameFilterProps = {
   onSearch: (filters: GameFilterValues) => void;
@@ -24,7 +25,7 @@ const genres = [
   "MMO",
   "MOBA",
   "Stealth",
-  "Puzzle",
+  "Puzzle"
 ];
 
 // startvalue for game filter
@@ -33,7 +34,7 @@ const initialFilter: GameFilterValues = {
   genre: [],
   dev: "",
   release: "",
-  multiplayer: false,
+  multiplayer: false
 };
 
 const GameFilter = ({ onSearch }: GameFilterProps) => {
@@ -53,7 +54,7 @@ const GameFilter = ({ onSearch }: GameFilterProps) => {
       ...prev,
       genre: checked
         ? [...prev.genre, value]
-        : prev.genre.filter((g) => g !== value),
+        : prev.genre.filter((g) => g !== value)
     }));
   };
 
@@ -103,13 +104,14 @@ const GameFilter = ({ onSearch }: GameFilterProps) => {
         Multiplayer
       </label>
 
-      <button
+      <Button
+        color="primary"
         type="button"
         aria-expanded={showGenres}
         onClick={() => setShowGenres((v) => !v)}
       >
         {showGenres ? "Hide genre" : "Show genre"}
-      </button>
+      </Button>
 
       {showGenres && (
         <fieldset>
@@ -128,10 +130,12 @@ const GameFilter = ({ onSearch }: GameFilterProps) => {
         </fieldset>
       )}
 
-      <button type="submit">Search</button>
-      <button type="button" onClick={handleReset}>
+      <Button color="primary" type="submit">
+        Search
+      </Button>
+      <Button color="primary" type="button" onClick={handleReset}>
         Reset
-      </button>
+      </Button>
     </form>
   );
 };
