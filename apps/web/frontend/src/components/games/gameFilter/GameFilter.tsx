@@ -24,7 +24,7 @@ const genres = [
   "MMO",
   "MOBA",
   "Stealth",
-  "Puzzle",
+  "Puzzle"
 ];
 
 // startvalue for game filter
@@ -33,7 +33,7 @@ const initialFilter: GameFilterValues = {
   genre: [],
   dev: "",
   release: "",
-  multiplayer: false,
+  multiplayer: false
 };
 
 const GameFilter = ({ onSearch }: GameFilterProps) => {
@@ -53,7 +53,7 @@ const GameFilter = ({ onSearch }: GameFilterProps) => {
       ...prev,
       genre: checked
         ? [...prev.genre, value]
-        : prev.genre.filter((g) => g !== value),
+        : prev.genre.filter((g) => g !== value)
     }));
   };
 
@@ -75,7 +75,7 @@ const GameFilter = ({ onSearch }: GameFilterProps) => {
 
   return (
     <form className="search-filter-container" onSubmit={handleSubmit}>
-      <p>Search Filter</p>
+      <h3>Search Filter</h3>
 
       <input
         name="title"
