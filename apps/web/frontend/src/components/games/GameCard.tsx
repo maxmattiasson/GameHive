@@ -6,39 +6,36 @@ import { StarButton } from "../ui/StarButton";
 
 interface Props {
   game: Game;
+  compact?: boolean;
 }
 
-export function GameCard({ game, playerLibrary }: Props) {
-  // console.log(game._id);
+export function GameCard({ game, compact }: Props) {
   return (
-    <div className="game-card-small">
+    <div className={`game-card-small ${compact ? "compact" : ""}`}>
       <div className="image-wrapper">
         <StarButton game={game} />
-        <img
-          src={
-            game.thumb ||
-            "https://gaming-cdn.com/images/products/20970/616x353/mimesis-pc-steam-cover.jpg?v=1761750647"
-          }
-          alt="Game Cover"
-        />
+        <img src={game.thumb || "..."} alt="Game Cover" />
       </div>
       <div className="inner">
         <h3>{game.title}</h3>
         <h4>{game.dev}</h4>
-        <p className="meta">Rating: {game.avg_rating}/10</p>
-        <p className="desc">{game.desc}</p>
-        <p className="meta">
-          Release date: {new Date(game.release).toLocaleDateString()}
-        </p>
-        <div className="badges">
-          {game.genres.map((genre) => (
-            <Badge key={genre._id} label={genre.name} />
-          ))}
-          {game.multiplayer && <Badge label="Multiplayer" />}
-        </div>
+        {!compact && <p className="meta">Rating: {game.avg_rating}/10</p>}
+        {!compact && <p className="desc">{game.desc}</p>}
+        {!compact && (
+          <p className="meta">
+            Release date: {new Date(game.release).toLocaleDateString()}
+          </p>
+        )}
+        {!compact && (
+          <div className="badges">
+            {game.genres.map((genre) => (
+              <Badge key={genre._id} label={genre.name} />
+            ))}
+            {game.multiplayer && <Badge label="Multiplayer" />}
+          </div>
+        )}
         <a className="arrow-button" href={`/games/${game._id}`}>
-          View Game
-          <span className="arrow">→</span>
+          View Game <span className="arrow">→</span>
         </a>
       </div>
     </div>

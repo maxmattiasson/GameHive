@@ -4,6 +4,7 @@ header {
   justify-content: space-between;
   overflow: hidden;
   padding: 0.5rem 1rem;
+  background: var(--gray-900);
 }
 
 nav {

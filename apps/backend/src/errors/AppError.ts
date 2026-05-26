@@ -27,7 +27,7 @@ export class ValidationError extends AppError {
 
 // 401 - Authorization is required (useable in week 7)
 
-export class UnothorizedError extends AppError {
+export class UnauthorizedError extends AppError {
   errors: any[];
 
   constructor(

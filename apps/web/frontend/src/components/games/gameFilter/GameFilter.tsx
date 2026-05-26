@@ -75,7 +75,7 @@ const GameFilter = ({ onSearch }: GameFilterProps) => {
 
   return (
     <form className="search-filter-container" onSubmit={handleSubmit}>
-      <h2>Search Filter</h2>
+      <h3>Search Filter</h3>
 
       <input
         name="title"
