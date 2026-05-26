@@ -1,8 +1,9 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSignup } from "../../hooks/useSignup";
 import Button from "../../components/ui/Button";
 
 export function SignupPage() {
+  const navigate = useNavigate();
   const {
     username,
     email,
@@ -22,6 +23,7 @@ export function SignupPage() {
     e.preventDefault();
 
     await signup();
+    navigate("/");
   };
 
   return (
