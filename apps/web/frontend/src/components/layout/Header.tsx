@@ -3,6 +3,7 @@ import LoginForm from "../auth/LoginForm";
 import { useAuth } from "../../hooks/useAuth";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import Button from "../ui/Button";
+import { Notifications } from "./Notifications";
 
 export function Header() {
   const { user, loading, logout } = useAuth();
@@ -56,6 +57,7 @@ export function Header() {
             <Link to="/signup">Sign up</Link>
           </div>
         )}
+        <Notifications />
       </header>
     </>
   );
