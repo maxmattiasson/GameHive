@@ -1,6 +1,8 @@
 input {
   margin-right: var(--space-1);
+  font-size: var(--fs-2);
   padding-inline: var(--space-1);
+  padding: var(--space-3);
   /* width: 15ch; */
   /* min-height: 1.8rem; */
   background: var(--gray-900);
@@ -12,7 +14,7 @@ input {
   &:focus {
     z-index: 2;
     border-color: var(--accent-500);
-    /* box-shadow: 0 0 5px 5px var(--accent-500); */
+    box-shadow: 0 0 5px 5px var(--accent-500);
     animation: glow 1s ease infinite alternate;
   }
 }

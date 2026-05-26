@@ -4,6 +4,7 @@ import { useAuth } from "../../hooks/useAuth";
 import Button from "../ui/Button";
 import Input from "../ui/Input";
 import { API_BASE_URL } from "../../config/api";
+import { useNotifications } from "../../hooks/useNotifications";
 
 const API_URL = `${API_BASE_URL}/auth`;
 
@@ -12,8 +13,9 @@ const LoginForm = () => {
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-
+  
   const { setUser } = useAuth();
+  const { notify } = useNotifications();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -66,8 +68,8 @@ const LoginForm = () => {
 
       const unlocked = data.user.newUnlocks || null;
       if (unlocked[0]) {
-        alert(
-          `Achievement unlocked: ${unlocked.length} new achievement(s) unlocked!`
+        notify(
+        `Achievement unlocked: ${unlocked.length} new achievement(s) unlocked!`
         );
       }
     } catch (err) {
