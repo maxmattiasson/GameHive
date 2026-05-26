@@ -75,70 +75,85 @@ const GameFilter = ({ onSearch }: GameFilterProps) => {
   };
 
   return (
-    <>
+    <form className="search-filter-container" onSubmit={handleSubmit}>
       <h3>Search Filter</h3>
-      <form className="search-filter-container" onSubmit={handleSubmit}>
+
+      <input
+        name="title"
+        type="text"
+        value={filter.title}
+        onChange={handleInputChange}
+        placeholder="Search title"
+      />
+
+      <input
+        name="dev"
+        type="text"
+        value={filter.dev}
+        onChange={handleInputChange}
+        placeholder="Search Developer"
+      />
+
+      <input
+        name="title"
+        type="text"
+        value={filter.title}
+        onChange={handleInputChange}
+        placeholder="Search title"
+      />
+
+      <input
+        name="dev"
+        type="text"
+        value={filter.dev}
+        onChange={handleInputChange}
+        placeholder="Search Developer"
+      />
+
+      <label>
         <input
-          name="title"
-          type="text"
-          value={filter.title}
-          onChange={handleInputChange}
-          placeholder="Search title"
+          className="multiplayer-box"
+          type="checkbox"
+          checked={filter.multiplayer}
+          onChange={handleMultiplayerChange}
         />
+        Multiplayer
+      </label>
 
-        <input
-          name="dev"
-          type="text"
-          value={filter.dev}
-          onChange={handleInputChange}
-          placeholder="Search Developer"
-        />
+      <Button
+        color="secondary"
+        type="button"
+        aria-expanded={showGenres}
+        onClick={() => setShowGenres((v) => !v)}
+      >
+        {showGenres ? "Hide genre" : "Show genre"}
+      </Button>
 
-        <label>
-          <input
-            className="multiplayer-box"
-            type="checkbox"
-            checked={filter.multiplayer}
-            onChange={handleMultiplayerChange}
-          />
-          Multiplayer
-        </label>
-
-        <Button
-          color="secondary"
-          type="button"
-          aria-expanded={showGenres}
-          onClick={() => setShowGenres((v) => !v)}
-        >
-          {showGenres ? "Hide genre" : "Show genre"}
+      {showGenres && (
+        <fieldset>
+          <legend>Genre</legend>
+          {genres.map((genre) => (
+            <label key={genre}>
+              <input
+                type="checkbox"
+                value={genre}
+                checked={filter.genre.includes(genre)}
+                onChange={handleGenreChange}
+              />
+              {genre}
+            </label>
+          ))}
+        </fieldset>
+      )}
+      <div className="">
+        <Button color="secondary" type="submit">
+          Search
         </Button>
-
-        {showGenres && (
-          <fieldset>
-            <legend>Genre</legend>
-            {genres.map((genre) => (
-              <label key={genre}>
-                <input
-                  type="checkbox"
-                  value={genre}
-                  checked={filter.genre.includes(genre)}
-                  onChange={handleGenreChange}
-                />
-                {genre}
-              </label>
-            ))}
-          </fieldset>
-        )}
-        <div className="">
-          <Button color="secondary" type="submit">
-            Search
-          </Button>
-          <Button color="secondary" type="button" onClick={handleReset}>
-            Reset
-          </Button>
-        </div>
-      </form>
-    </>
+        <Button color="secondary" type="button" onClick={handleReset}>
+          Reset
+        </Button>
+      </div>
+    </form>
   );
 };
 export default GameFilter;

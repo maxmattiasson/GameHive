@@ -3,9 +3,7 @@
   gap: 1rem;
   align-items: center;
 }
+
 .search-filter-container label {
   font-size: 0.8em;
-}
-/* .multiplayer-box {
-  font-size: 0.3em;
 }

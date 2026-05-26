@@ -2,6 +2,7 @@ import { Response, NextFunction } from "express";
 import mongoose, { ObjectId, ObjectIdQueryTypeCasting } from "mongoose";
 import LibraryModel from "../models/Library.js";
 import { AuthRequest } from "../auth/authMiddleware.js";
+import { checkPlayerLibraryAchievements } from "../helpers/achievementsChecker.js";
 import {
   ValidationError,
   UnauthorizedError,
@@ -78,6 +79,8 @@ export const addToLibrary = async (
       gameId: gameId
     });
 
+    const newUnlocks: string[] | null = await checkPlayerLibraryAchievements(userObjectId.toString());
+
     // Populates the gameId field with selected fields from the Game model and genre names,
     // so the frontend immediately receives all relevant game data in the response.
     const populated = await entry.populate({
@@ -85,7 +88,7 @@ export const addToLibrary = async (
       select: GAME_POPULATE_FIELDS,
       populate: { path: "genres", select: "name" }
     });
-    return res.status(201).json(populated);
+    return res.status(201).json({populated, newUnlocks });
   } catch (error: any) {
     if (error.code === 11000) {
       throw new ConflictError("Game is already in library");
