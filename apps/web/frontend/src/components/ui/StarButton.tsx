@@ -35,11 +35,12 @@ export function StarButton({ game }: StarButtonProps) {
       refetch();
     } else {
       const apiResponse = await addToLibrary(game._id);
-      // if(apiResponse.newUnlocks[0]) {
-      //   notify(
-      //     `Achievement unlocked: ${apiResponse.newUnlocks.length} new achievement(s) unlocked!`
-      //   );
-      // }
+      const {newUnlocks} = apiResponse
+      if(newUnlocks && newUnlocks.length > 0) {
+        notify(
+          `Achievement unlocked: ${newUnlocks.length} new achievement(s) unlocked!`
+        );
+      }
       console.log("apiResponse from addToLibrary:", apiResponse);
       refetch();
     }
