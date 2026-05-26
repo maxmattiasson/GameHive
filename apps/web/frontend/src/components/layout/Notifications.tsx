@@ -1,5 +1,5 @@
 import "./Notifications.css";
-import { useNotifications } from "../../contexts/NotificationsContext";
+import { useNotifications } from "../../hooks/useNotifications";
 
 export function Notifications() {
   const { notifications, dismiss } = useNotifications();

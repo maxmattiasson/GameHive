@@ -4,6 +4,7 @@ import { addToLibrary, removeFromLibrary } from "../../services/libraryService";
 import type { Game } from "../../types/game";
 import { useLibrary } from "../../contexts/LibraryContext";
 import { useParams } from "react-router-dom";
+import { useNotifications } from "../../hooks/useNotifications";
 
 interface StarButtonProps {
   game: Game;
@@ -11,6 +12,7 @@ interface StarButtonProps {
 
 export function StarButton({ game }: StarButtonProps) {
   const { id } = useParams();
+  const { notify } = useNotifications();
   if (id) return null;
 
   const [isInLibrary, setIsInLibrary] = useState(false);
@@ -33,7 +35,12 @@ export function StarButton({ game }: StarButtonProps) {
       refetch();
     } else {
       const apiResponse = await addToLibrary(game._id);
-      console.log(apiResponse);
+      // if(apiResponse.newUnlocks[0]) {
+      //   notify(
+      //     `Achievement unlocked: ${apiResponse.newUnlocks.length} new achievement(s) unlocked!`
+      //   );
+      // }
+      console.log("apiResponse from addToLibrary:", apiResponse);
       refetch();
     }
   };

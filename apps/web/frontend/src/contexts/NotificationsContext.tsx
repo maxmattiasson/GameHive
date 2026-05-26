@@ -1,7 +1,6 @@
 import React, {
   createContext,
   useCallback,
-  useContext,
   useEffect,
   useRef,
   useState
@@ -23,7 +22,7 @@ type NotificationsContextType = {
   clearAll: () => void;
 };
 
-const NotificationsContext = createContext<NotificationsContextType | null>(null);
+export const NotificationsContext = createContext<NotificationsContextType | null>(null);
 
 const DEFAULT_DURATION = 4000;
 
@@ -84,10 +83,4 @@ export function NotificationsProvider({ children }: { children: React.ReactNode 
       {children}
     </NotificationsContext.Provider>
   );
-}
-
-export function useNotifications() {
-  const context = useContext(NotificationsContext);
-  if (!context) throw new Error("useNotifications must be used within a NotificationsProvider");
-  return context;
 }
