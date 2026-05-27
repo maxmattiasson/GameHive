@@ -69,7 +69,7 @@ export function GameDetails() {
     <div className="container">
       <div className="header" style={{ backgroundImage: `url(${data.thumb})` }}>
         <h1>{data.title}</h1>
-        <p>Rating: {data.avg_rating}/10</p>
+        <p>Rating: {averageRating}/5</p>
         <p>
           {data.genres.map((g) => g.name).join(", ")} - {data.dev}
         </p>
