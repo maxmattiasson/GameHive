@@ -55,6 +55,7 @@
   color: var(--accent-500);
   text-decoration: none;
   transition: color 0.2s;
+  line-height: 1;
 }
 
 .profileLink:hover {

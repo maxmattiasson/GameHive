@@ -15,14 +15,14 @@ export default function Hero() {
             Track What You Play.
           </h2>
           <p>
-            Discover, track, and review your favorite games — all in one place.
+            Discover, track, and review your favorite games - all in one place.
           </p>
-        </div>
-        <div className={styles.buttonGroup}>
-          <Button color="primary" onClick={() => navigate("/games")}>
-            Explore
-          </Button>
-          <Button color="secondary">Something</Button>
+          <div className={styles.buttonGroup}>
+            <Button color="primary" onClick={() => navigate("/games")}>
+              Explore
+            </Button>
+            <Button color="secondary">Something</Button>
+          </div>
         </div>
       </div>
       <div className={styles.heroRight}>

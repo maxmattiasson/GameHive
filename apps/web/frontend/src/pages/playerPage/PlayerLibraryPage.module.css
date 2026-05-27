@@ -57,3 +57,10 @@
   font-family: var(--font-mono);
   font-size: var(--fs-1);
 }
+
+.requestActions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-left: auto;
+}

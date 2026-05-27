@@ -45,13 +45,15 @@ export function PlayerFriendsPage() {
                   <span className={styles.username}>
                     {request.requester.username}
                   </span>
-                  <FriendRequestActions
-                    requestId={request._id}
-                    onAction={() => {
-                      pendingRefetch();
-                      friendsRefetch();
-                    }}
-                  />
+                  <div className={styles.requestActions}>
+                    <FriendRequestActions
+                      requestId={request._id}
+                      onAction={() => {
+                        pendingRefetch();
+                        friendsRefetch();
+                      }}
+                    />
+                  </div>
                 </li>
               ))}
             </ul>

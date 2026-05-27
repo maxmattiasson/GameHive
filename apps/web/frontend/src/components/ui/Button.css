@@ -27,7 +27,6 @@
   font-size: var(--fs-1);
   color: var(--accent-500);
   border: 1px solid var(--gray-600);
-  margin-top: 0.5rem;
   background: transparent;
 }
 
