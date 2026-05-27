@@ -1,4 +1,5 @@
 import type { Game } from "../../../types/game";
+import Button from "../../ui/Button";
 
 type GameSortProps = {
   sortBy: string;
@@ -18,11 +19,12 @@ const GameSort: React.FC<GameSortProps> = ({ sortBy, order, onSortChange }) => (
 
         <option value="release">Release</option>
       </select>
-      <button
+      <Button
+        color="primary"
         onClick={() => onSortChange(sortBy, order === "asc" ? "desc" : "asc")}
       >
         {order === "asc" ? "⬆" : "⬇"}
-      </button>
+      </Button>
     </label>
   </div>
 );

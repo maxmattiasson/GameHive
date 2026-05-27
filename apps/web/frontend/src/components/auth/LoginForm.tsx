@@ -3,14 +3,19 @@ import type { ChangeEvent } from "react";
 import { useAuth } from "../../hooks/useAuth";
 import Button from "../ui/Button";
 import Input from "../ui/Input";
+import { API_BASE_URL } from "../../config/api";
+import { useNotifications } from "../../hooks/useNotifications";
+
+const API_URL = `${API_BASE_URL}/auth`;
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-
+  
   const { setUser } = useAuth();
+  const { notify } = useNotifications();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -32,7 +37,7 @@ const LoginForm = () => {
     }
     try {
       setIsLoading(true);
-      const response = await fetch("http://localhost:3000/api/auth/login", {
+      const response = await fetch(`${API_URL}/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -50,23 +55,24 @@ const LoginForm = () => {
         setErrorMessage(data.message || "Inloggning misslyckades");
         return;
       }
-      const me = await fetch("http://localhost:3000/api/auth/me", {
+      const me = await fetch(`${API_URL}/me`, {
         credentials: "include"
       });
       if (!me.ok) {
         setErrorMessage("Session failed, cookie not set");
         return;
       }
-      const checkedUser = await me.json(); //
+      const checkedUser = await me.json();
       setUser(checkedUser);
       console.log("Logged in user:", checkedUser);
 
-      const unlocked = data.user.newUnlocks || null
+      const unlocked = data.user.newUnlocks || null;
       if (unlocked[0]) {
-        alert(`Achievement unlocked: ${unlocked.length} new achievement(s) unlocked!`)
+        notify(
+        `Achievement unlocked: ${unlocked.length} new achievement(s) unlocked!`
+        );
       }
-
-    } catch(err) {
+    } catch (err) {
       console.error("Login error:", err);
       setErrorMessage("Kunde inte ansluta till servern");
     } finally {

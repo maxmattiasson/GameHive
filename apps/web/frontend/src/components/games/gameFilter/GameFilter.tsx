@@ -1,6 +1,7 @@
 import { useState } from "react";
 import type { GameFilterValues } from "../../../types/gameFilter";
 import "./GameFilter.css";
+import Button from "../../ui/Button";
 
 type GameFilterProps = {
   onSearch: (filters: GameFilterValues) => void;
@@ -75,7 +76,23 @@ const GameFilter = ({ onSearch }: GameFilterProps) => {
 
   return (
     <form className="search-filter-container" onSubmit={handleSubmit}>
-      <h2>Search Filter</h2>
+      <h3>Search Filter</h3>
+
+      <input
+        name="title"
+        type="text"
+        value={filter.title}
+        onChange={handleInputChange}
+        placeholder="Search title"
+      />
+
+      <input
+        name="dev"
+        type="text"
+        value={filter.dev}
+        onChange={handleInputChange}
+        placeholder="Search Developer"
+      />
 
       <input
         name="title"
@@ -103,13 +120,14 @@ const GameFilter = ({ onSearch }: GameFilterProps) => {
         Multiplayer
       </label>
 
-      <button
+      <Button
+        color="secondary"
         type="button"
         aria-expanded={showGenres}
         onClick={() => setShowGenres((v) => !v)}
       >
         {showGenres ? "Hide genre" : "Show genre"}
-      </button>
+      </Button>
 
       {showGenres && (
         <fieldset>
@@ -127,11 +145,14 @@ const GameFilter = ({ onSearch }: GameFilterProps) => {
           ))}
         </fieldset>
       )}
-
-      <button type="submit">Search</button>
-      <button type="button" onClick={handleReset}>
-        Reset
-      </button>
+      <div className="">
+        <Button color="secondary" type="submit">
+          Search
+        </Button>
+        <Button color="secondary" type="button" onClick={handleReset}>
+          Reset
+        </Button>
+      </div>
     </form>
   );
 };

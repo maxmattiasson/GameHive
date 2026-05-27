@@ -7,6 +7,7 @@
   --white-100: #efe;
   --accent-500: rgb(56, 173, 134);
   --accent-600: rgb(60, 139, 113);
+  --accent-700: rgb(76, 126, 109);
 
   /* Typography */
   --font-sans: "Sora", "Space Grotesk", "Segoe UI", sans-serif;
@@ -44,7 +45,7 @@
 
 html,
 body {
-  height: 100vh;
+  min-height: 100vh;
   margin: 0;
   padding: 0;
 }
@@ -55,7 +56,7 @@ body {
   font-size: var(--fs-2);
   line-height: var(--lh-2);
   color: var(--white-100);
-  background:
+  /*   background:
     radial-gradient(
       600px 400px at 85% 10%,
       var(--gray-800) 0%,
@@ -63,9 +64,14 @@ body {
     ),
     var(--gray-900);
   background-attachment: fixed;
-  background-repeat: no-repeat;
+  background-repeat: no-repeat; */
 }
 
+body {
+  background:
+    linear-gradient(to top, rgba(14, 17, 20, 0.6) 0%, rgba(14, 17, 20, 1) 40%),
+    url("/public/images/honeycomb.jpg") top / cover fixed;
+}
 /* ===== Utilities ===== */
 
 .center {
@@ -75,10 +81,10 @@ body {
 
 /* ===== Elements ===== */
 
-main {
+/* main {
   max-width: 1300px;
   margin: 0 auto;
-}
+} */
 
 .section {
   padding: 5rem 0rem;
@@ -137,6 +143,32 @@ a {
   }
 }
 
+select {
+  background: var(--gray-800);
+  color: var(--white-100);
+  border: 1.5px solid var(--accent-500);
+  border-radius: var(--radius-1);
+  padding: var(--space-2);
+  font-family: var(--font-sans);
+  font-size: var(--fs-2);
+  transition:
+    border 0.2s,
+    box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  outline: none;
+  margin: 0 10px;
+}
+
+select:focus {
+  border-color: var(--accent-600);
+  box-shadow: 0 0 0 2px var(--accent-600) 33;
+}
+
+select option {
+  background: var(--gray-700);
+  color: var(--white-100);
+}
+
 .active {
   color: var(--accent-500);
   font-weight: bold;
@@ -144,4 +176,14 @@ a {
 
 .border-10 {
   border-radius: 10px;
+}
+
+.btn-secondary {
+  padding: 0.5rem 2rem;
+  border-radius: var(--radius-round);
+  border: 0.5px solid var(--gray-600);
+  background: transparent;
+  color: var(--white-100);
+  cursor: pointer;
+  font-size: var(--fs-2);
 }

@@ -6,11 +6,11 @@ Developed as part of the Fullstack JavaScript program at Chas Academy.
 
 ## Quick Overview
 
-- Personal game library and playtime tracking
-- Achievements and progression
-- Friend system
-- Reviews and ratings
-- Per-game leaderboards
+- Manage your personal game library and track playtime
+- Unlock achievements and view progression
+- Connect with friends and send friend requests
+- Write reviews and rate games
+- Compete on per-game leaderboards
 - Role-based login (player/developer/admin)
 
 ## Folder Structure
@@ -25,6 +25,50 @@ GameHive/
 **backend/**: Node.js/Express, MongoDB, authentication, API, data models, seeders
 
 **web/frontend/**: React, TypeScript, Vite, UI components, hooks, pages
+
+## Features
+
+- Game catalog with genres and metadata
+- REST API for game resources and filtering
+- Frontend game list and game management views
+- MongoDB persistence with Mongoose models
+- Monorepo setup with separate backend and frontend apps
+
+## Roles (RBAC)
+
+- Admin
+- Developer
+- Player
+
+## Data Models
+
+- User
+- Game
+- Genre
+- Library
+- Achievement
+- UserAchievement
+- Friendship
+- Review
+- Leaderboard
+
+## GDPR
+
+- User data (games, friends, profile) is treated as personal data
+- Users can export and delete their game history
+
+## Tech Stack
+
+- **Frontend:** React, TypeScript, Vite
+- **Backend:** Node.js, Express, TypeScript
+- **Database:** MongoDB, Mongoose
+- **Repo:** npm workspaces (monorepo)
+
+## Contributing
+
+1. Fork and create a new branch
+2. Make your changes and commit
+3. Submit a Pull Request
 
 ## Installation & Getting Started
 
@@ -89,135 +133,6 @@ Example routes:
 
 Filtering on GET /games: `title`, `genre`, `created`, `dev`, `multiplayer`
 
-## Features
-
-- Game catalog with genres and metadata
-- Personal library and playtime
-- Achievements and progression
-- Friend system and friend requests
-- Per-game leaderboards
-- Reviews and ratings
-- Role-based login (player/developer/admin)
-
-## Roles (RBAC)
-
-- Admin
-- Developer
-- Player
-
-## Data Models
-
-- User
-- Game
-- Genre
-- Library
-- Achievement
-- UserAchievement
-- Friendship
-- Review
-- Leaderboard
-
-## GDPR
-
-- User data (games, friends, profile) is treated as personal data
-- Users can export and delete their game history
-
-## Tech Stack
-
-- **Frontend:** React, TypeScript, Vite
-- **Backend:** Node.js, Express, TypeScript
-- **Database:** MongoDB, Mongoose
-- **Repo:** npm workspaces (monorepo)
-
-## Contributing
-
-1. Fork and create a new branch
-2. Make your changes and commit
-3. Submit a Pull Request
-
-## Contact
-
-Questions or bugs? Create an issue or contact the project owner via GitHub.
-
----
-
-_See also [DOKUMENTATION.md](DOKUMENTATION.md) and [PROJEKTBESKRIVNING.md](PROJEKTBESKRIVNING.md) for more info._
-
-## Getting Started Locally
-
-### 1. Prerequisites
-
-- Node.js (LTS recommended)
-- npm
-- A running MongoDB instance (local or cloud)
-
-### 2. Install Dependencies
-
-From the project root:
-
-```bash
-npm install
-```
-
-### 3. Configure Environment Variables
-
-Create a file named .env in apps/backend with the following values:
-
-```env
-MONGO_URI=your_mongo_connection_string
-NODE_ENV=development
-PORT=3000
-```
-
-### 4. Run the Project
-
-Run frontend and backend together:
-
-```bash
-npm run dev:both
-```
-
-Run only backend:
-
-```bash
-npm run dev:backend
-```
-
-Run only frontend:
-
-```bash
-npm run dev:web
-```
-
-Default local URLs:
-
-- Backend: http://localhost:3000
-- Frontend: http://localhost:5173
-
-## Data Models
-
-- User
-- Game
-- Genre
-- Library
-- Achievement
-- UserAchievement
-- Friendship
-- Review
-- Leaderboard
-
-## Roles (RBAC)
-
-- Admin
-- Developer
-- Player
-
-## GDPR Considerations
-
-- Personal gameplay and usage history are treated as user data
-- Friendship connections and user profiles are personal data
-- Users should be able to export and delete their gameplay history
-
 ## Main Features in This Repository
 
 - REST API for game resources and filtering
@@ -225,65 +140,18 @@ Default local URLs:
 - MongoDB persistence with Mongoose models
 - Monorepo setup with separate backend and frontend apps
 
-## Tech Stack
-
-- Frontend: React, TypeScript, Vite
-- Backend: Node.js, Express, TypeScript
-- Database: MongoDB, Mongoose
-- Repository setup: npm workspaces (monorepo)
-
-## Project Structure
-
-```text
-GameHive/
-  apps/
-    backend/
-    web/frontend/
-```
-
-## API Overview
-
-Base URL:
-
-```text
-http://localhost:3000/api
-```
-
-Current routes:
-
-- GET /games
-- GET /games/:id
-- POST /games
-- PATCH /games/:id
-- DELETE /games/:id
-
-Available filters on GET /games:
-
-- title
-- genre
-- created
-- dev
-- multiplayer
-
 ## Planned (Missing / In Progress)
 
 ### Planned Backend
 
-- Friendship requests and friend management
-- Review system with helpful/not-helpful voting
 - Per-game leaderboard endpoints with ranking
 - Complete RBAC enforcement for Admin, Developer, and Player actions
-- GDPR tools for data export and account/game-history deletion requests
+- GDPR tools for data export and account/game history deletion
 
 ### Planned Frontend
 
-- Player dashboard for library, playtime, and achievement progress
-- Friends UI for requests, accepted friends
-- Review and rating interface with helpful/not-helpful actions
 - Leaderboard pages
-- **Admin profile page** with:
-  - Form to add new achievements
-  - Ability to remove users from the platform
+- Improved UI for friend management and friend requests
 
 ## Contributors
 

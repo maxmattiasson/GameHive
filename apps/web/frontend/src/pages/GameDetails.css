@@ -1,86 +1,71 @@
-/* .game-details-container {
+/* GameDetails.css */
+
+.container {
+  max-width: 1300px;
+  margin: 0 auto;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 2rem;
-  margin-top: 10rem;
+  flex-direction: column;
+  padding: 5rem;
 }
-
-.game-details-img {
-}
-
-@media (max-width: 768px) {
-  .game-details-container {
-    flex-direction: column;
-    gap: 1.5rem;
-    margin-top: 4rem;
-    padding: 0 1rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .game-details-container {
-    gap: 1rem;
-    margin-top: 2rem;
-  }
-}
- */
 
 .header {
+  position: relative;
   width: 100%;
   padding: 2rem;
   margin-bottom: 1rem;
-
-  /* background: url("https://gaming-cdn.com/images/products/20970/616x353/mimesis-pc-steam-cover.jpg?v=1761750647"); */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-
-  -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
   mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
-
-  border-radius: 2px;
+  border-radius: var(--radius-1);
+  min-height: 40vh;
 }
 
 .header::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.5);
+  border-radius: var(--radius-2);
+  background: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0.7) 30%,
+    transparent 100%
+  );
 }
 
 .header > * {
   position: relative;
 }
 
-.container {
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  max-width: 1200px;
-  padding: 5rem;
+.header h1 {
+  font-size: 3.5rem;
+  margin-bottom: var(--space-2);
+}
+
+.header p {
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0;
+  font-size: var(--fs-1);
 }
 
 .details-container {
   display: flex;
-  margin: 0 auto;
-  gap: 1rem;
-  padding: 2rem;
-}
-
-.col-2 {
-  flex: 4;
+  gap: var(--space-5);
 }
 
 .col-1,
 .col-3 {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
 }
 
-.col-2 .info-card {
-  width: 100%;
-  margin: 0 0.8rem;
+.col-2 {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
 }
 
 .bold {
@@ -88,8 +73,40 @@
   color: white;
 }
 
-.reviews-container {
-  display: flex;
-  flex-direction: column;
-  gap: 0.8rem;
+.details-container .span-title {
+  color: var(--accent-700);
+}
+
+@media (max-width: 1024px) {
+  .details-container {
+    flex-wrap: wrap;
+  }
+
+  .col-1 {
+    flex: 1;
+  }
+
+  .col-2 {
+    flex: 2;
+  }
+
+  .col-3 {
+    flex: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: var(--space-4);
+  }
+
+  .details-container {
+    flex-direction: column;
+  }
+
+  .col-1,
+  .col-2,
+  .col-3 {
+    flex: unset;
+  }
 }

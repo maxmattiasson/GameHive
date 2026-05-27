@@ -1,5 +1,29 @@
 .reviewCont {
+  font-size: var(--fs-1);
+}
+
+.formRating {
   display: flex;
-  flex-direction: column;
-  gap: 10px;
+  margin-bottom: 0.5rem;
+  gap: 1rem;
+}
+
+.formRating select {
+  background: var(--gray-800);
+  border: 1px solid var(--gray-700);
+  border-radius: var(--radius-1);
+  color: var(--white-100);
+  font-family: var(--font-mono);
+  font-size: var(--fs-1);
+  padding: var(--space-1) var(--space-3);
+  cursor: pointer;
+}
+
+.reviewCont textarea {
+  background: var(--gray-800);
+  color: var(--white-100);
+  border: 1px solid var(--gray-700);
+  border-radius: var(--radius-1);
+  width: 100%;
+  margin-top: 1rem;
 }

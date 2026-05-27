@@ -1,38 +1,68 @@
-import { useParams } from "react-router-dom";
-import { useGame } from "../hooks/useGame";
-import { Badge } from "../components/ui/Badge";
-import "./GameDetails.css";
-import { InfoCard } from "../components/ui/InfoCard";
-import { updateLibraryEntry } from "../services/libraryService";
-import { usePlaytime } from "../hooks/usePlaytime";
+import { useParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import ReviewForm from "../components/reviews/ReviewForm";
-import ReviewList from "../components/reviews/ReviewList";
+
+import { useGame } from "../hooks/useGame";
+import { usePlaytime } from "../hooks/usePlaytime";
 import { useAuth } from "../hooks/useAuth";
 import { useReviews } from "../hooks/useReviews";
-  
+
+import { Badge } from "../components/ui/Badge";
+import Button from "../components/ui/Button";
+import { InfoCard } from "../components/ui/InfoCard";
+import RemoveButton from "../components/ui/RemoveButton";
+
+import ReviewForm from "../components/reviews/ReviewForm";
+import ReviewList from "../components/reviews/ReviewList";
+
+import { updateLibraryEntry } from "../services/libraryService";
+import { deleteGame } from "../services/gameService";
+import { deleteReview } from "../services/reviewService";
+
+import "./GameDetails.css";
+
 export function GameDetails() {
-    const { id } = useParams();
-    const { data, loading, error } = useGame(id!);
-    const { playtime, setPlaytime } = usePlaytime(id);
-    const { user } = useAuth();
-  
-    const [showReviewForm, setShowReviewForm] = useState(false);
-  
-    const {
-      reviews,
-      reviewsLoading,
-      reviewsError,
-      refetchReviews,
-      handleVote,
-    } = useReviews(id);
-  
-    const myReview = reviews.find(
-      (review) => review.user._id === user?._id
-    );
+  const { id } = useParams();
+  const navigate = useNavigate();
+
+  const { data, loading, error } = useGame(id!);
+  const { playtime, setPlaytime } = usePlaytime(id);
+  const { user } = useAuth();
+
+  const [showReviewForm, setShowReviewForm] = useState(false);
+
+  const {
+    reviews,
+    reviewsLoading,
+    reviewsError,
+    refetchReviews,
+    handleVote,
+  } = useReviews(id);
+
+  const myReview = reviews.find((review) => review.user._id === user?._id);
+
+  const handleDeleteReview = async (reviewId: string) => {
+    try {
+      await deleteReview(reviewId);
+      await refetchReviews();
+    } catch (error) {
+      console.error("Could not remove review", error);
+    }
+  };
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
   if (!data) return <p>Game not found</p>;
+
+  const isAdmin = user?.role === "admin";
+
+  const handleDeleteGame = async (gameId: string) => {
+    try {
+      await deleteGame(gameId);
+      navigate("/games");
+    } catch (error) {
+      console.error("Could not remove game", error);
+    }
+  };
 
   return (
     <div className="container">
@@ -43,6 +73,7 @@ export function GameDetails() {
           {data.genres.map((g) => g.name).join(", ")} - {data.dev}
         </p>
       </div>
+
       <div className="details-container">
         <div className="col-1">
           <InfoCard>
@@ -65,6 +96,7 @@ export function GameDetails() {
               </li>
             </ul>
           </InfoCard>
+
           <div className="badges">
             <p>Tags</p>
             {data.genres.map((genre) => (
@@ -72,11 +104,14 @@ export function GameDetails() {
             ))}
             {data.multiplayer && <Badge label="Multiplayer" />}
           </div>
+
           <div className="play-time">
             <InfoCard>
               <p>Time Played</p>
               <p>{playtime} min</p>
-              <button
+
+              <Button
+                color="vote"
                 onClick={async () => {
                   const newTime = playtime - 30;
                   setPlaytime(newTime);
@@ -84,9 +119,11 @@ export function GameDetails() {
                 }}
                 disabled={playtime === 0}
               >
-                -
-              </button>
-              <button
+                −
+              </Button>
+
+              <Button
+                color="vote"
                 onClick={async () => {
                   const newTime = playtime + 30;
                   setPlaytime(newTime);
@@ -94,63 +131,71 @@ export function GameDetails() {
                 }}
               >
                 +
-              </button>
+              </Button>
             </InfoCard>
           </div>
         </div>
+
         <div className="col-2">
-  <InfoCard>
-    <p>Dev News</p>
-    <p>
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi,
-      eaque? Sed sint beatae.
-    </p>
-  </InfoCard>
+          <div className="reviews-container">
+            <p>Recent Reviews</p>
 
-  <div className="reviews-container">
-    <p>Recent Reviews</p>
+            {reviewsLoading && <p>Loading reviews...</p>}
+            {reviewsError && <p>{reviewsError}</p>}
 
-    {showReviewForm ? (
-  <ReviewForm
-    gameId={id!}
-    existingReview={myReview}
-    onReviewCreated={() => {
-      refetchReviews();
-      setShowReviewForm(false);
-    }}
-  />
-) : (
-  <button type="button" onClick={() => setShowReviewForm(true)}>
-    Write a review
-  </button>
-)}
+            {!reviewsLoading && !reviewsError && (
+              <ReviewList
+                reviews={reviews}
+                onVote={handleVote}
+                currentUserId={user?._id}
+                onDelete={handleDeleteReview}
+              />
+            )}
+          </div>
+        </div>
 
-    {reviewsLoading && <p>Loading reviews...</p>}
-    {reviewsError && <p>{reviewsError}</p>}
-
-    {!reviewsLoading && !reviewsError && <ReviewList reviews={reviews} onVote={handleVote} />}
-  </div>
-</div>
-
-<div className="col-3">
+        <div className="col-3">
           <InfoCard>
-            <p>Playtime Leaderboard</p>
+            <p className="span-title">Playtime Leaderboard</p>
             <ul>
-              <li>1. Snubbe</li>
+              <li>1. Sascha</li>
               <li>2. Klas</li>
               <li>3. Mira</li>
               <li>4. oskar</li>
+              <li>999. DU</li>
             </ul>
           </InfoCard>
+
           <InfoCard>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Est et
-              natus ea sit eos reiciendis voluptas aperiam aliquid deserunt
-              voluptates.
-            </p>
+            {showReviewForm ? (
+              <ReviewForm
+                gameId={id!}
+                existingReview={myReview}
+                onReviewCreated={() => {
+                  refetchReviews();
+                  setShowReviewForm(false);
+                }}
+              />
+            ) : (
+              <Button
+                color="primary"
+                type="button"
+                onClick={() => setShowReviewForm(true)}
+              >
+                Write a review
+              </Button>
+            )}
           </InfoCard>
         </div>
       </div>
+
+      {isAdmin && (
+        <div className="container">
+          <RemoveButton gameId={data._id} onDelete={handleDeleteGame}>
+            Remove Game
+          </RemoveButton>
+        </div>
+      )}
     </div>
   );
 }

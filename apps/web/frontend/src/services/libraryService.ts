@@ -52,7 +52,7 @@ export const addToLibrary = async (gameId: string): Promise<LibraryEntry> => {
   if (!res.ok) {
     throw new Error(await parseApiError(res, "Could not add game"));
   }
-
+  console.log("Response from addToLibrary:", res);
   return res.json();
 };
 
