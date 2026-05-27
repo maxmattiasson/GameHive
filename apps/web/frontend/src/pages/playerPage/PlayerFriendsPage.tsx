@@ -6,6 +6,7 @@ import {
   useFriendsByUserId,
 } from "../../hooks/useFriends";
 import { FriendRequestActions } from "../../components/ui/FriendRequestActions";
+import styles from "./PlayerFriendsPage.module.css";
 
 export function PlayerFriendsPage() {
   const { id } = useParams();
@@ -24,20 +25,26 @@ export function PlayerFriendsPage() {
   const friendsLoading = id ? otherFriends.loading : ownFriends.loading;
   const friendsRefetch = ownFriends.refetch;
 
-  if (pendingLoading || friendsLoading) return <p>Loading...</p>;
+  if (pendingLoading || friendsLoading)
+    return <p className={styles.empty}>Loading...</p>;
 
   return (
-    <section>
+    <section className={styles.section}>
       {isOwnProfile && (
-        <>
-          <h2>Friend Requests</h2>
+        <div>
+          <h2 className={styles.heading}>Friend Requests</h2>
           {pendingRequests.length === 0 ? (
-            <p>No pending requests</p>
+            <p className={styles.empty}>No pending requests</p>
           ) : (
-            <ul>
+            <ul className={styles.list}>
               {pendingRequests.map((request) => (
-                <li key={request._id}>
-                  <span>{request.requester.username}</span>
+                <li key={request._id} className={styles.requestCard}>
+                  <div className={styles.avatar}>
+                    {request.requester.username[0]}
+                  </div>
+                  <span className={styles.username}>
+                    {request.requester.username}
+                  </span>
                   <FriendRequestActions
                     requestId={request._id}
                     onAction={() => {
@@ -49,28 +56,31 @@ export function PlayerFriendsPage() {
               ))}
             </ul>
           )}
-        </>
+        </div>
       )}
 
-      <h2>Friends</h2>
-      {friends.length === 0 ? (
-        <p>No friends yet</p>
-      ) : (
-        <ul>
-          {friends.map((friendship) => {
-            const friend =
-              friendship.requester._id === user?._id
-                ? friendship.recipient
-                : friendship.requester;
+      <div>
+        <h2 className={styles.heading}>Friends</h2>
+        {friends.length === 0 ? (
+          <p className={styles.empty}>No friends yet</p>
+        ) : (
+          <ul className={styles.list}>
+            {friends.map((friendship) => {
+              const friend =
+                friendship.requester._id === user?._id
+                  ? friendship.recipient
+                  : friendship.requester;
 
-            return (
-              <li key={friendship._id}>
-                <span>{friend.username}</span>
-              </li>
-            );
-          })}
-        </ul>
-      )}
+              return (
+                <li key={friendship._id} className={styles.card}>
+                  <div className={styles.avatar}>{friend.username[0]}</div>
+                  <span className={styles.username}>{friend.username}</span>
+                </li>
+              );
+            })}
+          </ul>
+        )}
+      </div>
     </section>
   );
 }
