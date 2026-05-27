@@ -1,5 +1,9 @@
 import { useState, useEffect } from "react";
-import { getFriends, getPendingRequests } from "../services/friendshipService";
+import {
+  getFriends,
+  getPendingRequests,
+  getFriendsByUserId,
+} from "../services/friendshipService";
 
 export function useFriends() {
   const [data, setData] = useState<any[]>([]);
@@ -39,4 +43,19 @@ export function usePendingRequests() {
   }, []);
 
   return { data, loading, error, refetch };
+}
+
+export function useFriendsByUserId(userId: string) {
+  const [data, setData] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    getFriendsByUserId(userId)
+      .then(setData)
+      .catch((err: Error) => setError(err.message))
+      .finally(() => setLoading(false));
+  }, [userId]);
+
+  return { data, loading, error };
 }

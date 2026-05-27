@@ -53,3 +53,12 @@ export const getFriends = async () => {
   if (!res.ok) throw new Error("Couldnt fetch friends");
   return res.json();
 };
+
+export const getFriendsByUserId = async (userId: string) => {
+  const res = await fetch(`${API_URL}/friends/${userId}`, {
+    credentials: "include",
+  });
+
+  if (!res.ok) throw new Error("Couldn't fetch friends");
+  return res.json();
+};

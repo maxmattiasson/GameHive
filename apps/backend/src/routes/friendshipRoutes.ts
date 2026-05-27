@@ -5,6 +5,7 @@ import {
   acceptFriendRequest,
   rejectFriendRequest,
   getFriends,
+  getFriendsByUserId,
 } from "../controllers/friendshipControllers.js";
 import { authMiddleware } from "../auth/authMiddleware.js";
 import { friendshipBodySchema } from "../schemas/friendship.schemas.js";
@@ -25,5 +26,7 @@ router.patch("/requests/:id/accept", authMiddleware, acceptFriendRequest);
 router.delete("/requests/:id", authMiddleware, rejectFriendRequest);
 
 router.get("/friends", authMiddleware, getFriends);
+
+router.get("/friends/:id", authMiddleware, getFriendsByUserId);
 
 export default router;

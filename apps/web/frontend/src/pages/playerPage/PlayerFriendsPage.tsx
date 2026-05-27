@@ -1,6 +1,10 @@
 import { useParams } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
-import { usePendingRequests, useFriends } from "../../hooks/useFriends";
+import {
+  usePendingRequests,
+  useFriends,
+  useFriendsByUserId,
+} from "../../hooks/useFriends";
 import { FriendRequestActions } from "../../components/ui/FriendRequestActions";
 
 export function PlayerFriendsPage() {
@@ -13,11 +17,12 @@ export function PlayerFriendsPage() {
     loading: pendingLoading,
     refetch: pendingRefetch,
   } = usePendingRequests();
-  const {
-    data: friends,
-    loading: friendsLoading,
-    refetch: friendsRefetch,
-  } = useFriends();
+
+  const ownFriends = useFriends();
+  const otherFriends = useFriendsByUserId(id ?? "");
+  const friends = id ? otherFriends.data : ownFriends.data;
+  const friendsLoading = id ? otherFriends.loading : ownFriends.loading;
+  const friendsRefetch = ownFriends.refetch;
 
   if (pendingLoading || friendsLoading) return <p>Loading...</p>;
 

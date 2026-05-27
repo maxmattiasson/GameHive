@@ -114,10 +114,32 @@ async function getFriends(req: AuthRequest, res: Response, next: NextFunction) {
   }
 }
 
+async function getFriendsByUserId(
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction,
+) {
+  const { id } = req.params;
+
+  try {
+    const friends = await FriendshipModel.find({
+      $or: [{ requester: id }, { recipient: id }],
+      status: "accepted",
+    } as any)
+      .populate("requester", "username")
+      .populate("recipient", "username");
+
+    return res.status(200).json(friends);
+  } catch (err) {
+    next(err);
+  }
+}
+
 export {
   sendFriendRequest,
   getPendingRequests,
   acceptFriendRequest,
   rejectFriendRequest,
   getFriends,
+  getFriendsByUserId,
 };
