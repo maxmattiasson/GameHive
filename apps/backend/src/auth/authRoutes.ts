@@ -32,7 +32,6 @@ router.get("/me", authMiddleware, async (req: AuthRequest, res) => {
           return res.status(400).json({ message: "Invalid user ID" });
         }
     
-
         const user = await UserModel.findById(userId).select("-passwordHash");
     
         if (!user) {

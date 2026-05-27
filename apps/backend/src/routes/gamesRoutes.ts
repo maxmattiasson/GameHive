@@ -29,6 +29,8 @@ import {
   idParamSchema,
 } from "../schemas/common.schemas.js";
 
+import { createReviewSchema } from "../schemas/review.schema.js";
+
 import { validateRequest } from "../middleware/validate.js";
 
 const router = Router();
@@ -93,8 +95,11 @@ router.get(
 router.post(
   "/games/:gameId/reviews",
   authMiddleware,
-  validateRequest({ params: gameIdParamsSchema }),
-  createReview,
+  validateRequest({
+    params: gameIdParamsSchema,
+    body: createReviewSchema,
+  }),
+  createReview
 );
 
 // Get all reviews on a game

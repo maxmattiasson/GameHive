@@ -61,4 +61,4 @@ export function PlayerProfile() {
       </div>
     </div>
   );
-}
+} 

@@ -6,6 +6,8 @@ import {
   removeReviewVote,
   updateReview
 } from "../controllers/reviewController.js";
+import { voteReviewSchema, updateReviewSchema } from "../schemas/review.schema.js";
+import { validateRequest } from "../middleware/validate.js";
 
 const router = express.Router();
 
@@ -13,10 +15,10 @@ const router = express.Router();
 router.delete("/:reviewId", authMiddleware, deleteReview);
 
 // Update review
-router.patch("/:reviewId", authMiddleware, updateReview);
+router.patch("/:reviewId", authMiddleware, validateRequest({ body: updateReviewSchema }), updateReview);
 
 // Vote helpful / not helpful
-router.post("/:reviewId/vote", authMiddleware, voteReview);
+router.post("/:reviewId/vote", authMiddleware, validateRequest({ body: voteReviewSchema }), voteReview);
 
 // Remove own vote
 router.delete("/:reviewId/vote", authMiddleware, removeReviewVote);
