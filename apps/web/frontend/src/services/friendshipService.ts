@@ -1,6 +1,6 @@
 import { API_BASE_URL } from "../config/api";
 
-const API_URL = `${API_BASE_URL}/friendships`;
+const API_URL = `${API_BASE_URL}/friends`;
 
 export const sendFriendRequest = async (userId: string) => {
   const res = await fetch(`${API_URL}/requests`, {

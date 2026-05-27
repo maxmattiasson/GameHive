@@ -1,6 +1,7 @@
 import { Outlet, NavLink, useParams } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { useState, useEffect } from "react";
+import { AddFriendButton } from "../../components/ui/AddFriendButton";
 import "./PlayerProfilePage.css";
 
 export function PlayerProfile() {
@@ -36,6 +37,7 @@ export function PlayerProfile() {
           ) : (
             <h1>{user?.username}</h1>
           )}
+          {id && <AddFriendButton userId={id} />}
           <p>Player Profile</p>
         </div>
         <div className="player-img">
