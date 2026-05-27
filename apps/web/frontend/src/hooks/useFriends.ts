@@ -6,14 +6,19 @@ export function useFriends() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
+  function refetch() {
+    setLoading(true);
     getFriends()
       .then(setData)
       .catch((err: Error) => setError(err.message))
       .finally(() => setLoading(false));
+  }
+
+  useEffect(() => {
+    refetch();
   }, []);
 
-  return { data, loading, error };
+  return { data, loading, error, refetch };
 }
 
 export function usePendingRequests() {
@@ -21,12 +26,17 @@ export function usePendingRequests() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
+  function refetch() {
+    setLoading(true);
     getPendingRequests()
       .then(setData)
       .catch((err: Error) => setError(err.message))
       .finally(() => setLoading(false));
+  }
+
+  useEffect(() => {
+    refetch();
   }, []);
 
-  return { data, loading, error };
+  return { data, loading, error, refetch };
 }
