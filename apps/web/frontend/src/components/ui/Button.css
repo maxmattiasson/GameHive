@@ -21,6 +21,16 @@
   color: var(--white-100);
 }
 
+.btn-secondary {
+  border: 0.5px solid var(--gray-600);
+  background: transparent;
+  color: var(--white-100);
+}
+
+.btn-secondary:hover {
+  border-color: var(--white-100);
+}
+
 .btn-vote {
   padding: var(--space-1) var(--space-3);
   border-radius: var(--radius-1);
