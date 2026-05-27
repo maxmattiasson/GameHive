@@ -1,0 +1,96 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 2rem;
+  background: var(--gray-900);
+  border-bottom: 1px solid rgba(56, 173, 134, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.logo {
+  font-family: var(--font-sans);
+  font-size: var(--fs-4);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 0;
+  color: var(--white-100);
+  text-decoration: none;
+}
+
+.nav {
+  display: flex;
+  gap: var(--space-6);
+}
+
+.navLink {
+  font-family: var(--font-mono);
+  font-size: var(--fs-1);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #7a8a95;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.navLink:hover {
+  color: var(--white-100);
+}
+
+.navLinkActive {
+  color: var(--accent-500);
+}
+
+.userArea {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.profileLink {
+  font-family: var(--font-mono);
+  font-size: var(--fs-1);
+  color: var(--accent-500);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.profileLink:hover {
+  color: var(--accent-600);
+}
+
+.loginContainer {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.loginContainer form {
+  display: flex;
+  gap: var(--space-2);
+}
+
+@media (max-width: 768px) {
+  .header {
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-4);
+  }
+
+  .nav {
+    gap: var(--space-4);
+  }
+}
+
+@media (max-width: 480px) {
+  .loginContainer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .loginContainer input {
+    width: 100%;
+  }
+}

@@ -1,9 +1,13 @@
+import styles from "./AdminPage.module.css";
+
 const AdminPage = () => {
   return (
-    <div>
-      <h1>ADMIN</h1>
-      <p>Find and delete them maggots!</p>
-      <input placeholder="Find user" />
+    <div className={styles.page}>
+      <div>
+        <h1 className={styles.heading}>ADMIN</h1>
+        <p className={styles.subheading}>Find and delete them maggots!</p>
+      </div>
+      <input className={styles.input} placeholder="Find user" />
     </div>
   );
 };
