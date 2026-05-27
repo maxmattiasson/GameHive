@@ -46,4 +46,78 @@ async function getPendingRequests(
   }
 }
 
-export { sendFriendRequest, getPendingRequests };
+async function acceptFriendRequest(
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction,
+) {
+  const userId = req.user!.userId;
+  const { id } = req.params;
+
+  try {
+    //update status to accepted when userId matches and status is pending
+    const friendship = await FriendshipModel.findOneAndUpdate(
+      { _id: id, recipient: userId, status: "pending" },
+      { status: "accepted" },
+      { new: true },
+    );
+
+    if (!friendship) {
+      return res.status(404).json({ message: "Friend request not found" });
+    }
+
+    return res.status(200).json(friendship);
+  } catch (err) {
+    next(err);
+  }
+}
+
+async function rejectFriendRequest(
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction,
+) {
+  const userId = req.user!.userId;
+  const { id } = req.params;
+
+  try {
+    const friendship = await FriendshipModel.findOneAndDelete({
+      _id: id,
+      recipient: userId,
+      status: "pending",
+    });
+
+    if (!friendship) {
+      return res.status(404).json({ message: "Friend request not found" });
+    }
+
+    return res.status(200).json({ message: "Friend request rejected" });
+  } catch (err) {
+    next(err);
+  }
+}
+
+async function getFriends(req: AuthRequest, res: Response, next: NextFunction) {
+  const userId = req.user!.userId;
+
+  try {
+    const friends = await FriendshipModel.find({
+      status: "accepted",
+      $or: [{ requester: userId }, { recipient: userId }],
+    })
+      .populate("requester", "username")
+      .populate("recipient", "username");
+
+    return res.status(200).json(friends);
+  } catch (err) {
+    next(err);
+  }
+}
+
+export {
+  sendFriendRequest,
+  getPendingRequests,
+  acceptFriendRequest,
+  rejectFriendRequest,
+  getFriends,
+};
