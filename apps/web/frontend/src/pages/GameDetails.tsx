@@ -36,6 +36,7 @@ export function GameDetails() {
     reviewsError,
     refetchReviews,
     handleVote,
+    averageRating
   } = useReviews(id);
 
   const myReview = reviews.find((review) => review.user._id === user?._id);

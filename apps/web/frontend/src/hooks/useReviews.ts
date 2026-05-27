@@ -37,11 +37,18 @@ export function useReviews(gameId: string | undefined) {
     }
   };
 
+  const averageRating =
+  reviews.length > 0
+    ? reviews.reduce((sum, review) => sum + (review.rating || 0), 0) /
+      reviews.filter((review) => review.rating !== undefined).length
+    : 0;
+
   return {
     reviews,
     reviewsLoading,
     reviewsError,
     refetchReviews,
     handleVote,
+    averageRating
   };
 }
