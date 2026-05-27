@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { GameFilterValues } from "../../../types/gameFilter";
-import "./GameFilter.css";
+import styles from "./GameFilter.module.css";
 import Button from "../../ui/Button";
 
 type GameFilterProps = {
@@ -25,115 +25,94 @@ const genres = [
   "MMO",
   "MOBA",
   "Stealth",
-  "Puzzle"
+  "Puzzle",
 ];
 
-// startvalue for game filter
 const initialFilter: GameFilterValues = {
   title: "",
   genre: [],
   dev: "",
   release: "",
-  multiplayer: false
+  multiplayer: false,
 };
 
 const GameFilter = ({ onSearch }: GameFilterProps) => {
   const [filter, setFilter] = useState<GameFilterValues>(initialFilter);
   const [showGenres, setShowGenres] = useState(false);
 
-  // updates field dynamic.
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFilter((prev) => ({ ...prev, [name]: value }));
   };
 
-  // checkes value and checked, enables multi-select
   const handleGenreChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, checked } = e.target;
     setFilter((prev) => ({
       ...prev,
       genre: checked
         ? [...prev.genre, value]
-        : prev.genre.filter((g) => g !== value)
+        : prev.genre.filter((g) => g !== value),
     }));
   };
 
-  // check if checked
   const handleMultiplayerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFilter((prev) => ({ ...prev, multiplayer: e.target.checked }));
   };
 
-  const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     onSearch(filter);
   };
 
-  // resets filter on UI and parent component
   const handleReset = () => {
     setFilter(initialFilter);
     onSearch(initialFilter);
   };
 
   return (
-    <form className="search-filter-container" onSubmit={handleSubmit}>
-      <h3>Search Filter</h3>
+    <form className={styles.form} onSubmit={handleSubmit}>
+      <h3 className={styles.heading}>Search Filter</h3>
 
-      <input
-        name="title"
-        type="text"
-        value={filter.title}
-        onChange={handleInputChange}
-        placeholder="Search title"
-      />
-
-      <input
-        name="dev"
-        type="text"
-        value={filter.dev}
-        onChange={handleInputChange}
-        placeholder="Search Developer"
-      />
-
-      <input
-        name="title"
-        type="text"
-        value={filter.title}
-        onChange={handleInputChange}
-        placeholder="Search title"
-      />
-
-      <input
-        name="dev"
-        type="text"
-        value={filter.dev}
-        onChange={handleInputChange}
-        placeholder="Search Developer"
-      />
-
-      <label>
+      <div className={styles.row}>
         <input
-          className="multiplayer-box"
-          type="checkbox"
-          checked={filter.multiplayer}
-          onChange={handleMultiplayerChange}
+          className={styles.input}
+          name="title"
+          type="text"
+          value={filter.title}
+          onChange={handleInputChange}
+          placeholder="Search title"
         />
-        Multiplayer
-      </label>
-
-      <Button
-        color="secondary"
-        type="button"
-        aria-expanded={showGenres}
-        onClick={() => setShowGenres((v) => !v)}
-      >
-        {showGenres ? "Hide genre" : "Show genre"}
-      </Button>
+        <input
+          className={styles.input}
+          name="dev"
+          type="text"
+          value={filter.dev}
+          onChange={handleInputChange}
+          placeholder="Search developer"
+        />
+        <label className={styles.checkboxLabel}>
+          <input
+            type="checkbox"
+            checked={filter.multiplayer}
+            onChange={handleMultiplayerChange}
+          />
+          Multiplayer
+        </label>
+        <Button
+          color="secondary"
+          type="button"
+          aria-expanded={showGenres}
+          onClick={() => setShowGenres((v) => !v)}
+        >
+          {showGenres ? "Hide genre" : "Show genre"}
+        </Button>
+      </div>
 
       {showGenres && (
-        <fieldset>
-          <legend>Genre</legend>
+        <fieldset className={styles.fieldset}>
+          <legend className={styles.legend}>Genre</legend>
           {genres.map((genre) => (
-            <label key={genre}>
+            <label key={genre} className={styles.genreLabel}>
               <input
                 type="checkbox"
                 value={genre}
@@ -145,7 +124,8 @@ const GameFilter = ({ onSearch }: GameFilterProps) => {
           ))}
         </fieldset>
       )}
-      <div className="">
+
+      <div className={styles.actions}>
         <Button color="secondary" type="submit">
           Search
         </Button>
@@ -156,4 +136,5 @@ const GameFilter = ({ onSearch }: GameFilterProps) => {
     </form>
   );
 };
+
 export default GameFilter;

@@ -1,15 +1,15 @@
-import type { ChangeEvent } from "react"
-import "./input.css"
+import type { ChangeEvent } from "react";
+import styles from "./input.module.css";
 
 interface Props {
-  type?: "text" | "email" | "password" | "number" | "search"
-  name: string
-  value: string
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void
-  placeholder?: string
-  className?: string
-  disabled?: boolean
-  autoComplete?: string
+  type?: "text" | "email" | "password" | "number" | "search";
+  name: string;
+  value: string;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  placeholder?: string;
+  className?: string;
+  disabled?: boolean;
+  autoComplete?: string;
 }
 
 export default function Input({
@@ -29,9 +29,9 @@ export default function Input({
       value={value}
       onChange={onChange}
       placeholder={placeholder}
-      className={className}
+      className={`${styles.input} ${className ?? ""}`}
       disabled={disabled}
       autoComplete={autoComplete}
     />
-  )
+  );
 }

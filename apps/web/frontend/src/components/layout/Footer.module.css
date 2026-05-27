@@ -6,6 +6,7 @@
   padding: 0.75rem 1.5rem;
   background: var(--gray-900);
   border-top: 1px solid rgba(255, 255, 255, 0.08);
+  margin-top: auto;
 }
 
 .footer p {

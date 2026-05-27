@@ -1,0 +1,160 @@
+/* ===== Player Profile Page ===== */
+
+.playerProfile {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 5rem 1.5rem;
+}
+
+/* ===== Header ===== */
+
+.playerHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-6);
+  background: var(--gray-800);
+  border: 1px solid rgba(56, 173, 134, 0.15);
+  border-radius: 10px;
+  padding: var(--space-6);
+  margin-bottom: var(--space-5);
+  position: relative;
+  overflow: hidden;
+}
+
+.playerHeader::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 60% 80% at 90% 50%,
+    rgba(56, 173, 134, 0.07) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+}
+
+.playerHeaderInfo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  z-index: 1;
+}
+
+.playerHeaderInfo h1 {
+  margin: 0;
+  font-size: var(--fs-5);
+  font-family: var(--font-sans);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  color: var(--white-100);
+}
+
+.playerHeaderInfo p {
+  margin: 0;
+  font-size: var(--fs-1);
+  color: var(--accent-500);
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+/* ===== Avatar ===== */
+
+.playerImg {
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.playerImg img {
+  width: 96px;
+  height: 96px;
+  border-radius: var(--radius-2);
+  object-fit: cover;
+  border: 2px solid rgba(56, 173, 134, 0.4);
+  display: block;
+}
+
+/* ===== Nav Tabs ===== */
+
+.nav {
+  display: flex;
+  gap: 0;
+  list-style: none;
+  margin: 0 0 var(--space-4) 0;
+  padding: 0;
+  border-bottom: 1px solid rgba(56, 173, 134, 0.15);
+}
+
+.nav li a {
+  display: block;
+  padding: var(--space-3) var(--space-5);
+  font-family: var(--font-mono);
+  font-size: var(--fs-1);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #7a8a95;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition:
+    color 0.2s,
+    border-color 0.2s;
+}
+
+.nav li a:hover {
+  color: var(--white-100);
+  border-bottom-color: rgba(56, 173, 134, 0.4);
+}
+
+.nav li a:global(.active) {
+  color: var(--accent-500);
+  font-weight: 600;
+  border-bottom-color: var(--accent-500);
+}
+
+/* ===== Content Section ===== */
+
+.profileSection {
+  background: var(--gray-800);
+  border: 1px solid rgba(56, 173, 134, 0.1);
+  border-radius: 10px;
+  padding: var(--space-6);
+  min-height: 200px;
+}
+
+/* ===== Logged-out state ===== */
+
+.loggedOut p {
+  margin: 0;
+  color: #7a8a95;
+  font-family: var(--font-mono);
+  font-size: var(--fs-1);
+}
+
+@media (max-width: 600px) {
+  .playerHeader {
+    flex-direction: column-reverse;
+    align-items: flex-start;
+  }
+
+  .playerImg img {
+    width: 72px;
+    height: 72px;
+  }
+
+  .nav {
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .nav li a {
+    white-space: nowrap;
+    padding: var(--space-3) var(--space-4);
+  }
+}
