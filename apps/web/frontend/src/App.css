@@ -67,6 +67,16 @@ body {
   background-repeat: no-repeat; */
 }
 
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1;
+}
+
 body {
   background:
     linear-gradient(to top, rgba(14, 17, 20, 0.6) 0%, rgba(14, 17, 20, 1) 40%),

@@ -6,7 +6,15 @@
   box-sizing: border-box;
 }
 
+.game-filter-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
 .button-wrapper {
   display: flex;
   justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
 }
