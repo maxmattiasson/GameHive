@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Button from "../../components/ui/Button";
+
 import type { User } from "../../types/user";
 
 const AdminPage = () => {
@@ -41,7 +41,7 @@ const AdminPage = () => {
       <h1>ADMIN</h1>
 
       <fieldset>
-        <legend>Delete user</legend>
+        <legend>Search user</legend>
       </fieldset>
     </div>
   );
