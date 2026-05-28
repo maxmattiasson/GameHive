@@ -1,7 +1,6 @@
 import { Outlet, NavLink, useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { useState, useEffect } from "react";
-import "./PlayerProfilePage.css";
 import type { User } from "../../types/user";
 import RemoveButton from "../../components/ui/RemoveButton";
 import deleteUser from "../../services/userService";
