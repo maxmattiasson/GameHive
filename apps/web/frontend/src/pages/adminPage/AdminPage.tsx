@@ -1,48 +1,13 @@
-import { useState } from "react";
-
-import type { User } from "../../types/user";
+import styles from "./AdminPage.module.css";
 
 const AdminPage = () => {
-  const [users, setUsers] = useState<User[]>([]);
-  const [filter, setFilter] = useState("");
-
-  const findUsers = async (id: string) => {
-    try {
-      const response = await fetch(
-        `/api/users?search=${encodeURIComponent(filter)}`,
-        {
-          credentials: "include"
-        }
-      );
-      if (response.ok) {
-        const data = await response.json();
-        setUsers(data);
-      }
-    } catch (error) {
-      // hantera fel
-    }
-  };
-  const deleteUser = async (id: string) => {
-    try {
-      const response = await fetch(`/api/users/${id}`, {
-        method: "DELETE",
-        credentials: "include"
-      });
-      if (response.ok) {
-        setUsers((user) => users.filter((user) => user._id !== id));
-      }
-    } catch (error) {
-      // hantera fel
-    }
-  };
-
   return (
-    <div>
-      <h1>ADMIN</h1>
-
-      <fieldset>
-        <legend>Search user</legend>
-      </fieldset>
+    <div className={styles.page}>
+      <div>
+        <h1 className={styles.heading}>ADMIN</h1>
+        <p className={styles.subheading}>Find and delete them maggots!</p>
+      </div>
+      <input className={styles.input} placeholder="Find user" />
     </div>
   );
 };

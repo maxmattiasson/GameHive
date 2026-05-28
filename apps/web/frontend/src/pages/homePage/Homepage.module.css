@@ -1,0 +1,10 @@
+.homepage {
+  max-width: 1200px;
+  margin: 4rem auto;
+  padding: 0 2rem;
+}
+
+.homepage h3 {
+  font-size: var(--fs-4);
+  margin-bottom: 0;
+}

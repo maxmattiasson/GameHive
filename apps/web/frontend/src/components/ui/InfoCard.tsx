@@ -1,9 +1,9 @@
-import "./InfoCard.css";
+import styles from "./InfoCard.module.css";
 
 type Props = {
   children: React.ReactNode;
 };
 
 export function InfoCard({ children }: Props) {
-  return <div className="info-card">{children}</div>;
+  return <div className={styles.infoCard}>{children}</div>;
 }

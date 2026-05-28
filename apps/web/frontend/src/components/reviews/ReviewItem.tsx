@@ -17,22 +17,20 @@ export default function ReviewItem({
   currentUserId,
   onVote,
   onDelete,
-  showGameTitle = false
+  showGameTitle = false,
 }: ReviewItemProps) {
   const { user } = useAuth();
 
-  const helpfulCount = review.votes.filter((vote) => vote.value === 1).length;
-
-  const notHelpfulCount = review.votes.filter(
-    (vote) => vote.value === -1
-  ).length;
-
+  const helpfulCount = review.votes.filter((v) => v.value === 1).length;
+  const notHelpfulCount = review.votes.filter((v) => v.value === -1).length;
   const isOwnReview = review.user._id === currentUserId;
   const isAdmin = user?.role === "admin";
 
   return (
     <article className={styles.reviewCont}>
-      {showGameTitle && review.game && <h3>{review.game.title}</h3>}
+      {showGameTitle && review.game && (
+        <h3 className={styles.gameTitle}>{review.game.title}</h3>
+      )}
       <div className={styles.reviewHeader}>
         {isAdmin && onDelete && (
           <RemoveButton reviewId={review._id} onDelete={onDelete}>
@@ -41,22 +39,20 @@ export default function ReviewItem({
         )}
       </div>
       <p className={styles.reviewerName}>{review.user.username}</p>
-
-      {review.rating !== undefined && <p>Rating: {review.rating}/5</p>}
-
-      <p>{review.text}</p>
-
-      <small>{new Date(review.createdAt).toLocaleDateString()}</small>
-
-      <div>
+      {review.rating !== undefined && (
+        <p className={styles.rating}>Rating: {review.rating}/5</p>
+      )}
+      <p className={styles.text}>{review.text}</p>
+      <small className={styles.date}>
+        {new Date(review.createdAt).toLocaleDateString()}
+      </small>
+      <div className={styles.actions}>
         <Button color="vote" onClick={() => onVote?.(review._id, 1)}>
           Helpful ({helpfulCount})
         </Button>
-
         <Button color="vote" onClick={() => onVote?.(review._id, -1)}>
           Not helpful ({notHelpfulCount})
         </Button>
-
         {isOwnReview && (
           <Button color="vote" onClick={() => onDelete?.(review._id)}>
             Delete

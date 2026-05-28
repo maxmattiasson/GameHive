@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useSignup } from "../../hooks/useSignup";
 import Button from "../../components/ui/Button";
+import styles from "./SignupPage.module.css";
 
 export function SignupPage() {
   const {
@@ -15,23 +16,25 @@ export function SignupPage() {
     onChangePassword,
     onChangeConfirmPassword,
     signup,
-    loading
+    loading,
   } = useSignup();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     await signup();
   };
 
   return (
-    <section>
-      <h1>Sign up</h1>
-      <p>Join the GameHive Community</p>
-      {success && <p style={{ color: "green" }}>{success}</p>}
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      <form onSubmit={handleSubmit} autoComplete="off">
+    <section className={styles.section}>
+      <h1 className={styles.heading}>Sign up</h1>
+      <p className={styles.subheading}>Join the GameHive Community</p>
+
+      {success && <p className={styles.success}>{success}</p>}
+      {error && <p className={styles.error}>{error}</p>}
+
+      <form className={styles.form} onSubmit={handleSubmit} autoComplete="off">
         <input
+          className={styles.input}
           type="text"
           value={username}
           name="signup_user_field"
@@ -40,6 +43,7 @@ export function SignupPage() {
           autoComplete="off"
         />
         <input
+          className={styles.input}
           type="email"
           value={email}
           name="signup_email_field"
@@ -47,8 +51,8 @@ export function SignupPage() {
           placeholder="Email"
           autoComplete="off"
         />
-
         <input
+          className={styles.input}
           type="password"
           name="signup_password_field"
           value={password}
@@ -56,8 +60,8 @@ export function SignupPage() {
           onChange={onChangePassword}
           placeholder="Password"
         />
-
         <input
+          className={styles.input}
           type="password"
           name="signup_confirm_field"
           value={confirmPassword}
@@ -65,13 +69,14 @@ export function SignupPage() {
           onChange={onChangeConfirmPassword}
           placeholder="Re-enter password"
         />
-
         <Button color="primary" type="submit" disabled={loading}>
-          {" "}
           {loading ? "Creating account..." : "Sign up"}
         </Button>
       </form>
-      <Link to="/">Back to home</Link>
+
+      <Link to="/" className={styles.backLink}>
+        Back to home
+      </Link>
     </section>
   );
 }

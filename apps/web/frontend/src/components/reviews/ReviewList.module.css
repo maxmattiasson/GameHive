@@ -1,0 +1,45 @@
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.empty {
+  font-family: var(--font-mono);
+  font-size: var(--fs-1);
+  color: #7a8a95;
+  margin: 0;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  margin-top: var(--space-2);
+}
+
+.pageBtn {
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-round);
+  border: 1px solid var(--gray-600);
+  background: transparent;
+  color: var(--white-100);
+  font-family: var(--font-mono);
+  font-size: var(--fs-1);
+  cursor: pointer;
+  transition:
+    border-color 0.2s,
+    color 0.2s;
+}
+
+.pageBtn:hover:not(:disabled) {
+  border-color: var(--accent-500);
+  color: var(--accent-500);
+}
+
+.pageBtn:disabled {
+  border-color: var(--accent-500);
+  color: var(--accent-500);
+  cursor: default;
+}
