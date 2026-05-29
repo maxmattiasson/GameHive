@@ -19,7 +19,8 @@ import { deleteGame } from "../services/gameService";
 import { useNavigate } from "react-router-dom";
 
 export function GameDetails() {
-  const { id } = useParams();
+  const { id: slug } = useParams();
+  const id = slug?.match(/[0-9a-f]{24}$/i)?.[0];
   const { data, loading, error } = useGame(id!);
   const { playtime, setPlaytime } = usePlaytime(id);
   const { user } = useAuth();
