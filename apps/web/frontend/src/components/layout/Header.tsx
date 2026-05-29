@@ -43,7 +43,8 @@ export function Header() {
         <div className={styles.userArea}>
           <Notifications />
           <NavLink to={profilePath} className={styles.profileLink}>
-            {user.username}
+            <div className={styles.avatar}>{user.username[0]}</div>
+            <span>{user.username}</span>
           </NavLink>
           <Button color="vote" onClick={handleLogout}>
             Log out

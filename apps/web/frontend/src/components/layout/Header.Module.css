@@ -50,16 +50,38 @@
 }
 
 .profileLink {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   font-family: var(--font-mono);
   font-size: var(--fs-1);
   color: var(--accent-500);
   text-decoration: none;
   transition: color 0.2s;
   line-height: 1;
+  text-transform: uppercase;
+  background: var(--gray-600);
+  padding: 0.5rem;
 }
 
 .profileLink:hover {
   color: var(--accent-600);
+}
+
+.avatar {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: rgba(56, 173, 134, 0.15);
+  border: 1px solid rgba(56, 173, 134, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--fs-1);
+  font-family: var(--font-mono);
+  color: var(--accent-500);
+  flex-shrink: 0;
+  text-transform: uppercase;
 }
 
 .loginContainer {
