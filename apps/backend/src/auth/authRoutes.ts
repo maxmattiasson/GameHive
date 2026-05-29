@@ -21,6 +21,7 @@ router.post("/logout", logout);
 
 // Protected route
 router.get("/me", authMiddleware, async (req: AuthRequest, res) => {
+
     try {
         const userId = req.user?.userId;
 

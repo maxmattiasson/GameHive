@@ -2,10 +2,13 @@ import bcrypt from "bcrypt";
 import UserModel from "../models/User.js";
 import { NextFunction, Request, Response } from "express";
 import jwt  from "jsonwebtoken";
+import type { z } from "zod";
+import { signupSchema, loginSchema } from "../schemas/auth.schema.js";
 
 export const signup = async (req: Request, res: Response) => {
     try {
-    const { username, email, password }= req.body;
+    const { username, email, password } = req.validatedBody as z.infer<typeof signupSchema>;
+
 
     const existingUser = await UserModel.findOne({
       email: email.toLowerCase()
@@ -61,7 +64,7 @@ export const login = async (
   next: NextFunction
 ) => {
   try {
-    const { email, password } = req.body;
+    const { email, password } = req.validatedBody as z.infer<typeof loginSchema>;;
     
     const normalizedEmail = email.toLowerCase().trim();
 
