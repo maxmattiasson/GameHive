@@ -87,7 +87,7 @@ router.delete(
 // Reviews on one game
 router.get(
   "/games/:gameId/reviews",
-  validateRequest({ params: gameIdParamsSchema }),
+  validateRequest({ params: gameIdParamsSchema, body: createReviewSchema}),
   getAllGamesReviews,
 );
 

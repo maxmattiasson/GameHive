@@ -3,11 +3,14 @@ import { AuthRequest } from "../auth/authMiddleware.js";
 import Review from "../models/Review.js";
 import mongoose from "mongoose";
 import Game from "../models/Game.js";
+import { z } from "zod";
+import { createReviewSchema, voteReviewSchema, updateReviewSchema } from "../schemas/review.schema.js";
+import { gameIdParamsSchema, reviewIdParamsSchema, idParamSchema } from "../schemas/common.schemas.js";
 
 export const createReview = async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
-    const { text, rating } = req.body;
-    const gameId = req.params.gameId as string;
+    const { text, rating } = req.validatedBody as z.infer<typeof createReviewSchema>;
+    const { gameId } = req.validatedParams as z.infer<typeof gameIdParamsSchema>
     const userId = req.user?.userId;
 
     if (!userId) {
@@ -35,7 +38,7 @@ export const getAllGamesReviews = async (
   next: NextFunction
 ) => {
   try {
-    const gameId = req.params.gameId;
+    const { gameId } = req.validatedParams as z.infer<typeof gameIdParamsSchema>
     
     const reviews = await Review.find({
       game: new mongoose.Types.ObjectId(gameId),
@@ -56,7 +59,7 @@ export const deleteReview = async (
 ) => {
   try {
     const userId = req.user?.userId;
-    const reviewId = req.params.reviewId;
+    const { reviewId } = req.validatedParams as z.infer<typeof reviewIdParamsSchema>;
 
     if (!userId) {
       return res.status(401).json({ message: "Unauthorized" });
@@ -91,8 +94,8 @@ export const voteReview = async (
 ) => {
   try {
     const userId = req.user?.userId;
-    const reviewId = req.params.reviewId;
-    const { value } = req.body;
+    const { reviewId } = req.validatedParams as z.infer<typeof reviewIdParamsSchema>;
+    const { value } = req.validatedBody as  z.infer<typeof voteReviewSchema>;;
     
     if (!userId) {
       return res.status(401).json({ message: "Unauthorized" });
@@ -132,7 +135,7 @@ export const removeReviewVote = async (
 ) => {
   try {
     const userId = req.user?.userId;
-    const reviewId = req.params.reviewId;
+    const { reviewId } = req.validatedParams as z.infer<typeof reviewIdParamsSchema>;
 
     if (!userId) {
       return res.status(401).json({ message: "Unauthorized" });
@@ -162,8 +165,7 @@ export const getUserReviews = async (
   next: NextFunction
 ) => {
   try {
-    const userId = req.params.id;
-
+    const { id: userId } = req.validatedParams as z.infer<typeof idParamSchema>;
     const reviews = await Review.find({
       user: new mongoose.Types.ObjectId(userId),
     })
@@ -189,8 +191,8 @@ export const updateReview = async (
       return res.status(401).json({ message: "Unauthorized" });
     }
 
-    const { reviewId } = req.params;
-    const { text, rating } = req.body;
+    const { reviewId } = req.validatedParams as z.infer<typeof reviewIdParamsSchema>;
+    const { text, rating } = req.validatedBody as z.infer<typeof updateReviewSchema>;
 
     const review = await Review.findById(reviewId);
 
