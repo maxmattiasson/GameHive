@@ -13,6 +13,7 @@ import { SignupPage } from "./pages/signup/SignupPage";
 import { LibraryProvider } from "./contexts/LibraryContext";
 import { PlayerReviewsPage } from "./pages/playerPage/PlayerReviewsPage";
 import AdminPage from "./pages/adminPage/AdminPage";
+import Footer from "./components/layout/Footer";
 
 function App() {
   return (
@@ -48,10 +49,7 @@ function App() {
           </Routes>
         </main>
 
-        <footer>
-          {/* About: List of links to info articles */}
-          {/* Contact: List of contact paths to the site developers */}
-        </footer>
+        <Footer />
       </LibraryProvider>
     </>
   );

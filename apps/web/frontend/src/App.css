@@ -4,10 +4,12 @@
   --gray-800: #1a1f24;
   --gray-700: #2a323a;
   --gray-600: #3b46506e;
-  --white-100: #efe;
+  --gray-500: #b3bec96e;
+  --white-100: rgb(241, 248, 241);
   --accent-500: rgb(56, 173, 134);
   --accent-600: rgb(60, 139, 113);
   --accent-700: rgb(76, 126, 109);
+  --danger: #e53935;
 
   /* Typography */
   --font-sans: "Sora", "Space Grotesk", "Segoe UI", sans-serif;
@@ -65,6 +67,16 @@ body {
     var(--gray-900);
   background-attachment: fixed;
   background-repeat: no-repeat; */
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1;
 }
 
 body {
@@ -141,6 +153,32 @@ a {
   &:hover {
     color: var(--accent-500);
   }
+}
+
+select {
+  background: var(--gray-800);
+  color: var(--white-100);
+  border: 1.5px solid var(--accent-500);
+  border-radius: var(--radius-1);
+  padding: var(--space-2);
+  font-family: var(--font-sans);
+  font-size: var(--fs-2);
+  transition:
+    border 0.2s,
+    box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  outline: none;
+  margin: 0 10px;
+}
+
+select:focus {
+  border-color: var(--accent-600);
+  box-shadow: 0 0 0 2px var(--accent-600) 33;
+}
+
+select option {
+  background: var(--gray-700);
+  color: var(--white-100);
 }
 
 .active {

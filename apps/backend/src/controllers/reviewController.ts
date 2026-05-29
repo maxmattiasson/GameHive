@@ -2,53 +2,35 @@ import { Response, NextFunction} from "express"
 import { AuthRequest } from "../auth/authMiddleware.js";
 import Review from "../models/Review.js";
 import mongoose from "mongoose";
+import Game from "../models/Game.js";
+import { z } from "zod";
+import { createReviewSchema, voteReviewSchema, updateReviewSchema } from "../schemas/review.schema.js";
+import { gameIdParamsSchema, reviewIdParamsSchema, idParamSchema } from "../schemas/common.schemas.js";
 
 export const createReview = async (req: AuthRequest, res: Response, next: NextFunction) => {
-    const { text, rating } = req.body;
-    const gameId = req.params.gameId;
+  try {
+    const { text, rating } = req.validatedBody as z.infer<typeof createReviewSchema>;
+    const { gameId } = req.validatedParams as z.infer<typeof gameIdParamsSchema>
     const userId = req.user?.userId;
 
     if (!userId) {
       return res.status(401).json({ message: "Unauthorized" });
     }
-    if (!gameId || Array.isArray(gameId)) {
-      return res.status(400).json({ message: "Invalid game id" });
-    }
-    
-    if (!mongoose.Types.ObjectId.isValid(gameId)) {
-      return res.status(400).json({ message: "Invalid game id" });
-    }
 
-    const hasText = typeof text === "string" && text.trim().length > 0;
-    const hasRating = rating !== undefined;
+    const review = new Review({
+      game: gameId,
+      user: userId,
+      text,
+      rating,
+    });
 
-    if (!hasText && !hasRating) {
-      return res.status(400).json({ message: "Review text or rating required" });
-    }
-
-      
-      if (text.length > 1000) {
-        return res.status(400).json({ message: "Review too long" });
-      }
-      
-      if (rating !== undefined && (rating < 1 || rating > 5)) {
-        return res.status(400).json({ message: "Invalid rating" });
-      }
-
-      const review = new Review({
-        game: gameId,
-        user: userId,
-        text: text,
-        rating,
-      });
-
-      try {
-        const newReview = await review.save();
-        res.status(201).json(newReview);
-      } catch (error) {
-        next(error);
-      }
-}
+    const newReview = await review.save();
+    await updateGameAverageRating(gameId);
+    res.status(201).json(newReview);
+  } catch (error) {
+    next(error);
+  }
+};
 
 export const getAllGamesReviews = async (
   req: AuthRequest,
@@ -56,16 +38,8 @@ export const getAllGamesReviews = async (
   next: NextFunction
 ) => {
   try {
-    const gameId = req.params.gameId;
-
-    if (!gameId || Array.isArray(gameId)) {
-      return res.status(400).json({ message: "Invalid game id" });
-    }
-
-    if (!mongoose.Types.ObjectId.isValid(gameId)) {
-      return res.status(400).json({ message: "Invalid game id" });
-    }
-
+    const { gameId } = req.validatedParams as z.infer<typeof gameIdParamsSchema>
+    
     const reviews = await Review.find({
       game: new mongoose.Types.ObjectId(gameId),
     })
@@ -85,7 +59,7 @@ export const deleteReview = async (
 ) => {
   try {
     const userId = req.user?.userId;
-    const reviewId = req.params.reviewId;
+    const { reviewId } = req.validatedParams as z.infer<typeof reviewIdParamsSchema>;
 
     if (!userId) {
       return res.status(401).json({ message: "Unauthorized" });
@@ -101,7 +75,11 @@ export const deleteReview = async (
       return res.status(403).json({ message: "Forbidden" });
     }
 
+
     await review.deleteOne();
+    const gameId = review.game.toString();
+
+    await updateGameAverageRating(gameId);
 
     res.json({ message: "Review deleted" });
   } catch (error) {
@@ -116,14 +94,9 @@ export const voteReview = async (
 ) => {
   try {
     const userId = req.user?.userId;
-    const reviewId = req.params.reviewId;
-    const rawValue = Number(req.body.value);
-
-    if (rawValue !== 1 && rawValue !== -1) {
-      return res.status(400).json({ message: "Vote must be 1 or -1" });
-    }
+    const { reviewId } = req.validatedParams as z.infer<typeof reviewIdParamsSchema>;
+    const { value } = req.validatedBody as  z.infer<typeof voteReviewSchema>;;
     
-    const value: 1 | -1 = rawValue;    
     if (!userId) {
       return res.status(401).json({ message: "Unauthorized" });
     }
@@ -162,7 +135,7 @@ export const removeReviewVote = async (
 ) => {
   try {
     const userId = req.user?.userId;
-    const reviewId = req.params.reviewId;
+    const { reviewId } = req.validatedParams as z.infer<typeof reviewIdParamsSchema>;
 
     if (!userId) {
       return res.status(401).json({ message: "Unauthorized" });
@@ -174,9 +147,9 @@ export const removeReviewVote = async (
       return res.status(404).json({ message: "Review not found" });
     }
 
-review.votes = review.votes.filter(
-  (vote) => vote.user.toString() !== userId
-) as any;
+    review.votes = review.votes.filter(
+      (vote) => vote.user.toString() !== userId
+    );
 
     const updatedReview = await review.save();
 
@@ -192,16 +165,7 @@ export const getUserReviews = async (
   next: NextFunction
 ) => {
   try {
-    const userId = req.params.id;
-
-    if (!userId || Array.isArray(userId)) {
-      return res.status(400).json({ message: "Invalid user id" });
-    }
-
-    if (!mongoose.Types.ObjectId.isValid(userId)) {
-      return res.status(400).json({ message: "Invalid user id" });
-    }
-
+    const { id: userId } = req.validatedParams as z.infer<typeof idParamSchema>;
     const reviews = await Review.find({
       user: new mongoose.Types.ObjectId(userId),
     })
@@ -227,8 +191,8 @@ export const updateReview = async (
       return res.status(401).json({ message: "Unauthorized" });
     }
 
-    const { reviewId } = req.params;
-    const { text, rating } = req.body;
+    const { reviewId } = req.validatedParams as z.infer<typeof reviewIdParamsSchema>;
+    const { text, rating } = req.validatedBody as z.infer<typeof updateReviewSchema>;
 
     const review = await Review.findById(reviewId);
 
@@ -240,13 +204,36 @@ export const updateReview = async (
       return res.status(403).json({ message: "Forbidden" });
     }
 
-    review.text = text;
-    review.rating = rating;
+    if (text !== undefined) review.text = text;
+    if (rating !== undefined) review.rating = rating;
 
     const updatedReview = await review.save();
+    await updateGameAverageRating(review.game.toString());
 
     res.json(updatedReview);
   } catch (error) {
     next(error);
   }
+};
+const updateGameAverageRating = async (gameId: string) => {
+  const result = await Review.aggregate([
+    {
+      $match: {
+        game: new mongoose.Types.ObjectId(gameId),
+        rating: { $exists: true },
+      },
+    },
+    {
+      $group: {
+        _id: "$game",
+        avgRating: { $avg: "$rating" },
+      },
+    },
+  ]);
+
+  const avgRating = result[0]?.avgRating ?? 0;
+
+  await Game.findByIdAndUpdate(gameId, {
+    avg_rating: avgRating,
+  });
 };

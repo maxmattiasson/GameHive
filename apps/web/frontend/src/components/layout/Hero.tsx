@@ -1,14 +1,15 @@
-import "./Hero.css";
+import styles from "./Hero.module.css";
 import Button from "../ui/Button";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default function Hero() {
   const navigate = useNavigate();
 
   return (
-    <div className="hero">
-      <div className="hero-left">
-        <div className="text-group">
+    <div className={styles.hero}>
+      <div className={styles.heroLeft}>
+        <div className={styles.textGroup}>
           <h2>
             Find Games.
             <br />
@@ -17,16 +18,21 @@ export default function Hero() {
           <p>
             Discover, track, and review your favorite games - all in one place.
           </p>
-        </div>
-        <div className="button-group">
-          <Button color="primary" onClick={() => navigate("/games")}>
-            Explore
-          </Button>
-          <Button color="secondary">Something</Button>
+          <div className={styles.buttonGroup}>
+            <Button color="primary" onClick={() => navigate("/games")}>
+              Explore
+            </Button>
+            <Link to="/signup" className="btn-secondary">
+              Sign up
+            </Link>
+          </div>
         </div>
       </div>
-      <div className="hero-right">
-        <img src="https://www.gamespot.com/wp-content/uploads/original/1601/16018044/4631581-bestpcgames2026.jpg" />
+      <div className={styles.heroRight}>
+        <img
+          src="https://www.gamespot.com/wp-content/uploads/original/1601/16018044/4631581-bestpcgames2026.jpg"
+          alt="Featured games"
+        />
       </div>
     </div>
   );

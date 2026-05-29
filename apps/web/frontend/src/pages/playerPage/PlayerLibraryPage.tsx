@@ -6,6 +6,7 @@ import { GameList } from "../../components/games/GameList";
 import { useState } from "react";
 import type { Game } from "../../types/game";
 import { useUserLibrary } from "../../hooks/useUserLibrary";
+import styles from "./PlayerLibraryPage.module.css";
 
 export function PlayerLibraryPage() {
   const ownLibrary = useLibrary();
@@ -24,25 +25,39 @@ export function PlayerLibraryPage() {
     setOrder(newOrder);
   };
 
-  // extracts games-objects from library-entries, maps all games
   const games = libraryData.map((library) => library.gameId);
   const sortedGames = useSort(games, sortBy, order);
 
   if (loading) {
-    return <p>Loading...</p>;
+    return <p className={styles.status}>Loading...</p>;
   }
 
   if (error) {
-    return <p>Error: {error}</p>;
+    return <p className={styles.status}>Error: {error}</p>;
   }
-  return (
-    <section>
-      <h2>Library</h2>
-      <GameSort sortBy={sortBy} order={order} onSortChange={handleSortChange} />
 
-      <GameList games={sortedGames} />
-      <br />
-      <Link to="/profile">Back to profile</Link>
+  return (
+    <section className={styles.library}>
+      <div className={styles.header}>
+        <h2>Library</h2>
+        <div className={styles.controls}>
+          <GameSort
+            sortBy={sortBy}
+            order={order}
+            onSortChange={handleSortChange}
+          />
+        </div>
+      </div>
+
+      {sortedGames.length === 0 ? (
+        <p className={styles.empty}>No games in library yet.</p>
+      ) : (
+        <GameList games={sortedGames} />
+      )}
+
+      <Link to="/profile" className={styles.backLink}>
+        Back to profile
+      </Link>
     </section>
   );
 }

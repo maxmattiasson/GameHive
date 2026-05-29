@@ -1,8 +1,9 @@
-import "./Header.css";
+import styles from "./Header.module.css";
 import LoginForm from "../auth/LoginForm";
 import { useAuth } from "../../hooks/useAuth";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import Button from "../ui/Button";
+import { Notifications } from "./Notifications";
 
 export function Header() {
   const { user, loading, logout } = useAuth();
@@ -15,7 +16,7 @@ export function Header() {
   };
 
   const navClass = ({ isActive }: { isActive: boolean }) =>
-    `nav-link ${isActive ? "nav-link-active" : ""}`;
+    `${styles.navLink} ${isActive ? styles.navLinkActive : ""}`;
 
   const profilePath =
     user?.role === "admin"
@@ -24,39 +25,38 @@ export function Header() {
         ? "/dev/profile"
         : "/profile";
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return null;
 
   return (
-    <>
-      <header>
-        <h1>Game Hive</h1>
-        <nav>
-          <NavLink to="/" end className={navClass}>
-            Home
+    <header className={styles.header}>
+      <Link to="/" className={styles.logo}>
+        Game Hive
+      </Link>
+      <nav className={styles.nav}>
+        <NavLink to="/" end className={navClass}>
+          Home
+        </NavLink>
+        <NavLink to="/games" className={navClass}>
+          Games
+        </NavLink>
+      </nav>
+      {user ? (
+        <div className={styles.userArea}>
+          <Notifications />
+          <NavLink to={profilePath} className={styles.profileLink}>
+            <div className={styles.avatar}>{user.username[0]}</div>
+            <span>{user.username}</span>
           </NavLink>
-          <NavLink to="/games" className={navClass}>
-            Games
-          </NavLink>
-          {/*    <NavLink to="/about" className={navClass}>
-            About
-          </NavLink> */}
-        </nav>
-        {user ? (
-          <div>
-            <NavLink to={profilePath} className="profile-link">
-              {user.username}
-            </NavLink>
-            <Button color="vote" onClick={handleLogout}>
-              Log out
-            </Button>
-          </div>
-        ) : (
-          <div className="login-container">
-            <LoginForm />
-            <Link to="/signup">Sign up</Link>
-          </div>
-        )}
-      </header>
-    </>
+          <Button color="vote" onClick={handleLogout}>
+            Log out
+          </Button>
+        </div>
+      ) : (
+        <div className={styles.loginContainer}>
+          <LoginForm />
+          <Link to="/signup">Sign up</Link>
+        </div>
+      )}
+    </header>
   );
 }

@@ -1,7 +1,7 @@
 import { GameList } from "../../components/games/GameList";
 import { useGames } from "../../hooks/useGames";
 import Hero from "../../components/layout/Hero";
-import "./Homepage.css";
+import styles from "./Homepage.module.css";
 
 export function HomePage() {
   const { data } = useGames();
@@ -20,9 +20,9 @@ export function HomePage() {
   return (
     <>
       <Hero />
-      <div className="homepage">
-        <h3>This Week's Featured Games</h3>
-        <GameList games={games} />
+      <div className={styles.homepage}>
+        <h3>This Week&apos;s Featured Games</h3>
+        <GameList games={games} featured />
       </div>
     </>
   );

@@ -4,6 +4,8 @@ import { useAuth } from "../../hooks/useAuth";
 import Button from "../ui/Button";
 import Input from "../ui/Input";
 import { API_BASE_URL } from "../../config/api";
+import { useNotifications } from "../../hooks/useNotifications";
+import styles from "../../pages/signup/SignUpPage.module.css";
 
 const API_URL = `${API_BASE_URL}/auth`;
 
@@ -14,6 +16,7 @@ const LoginForm = () => {
   const [errorMessage, setErrorMessage] = useState("");
 
   const { setUser } = useAuth();
+  const { notify } = useNotifications();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -30,7 +33,7 @@ const LoginForm = () => {
     e.preventDefault();
     setErrorMessage("");
     if (!email.trim() || !password.trim()) {
-      setErrorMessage("Fyll i email och lösenord");
+      setErrorMessage("Enter email and password");
       return;
     }
     try {
@@ -50,7 +53,7 @@ const LoginForm = () => {
       const data = await response.json();
 
       if (!response.ok) {
-        setErrorMessage(data.message || "Inloggning misslyckades");
+        setErrorMessage(data.message || "Login failed");
         return;
       }
       const me = await fetch(`${API_URL}/me`, {
@@ -66,13 +69,13 @@ const LoginForm = () => {
 
       const unlocked = data.user.newUnlocks || null;
       if (unlocked[0]) {
-        alert(
+        notify(
           `Achievement unlocked: ${unlocked.length} new achievement(s) unlocked!`
         );
       }
     } catch (err) {
       console.error("Login error:", err);
-      setErrorMessage("Kunde inte ansluta till servern");
+      setErrorMessage("Could not connect to server");
     } finally {
       setIsLoading(false);
     }
@@ -81,6 +84,8 @@ const LoginForm = () => {
   return (
     <div>
       <form onSubmit={handleSubmit}>
+        <p className={styles.error}>{errorMessage}</p>
+
         <Input
           type="email"
           name="email"
@@ -93,10 +98,10 @@ const LoginForm = () => {
           value={password}
           onChange={handleChange}
         />
+
         <Button color="primary" disabled={isLoading} type="submit">
           Login
         </Button>
-        <p>{errorMessage}</p>
       </form>
     </div>
   );

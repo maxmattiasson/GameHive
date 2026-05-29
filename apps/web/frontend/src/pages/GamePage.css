@@ -1,7 +1,20 @@
 .gamepage-container {
   max-width: 1600px;
-  margin: 4rem auto;
+  margin: 2rem auto;
   padding: 0 2rem;
   width: 100%;
   box-sizing: border-box;
+}
+
+.game-filter-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.button-wrapper {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
 }
