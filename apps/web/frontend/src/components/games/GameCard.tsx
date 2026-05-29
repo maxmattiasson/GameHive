@@ -10,6 +10,7 @@ interface Props {
 }
 
 export function GameCard({ game, compact }: Props) {
+
   return (
     <div className={`game-card-small ${compact ? "compact" : ""}`}>
       <div className="image-wrapper">
@@ -19,7 +20,7 @@ export function GameCard({ game, compact }: Props) {
       <div className="inner">
         <h3>{game.title}</h3>
         <h4>{game.dev}</h4>
-        {!compact && <p className="meta">Rating: {game.avg_rating}/10</p>}
+        {!compact && <p className="meta">Rating: {game.avg_rating ? game.avg_rating.toFixed(1): "0"}/5</p>}
         {!compact && <p className="desc">{game.desc}</p>}
         {!compact && (
           <p className="meta">

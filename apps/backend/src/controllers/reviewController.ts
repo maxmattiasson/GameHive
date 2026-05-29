@@ -2,11 +2,12 @@ import { Response, NextFunction} from "express"
 import { AuthRequest } from "../auth/authMiddleware.js";
 import Review from "../models/Review.js";
 import mongoose from "mongoose";
+import Game from "../models/Game.js";
 
 export const createReview = async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
     const { text, rating } = req.body;
-    const gameId = req.params.gameId;
+    const gameId = req.params.gameId as string;
     const userId = req.user?.userId;
 
     if (!userId) {
@@ -21,6 +22,7 @@ export const createReview = async (req: AuthRequest, res: Response, next: NextFu
     });
 
     const newReview = await review.save();
+    await updateGameAverageRating(gameId);
     res.status(201).json(newReview);
   } catch (error) {
     next(error);
@@ -70,7 +72,11 @@ export const deleteReview = async (
       return res.status(403).json({ message: "Forbidden" });
     }
 
+
     await review.deleteOne();
+    const gameId = review.game.toString();
+
+    await updateGameAverageRating(gameId);
 
     res.json({ message: "Review deleted" });
   } catch (error) {
@@ -200,9 +206,32 @@ export const updateReview = async (
     if (rating !== undefined) review.rating = rating;
 
     const updatedReview = await review.save();
+    await updateGameAverageRating(review.game.toString());
 
     res.json(updatedReview);
   } catch (error) {
     next(error);
   }
+};
+const updateGameAverageRating = async (gameId: string) => {
+  const result = await Review.aggregate([
+    {
+      $match: {
+        game: new mongoose.Types.ObjectId(gameId),
+        rating: { $exists: true },
+      },
+    },
+    {
+      $group: {
+        _id: "$game",
+        avgRating: { $avg: "$rating" },
+      },
+    },
+  ]);
+
+  const avgRating = result[0]?.avgRating ?? 0;
+
+  await Game.findByIdAndUpdate(gameId, {
+    avg_rating: avgRating,
+  });
 };
