@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSignup } from "../../hooks/useSignup";
 import Button from "../../components/ui/Button";
 import styles from "./SignUpPage.module.css";
@@ -19,9 +19,15 @@ export function SignupPage() {
     loading,
   } = useSignup();
 
+  const navigate = useNavigate();
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await signup();
+    const ok = await signup();
+
+  if (ok) {
+    navigate("/");
+  }
   };
 
   return (

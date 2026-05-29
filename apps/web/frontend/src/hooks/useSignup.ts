@@ -1,6 +1,7 @@
 import { useState, type ChangeEvent } from "react";
 import { signupUser } from "../services/signupService";
 import { validateSignup } from "../helpers/validators";
+import { useAuth } from "./useAuth";
 
 export function useSignup() {
   const [email, setEmail] = useState("");
@@ -10,6 +11,7 @@ export function useSignup() {
   const [success, setSuccess] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const { setUser } = useAuth();
 
   const onChangeEmail = (e: ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
@@ -24,7 +26,8 @@ export function useSignup() {
     setUsername(e.target.value);
   };
 
-  const signup = async () => {
+  const signup = async (): Promise<boolean> => {
+    
     setError(null);
     setSuccess(null);
     setLoading(true);
@@ -32,7 +35,7 @@ export function useSignup() {
     if (password !== confirmPassword) {
       setError("passwords do not match");
       setLoading(false);
-      return;
+      return false;
     }
 
     const validationResult = validateSignup({ username, email, password });
@@ -40,23 +43,26 @@ export function useSignup() {
     if (validationResult !== true) {
       setError(validationResult);
       setLoading(false);
-      return;
+      return false;
     }
 
     try {
       const data = await signupUser({ username, email, password });
+      setUser(data.user);
 
       setSuccess(data.message);
       setUsername("");
       setEmail("");
       setPassword("");
       setConfirmPassword("");
+      return true;
     } catch (error) {
       if (error instanceof Error) {
         setError(error.message);
       } else {
         setError("something went wrong");
       }
+      return false;
     } finally {
       setLoading(false);
     }
