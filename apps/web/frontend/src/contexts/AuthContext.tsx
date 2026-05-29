@@ -26,7 +26,6 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    console.log("checking auth:", `${API_URL}/me`);
   
     fetch(`${API_URL}/me`, {
       credentials: "include",
@@ -38,7 +37,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       .then((data) => {
         setUser(data);
       })
-      .catch((err) => {
+      .catch(() => {
         setUser(null);
       })
       .finally(() => {
