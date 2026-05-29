@@ -3,7 +3,7 @@ import { useAuth } from "../../hooks/useAuth";
 import {
   usePendingRequests,
   useFriends,
-  useFriendsByUserId,
+  useFriendsByUserId
 } from "../../hooks/useFriends";
 import { FriendRequestActions } from "../../components/ui/FriendRequestActions";
 import styles from "./PlayerFriendsPage.module.css";
@@ -16,7 +16,7 @@ export function PlayerFriendsPage() {
   const {
     data: pendingRequests,
     loading: pendingLoading,
-    refetch: pendingRefetch,
+    refetch: pendingRefetch
   } = usePendingRequests();
 
   const ownFriends = useFriends();

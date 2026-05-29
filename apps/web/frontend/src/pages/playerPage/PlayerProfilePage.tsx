@@ -1,6 +1,9 @@
-import { Outlet, NavLink, useParams } from "react-router-dom";
+import { Outlet, NavLink, useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { useState, useEffect } from "react";
+import type { User } from "../../types/user";
+import RemoveButton from "../../components/ui/RemoveButton";
+import deleteUser from "../../services/userService";
 import { AddFriendButton } from "../../components/ui/AddFriendButton";
 import styles from "./PlayerProfile.module.css";
 
@@ -9,6 +12,24 @@ export function PlayerProfile() {
   const { id } = useParams();
 
   const [otherUser, setOtherUser] = useState<any>(null);
+
+  const [users, setUsers] = useState<User[]>([]);
+  const [error, setError] = useState("");
+
+  const navigate = useNavigate();
+
+  const isAdmin = user?.role === "admin";
+
+  const handleDeleteUser = async (id: string) => {
+    console.log(id);
+    try {
+      await deleteUser(id);
+      navigate("/admin");
+    } catch (error) {
+      console.error(error);
+      setError(error as string);
+    }
+  };
 
   useEffect(() => {
     if (!id) return;
@@ -66,6 +87,14 @@ export function PlayerProfile() {
       <div className={styles.profileSection}>
         <Outlet />
       </div>
+      {isAdmin && (
+        <div className="container">
+          <RemoveButton id={id} onDelete={handleDeleteUser}>
+            Die
+          </RemoveButton>
+          <p>{error}</p>
+        </div>
+      )}
     </div>
   );
 }

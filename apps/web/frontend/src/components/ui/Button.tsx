@@ -2,7 +2,7 @@ import "./Button.css";
 import type { ReactNode } from "react";
 
 interface Props {
-  color: "primary" | "secondary" | "vote";
+  color: "primary" | "secondary" | "vote" | "danger";
   disabled?: boolean;
   type?: "submit" | "reset" | "button";
   onClick?: () => void;
@@ -14,7 +14,7 @@ export default function Button({
   disabled = false,
   type = "button",
   onClick,
-  children,
+  children
 }: Props) {
   return (
     <button

@@ -8,6 +8,7 @@
   --accent-500: rgb(56, 173, 134);
   --accent-600: rgb(60, 139, 113);
   --accent-700: rgb(76, 126, 109);
+  --danger: #e53935;
 
   /* Typography */
   --font-sans: "Sora", "Space Grotesk", "Segoe UI", sans-serif;
