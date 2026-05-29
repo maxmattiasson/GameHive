@@ -1,7 +1,11 @@
 import { NextFunction, Response } from "express";
 import { AuthRequest } from "../auth/authMiddleware.js";
 import FriendshipModel from "../models/Friendship.js";
-import { ConflictError } from "../errors/AppError.js";
+import {
+  friendshipBodySchema,
+  friendshipParamsSchema,
+} from "../schemas/friendship.schemas.js";
+import { ConflictError, ValidationError } from "../errors/AppError.js";
 
 async function sendFriendRequest(
   req: AuthRequest,
@@ -9,7 +13,12 @@ async function sendFriendRequest(
   next: NextFunction,
 ) {
   const requester = req.user!.userId;
-  const recipient = req.body.recipient;
+
+  const result = friendshipBodySchema.safeParse(req.body);
+  if (!result.success) {
+    return next(new ValidationError());
+  }
+  const { recipient } = result.data;
 
   try {
     const friendship = await FriendshipModel.create({
@@ -19,8 +28,7 @@ async function sendFriendRequest(
 
     return res.status(201).json(friendship);
   } catch (err: any) {
-    if (err.code === 11000) // duplicate key
-    {
+    if (err.code === 11000) {
       return next(new ConflictError());
     }
     next(err);
@@ -52,10 +60,14 @@ async function acceptFriendRequest(
   next: NextFunction,
 ) {
   const userId = req.user!.userId;
-  const { id } = req.params;
+
+  const result = friendshipParamsSchema.safeParse(req.params);
+  if (!result.success) {
+    return next(new ValidationError());
+  }
+  const { id } = result.data;
 
   try {
-    //update status to accepted when userId matches and status is pending
     const friendship = await FriendshipModel.findOneAndUpdate(
       { _id: id, recipient: userId, status: "pending" },
       { status: "accepted" },
@@ -78,7 +90,12 @@ async function rejectFriendRequest(
   next: NextFunction,
 ) {
   const userId = req.user!.userId;
-  const { id } = req.params;
+
+  const result = friendshipParamsSchema.safeParse(req.params);
+  if (!result.success) {
+    return next(new ValidationError());
+  }
+  const { id } = result.data;
 
   try {
     const friendship = await FriendshipModel.findOneAndDelete({
@@ -119,7 +136,11 @@ async function getFriendsByUserId(
   res: Response,
   next: NextFunction,
 ) {
-  const { id } = req.params;
+  const result = friendshipParamsSchema.safeParse(req.params);
+  if (!result.success) {
+    return next(new ValidationError());
+  }
+  const { id } = result.data;
 
   try {
     const friends = await FriendshipModel.find({
