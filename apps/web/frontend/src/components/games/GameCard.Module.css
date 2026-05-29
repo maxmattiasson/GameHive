@@ -26,7 +26,7 @@
 /* ===== Featured (large, fixed height) ===== */
 
 .featured {
-  height: 28rem;
+  min-height: 28rem;
 }
 
 .featured .image {

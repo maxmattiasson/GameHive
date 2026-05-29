@@ -1,12 +1,19 @@
-import "./Notifications.css";
+import styles from "./Notifications.module.css";
 import { useNotifications } from "../../hooks/useNotifications";
+
+const typeClass: Record<string, string> = {
+  info: styles.appMessageInfo,
+  success: styles.appMessageSuccess,
+  warning: styles.appMessageWarning,
+  error: styles.appMessageError,
+};
 
 export function Notifications() {
   const { notifications, dismiss } = useNotifications();
 
   return (
     <div
-      className="notifications-box"
+      className={styles.notificationsBox}
       role="region"
       aria-live="polite"
       aria-label="Notifications"
@@ -14,7 +21,7 @@ export function Notifications() {
       {notifications.map((notif) => (
         <div
           key={notif.id}
-          className={`app-message app-message--${notif.type || "info"}`}
+          className={`${styles.appMessage} ${typeClass[notif.type || "info"]}`}
           onClick={() => dismiss(notif.id)}
           onKeyDown={(e) => {
             if (e.key === "Enter" || e.key === " ") {
@@ -29,7 +36,7 @@ export function Notifications() {
           <p>{notif.message}</p>
           <button
             type="button"
-            className="app-message__close"
+            className={styles.appMessageClose}
             onClick={(e) => {
               e.stopPropagation();
               dismiss(notif.id);
