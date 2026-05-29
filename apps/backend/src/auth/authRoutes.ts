@@ -21,9 +21,11 @@ router.post("/logout", logout);
 
 // Protected route
 router.get("/me", authMiddleware, async (req: AuthRequest, res) => {
+  console.log("hit /auth/me");
+
     try {
         const userId = req.user?.userId;
-    
+
         if (!userId) {
           res.status(401).json({ message: "Unauthorized" });
           return;

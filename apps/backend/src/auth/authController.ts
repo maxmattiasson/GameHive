@@ -24,14 +24,30 @@ export const signup = async (req: Request, res: Response) => {
     });
 
     await user.save();
-
+    
+    const token = jwt.sign(
+      {
+        userId: user._id,
+        email: user.email,
+        username: user.username,
+        role: user.role,
+      },
+      getJwtSecret(),
+      { expiresIn: "7d" }
+    );
+    
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: false,
+      sameSite: "lax",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+    
+    const { passwordHash: _, ...userWithoutPassword } = user.toObject();
+    
     return res.status(201).json({
       message: "User created",
-      user: {
-        id: user._id,
-        username: user.username,
-        email: user.email
-      }
+      user: userWithoutPassword,
     });
   } catch (err) {
     console.error("[signup] error:", err);
