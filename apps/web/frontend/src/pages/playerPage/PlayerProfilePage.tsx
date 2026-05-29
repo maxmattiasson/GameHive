@@ -9,7 +9,8 @@ import styles from "./PlayerProfile.module.css";
 
 export function PlayerProfile() {
   const { user, loading: authLoading } = useAuth();
-  const { id } = useParams();
+  const { id: slug } = useParams();
+  const id = slug?.match(/[0-9a-f]{24}$/i)?.[0];
 
   const [otherUser, setOtherUser] = useState<any>(null);
 

@@ -2,6 +2,8 @@ import type { Game } from "../../types/game";
 import { Badge } from "../ui/Badge";
 import { StarButton } from "../ui/StarButton";
 import styles from "./GameCard.module.css";
+import { slugify } from "../../helpers/slugify";
+import { Link } from "react-router-dom";
 
 interface Props {
   game: Game;
@@ -52,9 +54,12 @@ export function GameCard({ game, compact, featured }: Props) {
           </div>
         )}
 
-        <a className={styles.viewLink} href={`/games/${game._id}`}>
+        <Link
+          className={styles.viewLink}
+          to={`/games/${slugify(game.title)}-${game._id}`}
+        >
           View Game →
-        </a>
+        </Link>
       </div>
     </div>
   );

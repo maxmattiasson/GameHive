@@ -22,6 +22,15 @@
   color: var(--white-100);
 }
 
+.btn-secondary {
+  border: 1px solid var(--gray-500);
+}
+
+.btn-secondary:hover {
+  background: var(--accent-600);
+  color: var(--white-100);
+}
+
 .btn-danger {
   border: 1px solid var(--danger);
   background: transparent;
