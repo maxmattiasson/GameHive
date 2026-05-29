@@ -24,7 +24,7 @@ export function GameDetails() {
   const navigate = useNavigate();
   const { id: slug } = useParams();
   const id = slug?.match(/[0-9a-f]{24}$/i)?.[0];
-  
+
   const { data, loading, error } = useGame(id!);
   const { playtime, setPlaytime } = usePlaytime(id);
   const { user } = useAuth();
@@ -37,7 +37,7 @@ export function GameDetails() {
     reviewsError,
     refetchReviews,
     handleVote,
-    averageRating
+    averageRating,
   } = useReviews(id);
 
   const myReview = reviews.find((review) => review.user._id === user?._id);
@@ -70,7 +70,7 @@ export function GameDetails() {
     <div className="container">
       <div className="header" style={{ backgroundImage: `url(${data.thumb})` }}>
         <h1>{data.title}</h1>
-        <p>Rating: {averageRating ? averageRating.toFixed(1) : "0" }/5</p>
+        <p>Rating: {averageRating ? averageRating.toFixed(1) : "0"}/5</p>
         <p>
           {data.genres.map((g) => g.name).join(", ")} - {data.dev}
         </p>
