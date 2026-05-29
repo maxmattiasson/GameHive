@@ -98,7 +98,7 @@ const LoginForm = () => {
           value={password}
           onChange={handleChange}
         />
-        <p className={styles.error}>{errorMessage}</p>
+
         <Button color="primary" disabled={isLoading} type="submit">
           Login
         </Button>
