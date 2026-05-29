@@ -30,13 +30,13 @@
   font-size: var(--fs-1);
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: #7a8a95;
+  color: var(--white-100);
   text-decoration: none;
   transition: color 0.2s;
 }
 
 .navLink:hover {
-  color: var(--white-100);
+  color: var(--accent-500);
 }
 
 .navLinkActive {
@@ -55,13 +55,12 @@
   gap: 8px;
   font-family: var(--font-mono);
   font-size: var(--fs-1);
-  color: var(--accent-500);
+  color: var(--white-100);
   text-decoration: none;
   transition: color 0.2s;
   line-height: 1;
   text-transform: uppercase;
-  background: var(--gray-600);
-  padding: 0.5rem;
+  margin-right: 16px;
 }
 
 .profileLink:hover {
