@@ -4,7 +4,8 @@
   --gray-800: #1a1f24;
   --gray-700: #2a323a;
   --gray-600: #3b46506e;
-  --white-100: #efe;
+  --gray-500: #b3bec96e;
+  --white-100: rgb(241, 248, 241);
   --accent-500: rgb(56, 173, 134);
   --accent-600: rgb(60, 139, 113);
   --accent-700: rgb(76, 126, 109);
