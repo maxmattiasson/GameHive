@@ -84,6 +84,8 @@ const LoginForm = () => {
   return (
     <div>
       <form onSubmit={handleSubmit}>
+        <p className={styles.error}>{errorMessage}</p>
+
         <Input
           type="email"
           name="email"
