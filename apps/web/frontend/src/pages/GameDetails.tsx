@@ -24,7 +24,7 @@ export function GameDetails() {
   const navigate = useNavigate();
   const { id: slug } = useParams();
   const id = slug?.match(/[0-9a-f]{24}$/i)?.[0];
-  
+
   const { data, loading, error } = useGame(id!);
   const { playtime, setPlaytime } = usePlaytime(id);
   const { user } = useAuth();
