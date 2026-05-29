@@ -7,6 +7,7 @@ interface RemoveButtonProps {
   onDelete: (id: string) => void;
   disabled?: boolean;
   children?: ReactNode;
+  id?: string;
 }
 
 export default function RemoveButton({
@@ -15,11 +16,12 @@ export default function RemoveButton({
   onDelete,
   disabled,
   children,
+  id
 }: RemoveButtonProps) {
   const handleDelete = () => {
     if (gameId) {
       const confirmed = window.confirm(
-        "Are you sure you want to delete this game?",
+        "Are you sure you want to delete this game? This can not be undone!"
       );
       if (confirmed) {
         onDelete(gameId);
@@ -28,17 +30,26 @@ export default function RemoveButton({
     }
     if (reviewId) {
       const confirmed = window.confirm(
-        "Are you sure you want to delete this review? This can not be undone!",
+        "Are you sure you want to delete this review? This can not be undone!"
       );
       if (confirmed) {
         onDelete(reviewId);
       }
       return;
     }
+    if (id) {
+      const confirmed = window.confirm(
+        "Are you sure you want to delete this user? This can not be undone!"
+      );
+      if (confirmed) {
+        onDelete(id);
+      }
+      return;
+    }
   };
 
   return (
-    <Button color="vote" onClick={handleDelete} disabled={disabled}>
+    <Button color="danger" onClick={handleDelete} disabled={disabled}>
       {children}
     </Button>
   );

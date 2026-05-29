@@ -1,9 +1,0 @@
-.homepage {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-}
-
-.homepage h3 {
-  font-size: var(--fs-4);
-}

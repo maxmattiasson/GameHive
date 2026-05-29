@@ -1,5 +1,4 @@
-.info-card {
-  /* background: rgba(255, 255, 255, 0.04); */
+.infoCard {
   background: linear-gradient(
     to right,
     rgba(216, 216, 216, 0.103),
@@ -11,14 +10,14 @@
   color: var(--white-100);
 }
 
-.info-card ul,
-.info-card ol {
+.infoCard ul,
+.infoCard ol {
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-.info-card li {
+.infoCard li {
   display: flex;
   align-items: center;
   gap: var(--space-3);
@@ -27,14 +26,14 @@
   font-size: var(--fs-1);
 }
 
-.info-card li:last-child {
+.infoCard li:last-child {
   border-bottom: none;
 }
 
-.info-card ul li {
+.infoCard ul li {
   justify-content: space-between;
 }
 
-.info-card p {
+.infoCard p {
   font-size: var(--fs-1);
 }
