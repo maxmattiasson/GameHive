@@ -13,7 +13,6 @@ export function PlayerProfile() {
 
   const [otherUser, setOtherUser] = useState<any>(null);
 
-  const [users, setUsers] = useState<User[]>([]);
   const [error, setError] = useState("");
 
   const navigate = useNavigate();

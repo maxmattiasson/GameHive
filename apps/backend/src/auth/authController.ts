@@ -1,12 +1,12 @@
 import bcrypt from "bcrypt";
 import UserModel from "../models/User.js";
 import { NextFunction, Request, Response } from "express";
-import jwt  from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import { validateSignup } from "../helpers/validators.js";
 
 export const signup = async (req: Request, res: Response) => {
-    try {
-    const { username, email, password }= req.body;
+  try {
+    const { username, email, password } = req.body;
 
     const validationResult = validateSignup({ username, email, password });
 
@@ -46,7 +46,11 @@ export const signup = async (req: Request, res: Response) => {
   }
 };
 
-export const login = async (req: Request, res: Response, next: NextFunction ) => {
+export const login = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const { email, password } = req.body;
     if (
@@ -70,7 +74,7 @@ export const login = async (req: Request, res: Response, next: NextFunction ) =>
 
     const match = await bcrypt.compare(password, user.passwordHash);
     if (!match) {
-      res.status(401).json({ message: "Invalid user och password" });
+      res.status(401).json({ message: "Invalid email or password" });
       return;
     }
 
@@ -86,25 +90,24 @@ export const login = async (req: Request, res: Response, next: NextFunction ) =>
     );
 
     res.cookie("token", token, {
-        httpOnly: true,
-        secure: false,
-        sameSite: "lax",
-        maxAge: 7 * 24 * 60 * 60 * 1000,
+      httpOnly: true,
+      secure: false,
+      sameSite: "lax",
+      maxAge: 7 * 24 * 60 * 60 * 1000
     });
 
     const { passwordHash, ...userWithoutPassword } = user.toObject();
     req.body = { user: userWithoutPassword };
 
-    next()
-
-    } catch (err) {
-        console.log(err)
-        res.status(500).json({ message: "Server error"})
-    }
-}
+    next();
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
 
 export const logout = (req: Request, res: Response) => {
-    res.clearCookie("token", {
+  res.clearCookie("token", {
     httpOnly: true,
     secure: false,
     sameSite: "lax"
