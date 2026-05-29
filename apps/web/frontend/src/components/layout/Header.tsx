@@ -7,6 +7,7 @@ import { Notifications } from "./Notifications";
 
 export function Header() {
   const { user, loading, logout } = useAuth();
+
   const navigate = useNavigate();
 
   const handleLogout = async () => {

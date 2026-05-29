@@ -1,5 +1,6 @@
 import { Router } from "express";
 import getGame from "../middleware/idMiddleware.js";
+
 import {
   getAllGames,
   getGamebyId,
@@ -8,22 +9,29 @@ import {
   deleteGame,
   getOwnersGames,
 } from "../controllers/gameController.js";
-import { authMiddleware } from "../auth/authMiddleware.js";
-import { requireRole } from "../auth/requireRole.js";
-import { canEditGame } from "../middleware/canEditGame.js";
-import {
-  createGameSchema,
-  updateGameSchema,
-} from "../schemas/games.schemas.js";
-import { validateRequest } from "../middleware/validate.js";
+
 import {
   createReview,
   getAllGamesReviews,
 } from "../controllers/reviewController.js";
+
+import { authMiddleware } from "../auth/authMiddleware.js";
+import { requireRole } from "../auth/requireRole.js";
+import { canEditGame } from "../middleware/canEditGame.js";
+
+import {
+  createGameSchema,
+  updateGameSchema,
+} from "../schemas/games.schemas.js";
+
 import {
   gameIdParamsSchema,
   idParamSchema,
 } from "../schemas/common.schemas.js";
+
+import { createReviewSchema } from "../schemas/review.schema.js";
+
+import { validateRequest } from "../middleware/validate.js";
 
 const router = Router();
 
@@ -79,7 +87,7 @@ router.delete(
 // Reviews on one game
 router.get(
   "/games/:gameId/reviews",
-  validateRequest({ params: gameIdParamsSchema }),
+  validateRequest({ params: gameIdParamsSchema, body: createReviewSchema}),
   getAllGamesReviews,
 );
 
@@ -87,8 +95,11 @@ router.get(
 router.post(
   "/games/:gameId/reviews",
   authMiddleware,
-  validateRequest({ params: gameIdParamsSchema }),
-  createReview,
+  validateRequest({
+    params: gameIdParamsSchema,
+    body: createReviewSchema,
+  }),
+  createReview
 );
 
 // Get all reviews on a game

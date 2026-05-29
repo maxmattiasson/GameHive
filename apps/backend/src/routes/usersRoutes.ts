@@ -75,7 +75,7 @@ router.get(
   }
 );
 
-router.get("/:id/reviews", authMiddleware, getUserReviews);
+router.get("/:id/reviews", authMiddleware, validateRequest({ params: idParamSchema }), getUserReviews);
 
 router.delete(
   "/:id",
