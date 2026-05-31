@@ -3,7 +3,7 @@ import UserModel from "../models/User.js";
 import LibraryModel from "../models/Library.js";
 import { authMiddleware, AuthRequest } from "../auth/authMiddleware.js";
 import { getUserReviews } from "../controllers/reviewController.js";
-import { idParamSchema } from "../schemas/common.schemas.js";
+import { idParamSchema, searchQuerySchema } from "../schemas/common.schemas.js";
 import { validateRequest } from "../middleware/validate.js";
 import { NotFoundError } from "../errors/AppError.js";
 import { Response, NextFunction } from "express";
@@ -109,18 +109,18 @@ router.get(
   }
 );
 
-router.get("/", authMiddleware, async (req: AuthRequest, res: Response, next: NextFunction) => {
+router.get("/search", authMiddleware, validateRequest({ query: searchQuerySchema }), async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
-    const query = req.query.search as string;
+    const { query } = req.validatedQuery as { query: string };
 
-    const escpapedQuery = query.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+    const escapedQuery = query.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
 
     if(req.user?.role === "user" || req.user?.role === "dev") {
       const users = await UserModel.find({ 
         role: "user", 
         $or: [
-          { username: { $regex: escpapedQuery, $options: "i" } },
-          { email: { $regex: escpapedQuery, $options: "i" } }
+          { username: { $regex: escapedQuery, $options: "i" } },
+          { email: { $regex: escapedQuery, $options: "i" } }
         ]
        }).select("username createdAt");
       res.json(users);
@@ -129,8 +129,8 @@ router.get("/", authMiddleware, async (req: AuthRequest, res: Response, next: Ne
       const users = await UserModel.find({ 
         role: { $in: ["dev", "user"] }, 
         $or: [
-          { username: { $regex: escpapedQuery, $options: "i" } },
-          { email: { $regex: escpapedQuery, $options: "i" } }
+          { username: { $regex: escapedQuery, $options: "i" } },
+          { email: { $regex: escapedQuery, $options: "i" } }
         ]
        }).select("username role createdAt");
       res.json(users);
