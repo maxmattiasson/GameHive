@@ -109,4 +109,35 @@ router.get(
   }
 );
 
+router.get("/", authMiddleware, async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    const query = req.query.search as string;
+
+    const escpapedQuery = query.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+
+    if(req.user?.role === "user" || req.user?.role === "dev") {
+      const users = await UserModel.find({ 
+        role: "user", 
+        $or: [
+          { username: { $regex: escpapedQuery, $options: "i" } },
+          { email: { $regex: escpapedQuery, $options: "i" } }
+        ]
+       }).select("username createdAt");
+      res.json(users);
+    }
+    if(req.user?.role === "admin") {
+      const users = await UserModel.find({ 
+        role: { $in: ["dev", "user"] }, 
+        $or: [
+          { username: { $regex: escpapedQuery, $options: "i" } },
+          { email: { $regex: escpapedQuery, $options: "i" } }
+        ]
+       }).select("username role createdAt");
+      res.json(users);
+    }
+  } catch (err) {
+    next(err);
+  }
+});
+
 export default router;
