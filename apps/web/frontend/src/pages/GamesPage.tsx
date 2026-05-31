@@ -6,7 +6,7 @@ import { useGames } from "../hooks/useGames";
 import "./GamePage.css";
 import Button from "../components/ui/Button";
 
-const PAGE_SIZE = 15;
+const PAGE_SIZE = 18;
 
 const initialFilters: GameFilterValues = {
   title: "",

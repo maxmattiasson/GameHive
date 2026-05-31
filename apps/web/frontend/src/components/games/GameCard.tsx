@@ -2,6 +2,8 @@ import type { Game } from "../../types/game";
 import { Badge } from "../ui/Badge";
 import { StarButton } from "../ui/StarButton";
 import styles from "./GameCard.module.css";
+import { slugify } from "../../helpers/slugify";
+import { Link } from "react-router-dom";
 
 interface Props {
   game: Game;
@@ -30,10 +32,11 @@ export function GameCard({ game, compact, featured }: Props) {
           alt={game.title}
         />
       </div>
-      <div className={styles.inner}>
-        <h3 className={styles.title}>{game.title}</h3>
-        <h4 className={styles.dev}>{game.dev}</h4>
-
+      <div className="inner">
+        <h3>{game.title}</h3>
+        <h4>{game.dev}</h4>
+        {!compact && <p className="meta">Rating: {game.avg_rating ? game.avg_rating.toFixed(1): "0"}/5</p>}
+        {!compact && <p className="desc">{game.desc}</p>}
         {!compact && (
           <p className={styles.meta}>Rating: {game.avg_rating}/10</p>
         )}
@@ -51,9 +54,12 @@ export function GameCard({ game, compact, featured }: Props) {
           </div>
         )}
 
-        <a className={styles.viewLink} href={`/games/${game._id}`}>
+        <Link
+          className={styles.viewLink}
+          to={`/games/${slugify(game.title)}-${game._id}`}
+        >
           View Game →
-        </a>
+        </Link>
       </div>
     </div>
   );

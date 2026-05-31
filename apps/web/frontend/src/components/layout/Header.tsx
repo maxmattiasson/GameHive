@@ -7,6 +7,7 @@ import { Notifications } from "./Notifications";
 
 export function Header() {
   const { user, loading, logout } = useAuth();
+
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -43,7 +44,8 @@ export function Header() {
         <div className={styles.userArea}>
           <Notifications />
           <NavLink to={profilePath} className={styles.profileLink}>
-            {user.username}
+            <div className={styles.avatar}>{user.username[0]}</div>
+            <span>{user.username}</span>
           </NavLink>
           <Button color="vote" onClick={handleLogout}>
             Log out

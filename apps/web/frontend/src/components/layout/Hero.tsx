@@ -1,6 +1,7 @@
 import styles from "./Hero.module.css";
 import Button from "../ui/Button";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default function Hero() {
   const navigate = useNavigate();
@@ -21,7 +22,9 @@ export default function Hero() {
             <Button color="primary" onClick={() => navigate("/games")}>
               Explore
             </Button>
-            <Button color="secondary">Something</Button>
+            <Link to="/signup" className="btn-secondary">
+              Sign up
+            </Link>
           </div>
         </div>
       </div>
