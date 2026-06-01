@@ -4,12 +4,13 @@ import {
   useContext,
   useCallback,
   useEffect,
-  useState
+  useState,
 } from "react";
 import {
   getPlayerLibrary,
-  type LibraryEntry
+  type LibraryEntry,
 } from "../services/libraryService";
+import { useAuth } from "../hooks/useAuth";
 
 type LibraryContextType = {
   data: LibraryEntry[];
@@ -27,6 +28,8 @@ interface LibraryProviderProps {
 }
 
 export function LibraryProvider({ children }: LibraryProviderProps) {
+  const { user } = useAuth();
+
   const [data, setData] = useState<LibraryEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -35,12 +38,14 @@ export function LibraryProvider({ children }: LibraryProviderProps) {
   const refetch = useCallback(() => setRefreshCount((c) => c + 1), []);
 
   useEffect(() => {
+    if (!user?._id) return;
+
     setLoading(true);
     getPlayerLibrary()
       .then(setData)
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
-  }, [refreshCount]);
+  }, [refreshCount, user?._id]);
 
   return (
     <LibraryContext.Provider value={{ data, loading, error, refetch }}>

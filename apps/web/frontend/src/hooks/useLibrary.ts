@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
 import {
   getPlayerLibrary,
-  type LibraryEntry
+  type LibraryEntry,
 } from "../services/libraryService";
+import { useAuth } from "../hooks/useAuth";
 
 // get all player library games, show status and throw errors
 function useLibrary(): {
@@ -11,6 +12,8 @@ function useLibrary(): {
   error: string | null;
   refetch: () => void;
 } {
+  const { user } = useAuth();
+
   const [data, setData] = useState<LibraryEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -23,7 +26,7 @@ function useLibrary(): {
       .then(setData)
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
-  }, [refreshCount]);
+  }, [refreshCount, user?._id]);
 
   return { data, loading, error, refetch };
 }
