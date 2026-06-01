@@ -17,7 +17,7 @@ export default function DevGamesList({ games, onEdit, onDelete }: Props){
             ) : (
                 games.map((game) => (
                 <div key={game._id} className={styles.DevGameItem}>
-                    <div>{game.title}</div>
+                    <div><a href={`/games/${game._id}`}>{game.title}</a></div>
                     <button onClick={() => onEdit(game)}>Edit</button>
                     <button onClick={() => onDelete(game._id)}>Delete</button>
                 </div>

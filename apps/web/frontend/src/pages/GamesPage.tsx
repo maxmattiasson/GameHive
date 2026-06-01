@@ -13,7 +13,7 @@ const initialFilters: GameFilterValues = {
   genre: [],
   dev: "",
   release: "",
-  multiplayer: false
+  multiplayer: false,
 };
 
 export function GamesPage() {
@@ -36,7 +36,7 @@ export function GamesPage() {
     const genreMatch =
       activeFilters?.genre.length === 0 ||
       activeFilters?.genre.some((selectedGenre) =>
-        game.genres.some((g) => g.name === selectedGenre)
+        game.genres.some((g) => g.name === selectedGenre),
       );
 
     const multiplayerMatch = !activeFilters?.multiplayer || game.multiplayer;
@@ -48,13 +48,17 @@ export function GamesPage() {
   const start = (currentPage - 1) * PAGE_SIZE;
   const currentGames = filteredGames.slice(start, start + PAGE_SIZE);
   return (
-    <>
-      <div className="gamepage-container">
-        <h2>Browse Catalogue</h2>
-        <div className="game-filter-wrapper">
-          <GameFilter onSearch={setActiveFilters} />
+    <div className="gamepage-container">
+      <h2>Browse Catalogue</h2>
+      <div className="game-filter-wrapper">
+        <GameFilter onSearch={setActiveFilters} />
+        {currentGames.length > 0 ? (
           <GameList games={currentGames} compact />
-        </div>
+        ) : (
+          <p>No games found </p>
+        )}
+      </div>
+      {totalPages > 1 && (
         <div className="button-wrapper">
           <Button
             color="primary"
@@ -71,7 +75,7 @@ export function GamesPage() {
             Next
           </Button>
         </div>
-      </div>
-    </>
+      )}
+    </div>
   );
 }

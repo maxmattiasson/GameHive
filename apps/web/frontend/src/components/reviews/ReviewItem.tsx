@@ -29,7 +29,9 @@ export default function ReviewItem({
   return (
     <article className={styles.reviewCont}>
       {showGameTitle && review.game && (
-        <h3 className={styles.gameTitle}>{review.game.title}</h3>
+        <h3 className={styles.gameTitle}>
+          <a href={`/games/${review.game._id}`}>{review.game.title}</a>
+        </h3>
       )}
       <div className={styles.reviewHeader}>
         {isAdmin && onDelete && (
