@@ -41,7 +41,9 @@ export default function ReviewItem({
         )}
       </div>
       <p className={styles.reviewerName}>
-        {review.user?.username ?? "Deleted user"}
+        <a href={`/users/${review.user?._id}`}>
+          {review.user?.username ?? "Deleted user"}
+        </a>
       </p>
       {review.rating !== undefined && (
         <p className={styles.rating}>Rating: {review.rating}/5</p>
