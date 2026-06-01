@@ -1,0 +1,10 @@
+.resultsList {
+    margin: var(--space-3) 0;
+    padding: var(--space-3);
+    width: fit-content;
+    list-style: none;
+    flex-direction: column;
+}   
+.resultsList li {
+    padding: 0;
+}
