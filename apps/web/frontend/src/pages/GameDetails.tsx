@@ -37,10 +37,10 @@ export function GameDetails() {
     reviewsError,
     refetchReviews,
     handleVote,
-    averageRating,
+    averageRating
   } = useReviews(id);
 
-  const myReview = reviews.find((review) => review.user._id === user?._id);
+  const myReview = reviews.find((review) => review.user?._id === user?._id);
 
   const handleDeleteReview = async (reviewId: string) => {
     try {

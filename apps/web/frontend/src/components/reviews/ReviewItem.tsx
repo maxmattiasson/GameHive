@@ -17,13 +17,13 @@ export default function ReviewItem({
   currentUserId,
   onVote,
   onDelete,
-  showGameTitle = false,
+  showGameTitle = false
 }: ReviewItemProps) {
   const { user } = useAuth();
 
   const helpfulCount = review.votes.filter((v) => v.value === 1).length;
   const notHelpfulCount = review.votes.filter((v) => v.value === -1).length;
-  const isOwnReview = review.user._id === currentUserId;
+  const isOwnReview = review.user?._id === currentUserId;
   const isAdmin = user?.role === "admin";
 
   return (
@@ -38,7 +38,9 @@ export default function ReviewItem({
           </RemoveButton>
         )}
       </div>
-      <p className={styles.reviewerName}>{review.user.username}</p>
+      <p className={styles.reviewerName}>
+        {review.user?.username ?? "Deleted user"}
+      </p>
       {review.rating !== undefined && (
         <p className={styles.rating}>Rating: {review.rating}/5</p>
       )}
