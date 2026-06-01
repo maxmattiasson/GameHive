@@ -1,3 +1,4 @@
+import UsersSearchField from "../../components/ui/UsersSearchField";
 import styles from "./AdminPage.module.css";
 
 const AdminPage = () => {
@@ -7,7 +8,7 @@ const AdminPage = () => {
         <h1 className={styles.heading}>ADMIN</h1>
         <p className={styles.subheading}>Find and delete them maggots!</p>
       </div>
-      <input className={styles.input} placeholder="Find user" />
+      <UsersSearchField />
     </div>
   );
 };

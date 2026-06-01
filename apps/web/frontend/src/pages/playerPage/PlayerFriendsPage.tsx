@@ -86,6 +86,7 @@ export function PlayerFriendsPage() {
       </div>
 
       <div>
+        <h2 className={styles.heading}>Find More Friends</h2>
         <UserSearchField />
       </div>
     </section>
