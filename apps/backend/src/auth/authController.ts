@@ -1,18 +1,14 @@
 import bcrypt from "bcrypt";
 import UserModel from "../models/User.js";
 import { NextFunction, Request, Response } from "express";
-import jwt from "jsonwebtoken";
-import { validateSignup } from "../helpers/validators.js";
+import jwt  from "jsonwebtoken";
+import type { z } from "zod";
+import { signupSchema, loginSchema } from "../schemas/auth.schema.js";
 
 export const signup = async (req: Request, res: Response) => {
-  try {
-    const { username, email, password } = req.body;
+    try {
+    const { username, email, password } = req.validatedBody as z.infer<typeof signupSchema>;
 
-    const validationResult = validateSignup({ username, email, password });
-
-    if (validationResult !== true) {
-      return res.status(400).json({ message: validationResult });
-    }
 
     const existingUser = await UserModel.findOne({
       email: email.toLowerCase()
@@ -31,14 +27,30 @@ export const signup = async (req: Request, res: Response) => {
     });
 
     await user.save();
-
+    
+    const token = jwt.sign(
+      {
+        userId: user._id,
+        email: user.email,
+        username: user.username,
+        role: user.role,
+      },
+      getJwtSecret(),
+      { expiresIn: "7d" }
+    );
+    
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: false,
+      sameSite: "lax",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+    
+    const { passwordHash: _, ...userWithoutPassword } = user.toObject();
+    
     return res.status(201).json({
       message: "User created",
-      user: {
-        id: user._id,
-        username: user.username,
-        email: user.email
-      }
+      user: userWithoutPassword,
     });
   } catch (err) {
     console.error("[signup] error:", err);
@@ -52,17 +64,8 @@ export const login = async (
   next: NextFunction
 ) => {
   try {
-    const { email, password } = req.body;
-    if (
-      typeof email !== "string" ||
-      typeof password !== "string" ||
-      !email.trim() ||
-      !password.trim()
-    ) {
-      res.status(400).json({ message: "Missing or invalid fields" });
-      return;
-    }
-
+    const { email, password } = req.validatedBody as z.infer<typeof loginSchema>;;
+    
     const normalizedEmail = email.toLowerCase().trim();
 
     const user = await UserModel.findOne({ email: normalizedEmail });

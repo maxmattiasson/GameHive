@@ -7,3 +7,11 @@ export const idParamSchema = z.object({
 export const gameIdParamsSchema = z.object({
   gameId: z.string().regex(/^[0-9a-fA-F]{24}$/),
 });
+
+export const reviewIdParamsSchema = z.object({
+  reviewId: z.string().regex(/^[0-9a-fA-F]{24}$/),
+});
+
+export const searchQuerySchema = z.object({
+  query: z.string().min(1).max(100),
+});

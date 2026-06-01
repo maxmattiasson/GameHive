@@ -75,7 +75,7 @@ export function validateRequest(schema: RequestSchemas) {
           })),
         );
       } else {
-        (req as any).validateQuery = rQuery.data;
+        (req as any).validatedQuery = rQuery.data;
       }
     }
 
