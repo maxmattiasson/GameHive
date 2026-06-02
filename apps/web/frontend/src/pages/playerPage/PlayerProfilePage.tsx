@@ -1,11 +1,11 @@
 import { Outlet, NavLink, useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
-import { useState, useEffect } from "react";
-import type { User } from "../../types/user";
+import { useState, useEffect, type ChangeEvent } from "react";
 import RemoveButton from "../../components/ui/RemoveButton";
 import deleteUser from "../../services/userService";
 import { AddFriendButton } from "../../components/ui/AddFriendButton";
 import styles from "./PlayerProfile.module.css";
+import Avatar from "../../components/ui/Avatar";
 
 export function PlayerProfile() {
   const { user, loading: authLoading } = useAuth();
@@ -15,6 +15,8 @@ export function PlayerProfile() {
   const [otherUser, setOtherUser] = useState<any>(null);
 
   const [error, setError] = useState("");
+
+  const [selectedAvatar, setSelectedAvatar] = useState("/images/avatar.jpg");
 
   const navigate = useNavigate();
 
@@ -29,6 +31,11 @@ export function PlayerProfile() {
       console.error(error);
       setError(error as string);
     }
+  };
+
+  const handleAvatarSelect = (event: ChangeEvent<HTMLSelectElement>) => {
+    const avatar = event.currentTarget.value;
+    setSelectedAvatar(avatar);
   };
 
   useEffect(() => {
@@ -62,10 +69,9 @@ export function PlayerProfile() {
           <p>Player Profile</p>
         </div>
         <div className={styles.playerImg}>
-          <img
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfJ09O7DcXW62RYeG11IAOVukc5tNBerllXA&s"
-            alt="Player avatar"
-          />
+          <div className={styles.playerImg}> </div>
+          <img src={selectedAvatar} alt="Player avatar" />
+          <Avatar onAvatarSelect={handleAvatarSelect} />
         </div>
       </div>
 
@@ -90,11 +96,11 @@ export function PlayerProfile() {
       {isAdmin && (
         <div className="container">
           <RemoveButton id={id} onDelete={handleDeleteUser}>
-            Die
+            Delete User
           </RemoveButton>
           <p>{error}</p>
         </div>
       )}
     </div>
   );
-} 
+}
