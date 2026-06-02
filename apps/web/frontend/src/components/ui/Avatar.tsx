@@ -8,11 +8,11 @@ const Avatar = ({ onAvatarSelect }: AvatarPickerProps) => {
   return (
     <div>
       <select onChange={onAvatarSelect} name="avatar_picker">
-        <option value="/images/avatar.jpg">Avatar 1</option>
-        <option value="/images/avatar2.jpg">Avatar 2</option>
-        <option value="/images/avatar3.jpg">Avatar 3</option>
-        <option value="/images/avatar4.jpg">Avatar 4</option>
-        <option value="/images/avatar5.jpg">Avatar 5</option>
+        <option value="avatar1">Avatar 1</option>
+        <option value="avatar2">Avatar 2</option>
+        <option value="avatar3">Avatar 3</option>
+        <option value="avatar4">Avatar 4</option>
+        <option value="avatar5">Avatar 5</option>
       </select>
     </div>
   );

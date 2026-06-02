@@ -6,6 +6,7 @@ import deleteUser from "../../services/userService";
 import { AddFriendButton } from "../../components/ui/AddFriendButton";
 import styles from "./PlayerProfile.module.css";
 import Avatar from "../../components/ui/Avatar";
+import Button from "../../components/ui/Button";
 
 export function PlayerProfile() {
   const { user, loading: authLoading } = useAuth();
@@ -16,7 +17,7 @@ export function PlayerProfile() {
 
   const [error, setError] = useState("");
 
-  const [selectedAvatar, setSelectedAvatar] = useState("/images/avatar.jpg");
+  const [selectedAvatar, setSelectedAvatar] = useState("avatar1");
 
   const navigate = useNavigate();
 
@@ -69,9 +70,10 @@ export function PlayerProfile() {
           <p>Player Profile</p>
         </div>
         <div className={styles.playerImg}>
-          <div className={styles.playerImg}> </div>
-          <img src={selectedAvatar} alt="Player avatar" />
+          <img src={`/images/${selectedAvatar}.jpg`} alt="Player avatar" />
           <Avatar onAvatarSelect={handleAvatarSelect} />
+
+          {/* <Button onClick={onSaveAvatar} color="primary">Save</Button> */}
         </div>
       </div>
 
