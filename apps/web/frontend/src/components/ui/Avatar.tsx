@@ -1,6 +1,6 @@
 import { type ChangeEvent } from "react";
-
 interface AvatarPickerProps {
+  value: string;
   onAvatarSelect: (avatar: ChangeEvent<HTMLSelectElement>) => void;
 }
 

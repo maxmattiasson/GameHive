@@ -9,7 +9,7 @@ import Avatar from "../../components/ui/Avatar";
 import Button from "../../components/ui/Button";
 
 export function PlayerProfile() {
-  const { user, loading: authLoading } = useAuth();
+  const { user, setUser, loading: authLoading } = useAuth();
   const { id: slug } = useParams();
   const id = slug?.match(/[0-9a-f]{24}$/i)?.[0];
 
@@ -17,7 +17,9 @@ export function PlayerProfile() {
 
   const [error, setError] = useState("");
 
-  const [selectedAvatar, setSelectedAvatar] = useState("avatar1");
+  const [selectedAvatar, setSelectedAvatar] = useState(
+    user?.avatar ?? "avatar1"
+  );
 
   const navigate = useNavigate();
 
@@ -34,9 +36,46 @@ export function PlayerProfile() {
     }
   };
 
-  const handleAvatarSelect = (event: ChangeEvent<HTMLSelectElement>) => {
+  const handleAvatarSelect = async (event: ChangeEvent<HTMLSelectElement>) => {
     const avatar = event.currentTarget.value;
     setSelectedAvatar(avatar);
+  };
+
+  useEffect(() => {
+    if (user?.avatar) {
+      setSelectedAvatar(user.avatar);
+    }
+  }, [user?.avatar]);
+
+  const onSaveAvatar = async () => {
+    try {
+      const res = await fetch("/api/users/me/avatar", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        credentials: "include",
+        body: JSON.stringify({ avatar: selectedAvatar })
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(data.message ?? "Could not set avatar");
+        return;
+      }
+
+      if (user) {
+        setUser({
+          ...user,
+          avatar: data.user.avatar
+        });
+      }
+
+      setError("");
+    } catch (error) {
+      setError("Something went wrong with saving avatar");
+    }
   };
 
   useEffect(() => {
@@ -71,9 +110,11 @@ export function PlayerProfile() {
         </div>
         <div className={styles.playerImg}>
           <img src={`/images/${selectedAvatar}.jpg`} alt="Player avatar" />
-          <Avatar onAvatarSelect={handleAvatarSelect} />
+          <Avatar value={selectedAvatar} onAvatarSelect={handleAvatarSelect} />
 
-          {/* <Button onClick={onSaveAvatar} color="primary">Save</Button> */}
+          <Button onClick={onSaveAvatar} color="primary">
+            Save
+          </Button>
         </div>
       </div>
 
