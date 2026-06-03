@@ -4,6 +4,7 @@ import {
   getPendingRequests,
   acceptFriendRequest,
   rejectFriendRequest,
+  removeFriend,
   getFriends,
   getFriendsByUserId,
 } from "../controllers/friendshipControllers.js";
@@ -24,6 +25,8 @@ router.get("/requests", authMiddleware, getPendingRequests);
 router.patch("/requests/:id/accept", authMiddleware, acceptFriendRequest);
 
 router.delete("/requests/:id", authMiddleware, rejectFriendRequest);
+
+router.delete("/friends/:id", authMiddleware, removeFriend);
 
 router.get("/friends", authMiddleware, getFriends);
 

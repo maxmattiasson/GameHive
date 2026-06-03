@@ -8,6 +8,7 @@ import {
 import { FriendRequestActions } from "../../components/ui/FriendRequestActions";
 import styles from "./PlayerFriendsPage.module.css";
 import UserSearchField from "../../components/ui/UsersSearchField";
+import { removeFriend } from "../../services/friendshipService";
 
 export function PlayerFriendsPage() {
   const { id } = useParams();
@@ -29,6 +30,15 @@ export function PlayerFriendsPage() {
 
   if (pendingLoading || friendsLoading)
     return <p className={styles.empty}>Loading...</p>;
+
+  async function handleRemoveFriend(friendshipId: string) {
+    try {
+      await removeFriend(friendshipId);
+      friendsRefetch();
+    } catch (err) {
+      console.error(err);
+    }
+  }
 
   return (
     <section className={styles.section}>
@@ -80,9 +90,10 @@ export function PlayerFriendsPage() {
               return (
                 <li key={friendship._id} className={styles.card}>
                   <div className={styles.avatar}>{friend.username[0]}</div>
-                  <span className={styles.username}>
-                    <a href={`/users/${friend._id}`}>{friend.username}</a>
-                  </span>
+                  <span className={styles.username}>{friend.username}</span>
+                  <button onClick={() => handleRemoveFriend(friendship._id)}>
+                    Remove
+                  </button>
                 </li>
               );
             })}
