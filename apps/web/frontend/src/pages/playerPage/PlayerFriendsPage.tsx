@@ -45,7 +45,9 @@ export function PlayerFriendsPage() {
                     {request.requester.username[0]}
                   </div>
                   <span className={styles.username}>
-                    {request.requester.username}
+                    <a href={`/users/${request.requester._id}`}>
+                      {request.requester.username}
+                    </a>
                   </span>
                   <div className={styles.requestActions}>
                     <FriendRequestActions
@@ -78,7 +80,9 @@ export function PlayerFriendsPage() {
               return (
                 <li key={friendship._id} className={styles.card}>
                   <div className={styles.avatar}>{friend.username[0]}</div>
-                  <span className={styles.username}>{friend.username}</span>
+                  <span className={styles.username}>
+                    <a href={`/users/${friend._id}`}>{friend.username}</a>
+                  </span>
                 </li>
               );
             })}
