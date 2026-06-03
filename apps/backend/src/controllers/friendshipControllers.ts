@@ -20,6 +20,10 @@ async function sendFriendRequest(
   }
   const { recipient } = result.data;
 
+  if (requester === recipient) {
+    return next(new ValidationError("You can't add yourself as a friend"));
+  }
+
   try {
     const friendship = await FriendshipModel.create({
       requester,
