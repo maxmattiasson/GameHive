@@ -3,7 +3,7 @@ import { useAuth } from "../../hooks/useAuth";
 import {
   usePendingRequests,
   useFriends,
-  useFriendsByUserId
+  useFriendsByUserId,
 } from "../../hooks/useFriends";
 import { FriendRequestActions } from "../../components/ui/FriendRequestActions";
 import styles from "./PlayerFriendsPage.module.css";
@@ -17,7 +17,7 @@ export function PlayerFriendsPage() {
   const {
     data: pendingRequests,
     loading: pendingLoading,
-    refetch: pendingRefetch
+    refetch: pendingRefetch,
   } = usePendingRequests();
 
   const ownFriends = useFriends();
@@ -25,6 +25,7 @@ export function PlayerFriendsPage() {
   const friends = id ? otherFriends.data : ownFriends.data;
   const friendsLoading = id ? otherFriends.loading : ownFriends.loading;
   const friendsRefetch = ownFriends.refetch;
+  const profileUserId = id ? id.match(/[0-9a-f]{24}$/i)?.[0] : user?._id;
 
   if (pendingLoading || friendsLoading)
     return <p className={styles.empty}>Loading...</p>;
@@ -72,7 +73,7 @@ export function PlayerFriendsPage() {
           <ul className={styles.list}>
             {friends.map((friendship) => {
               const friend =
-                friendship.requester._id === user?._id
+                friendship.requester._id === profileUserId
                   ? friendship.recipient
                   : friendship.requester;
 

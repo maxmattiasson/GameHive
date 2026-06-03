@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import type { LibraryEntry } from "../services/libraryService";
 
-export function useUserLibrary(id: string | undefined) {
+export function useUserLibrary(idOrSlug: string | undefined) {
+  const id = idOrSlug?.match(/[0-9a-f]{24}$/i)?.[0];
+
   const [data, setData] = useState<LibraryEntry[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -9,7 +11,7 @@ export function useUserLibrary(id: string | undefined) {
     if (!id) return;
     fetch(`/api/users/${id}/library`)
       .then((res) => res.json())
-      .then(setData)
+      .then((data) => setData(Array.isArray(data) ? data : []))
       .finally(() => setLoading(false));
   }, [id]);
 
