@@ -11,6 +11,7 @@ import { FriendRequestActions } from "../../components/ui/FriendRequestActions";
 import styles from "./PlayerFriendsPage.module.css";
 import UserSearchField from "../../components/ui/UsersSearchField";
 import { removeFriend } from "../../services/friendshipService";
+import Button from "../../components/ui/Button";
 
 export function PlayerFriendsPage() {
   const { id } = useParams();
@@ -100,9 +101,12 @@ export function PlayerFriendsPage() {
                     </Link>
                   </span>
                   {isOwnProfile && (
-                    <button onClick={() => handleRemoveFriend(friendship._id)}>
+                    <Button
+                      color="vote"
+                      onClick={() => handleRemoveFriend(friendship._id)}
+                    >
                       Remove
-                    </button>
+                    </Button>
                   )}
                 </li>
               );
