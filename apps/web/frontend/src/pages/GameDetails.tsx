@@ -107,6 +107,7 @@ export function GameDetails() {
             {data.multiplayer && <Badge label="Multiplayer" />}
           </div>
 
+          {user ? (
           <div className="play-time">
             <InfoCard>
               <p>Time Played</p>
@@ -136,6 +137,8 @@ export function GameDetails() {
               </Button>
             </InfoCard>
           </div>
+          ) : null
+          }
         </div>
 
         <div className="col-2">
@@ -158,6 +161,7 @@ export function GameDetails() {
 
         <div className="col-3">
           <InfoCard>
+            {user ? (
             <ReviewForm
               gameId={id!}
               existingReview={myReview}
@@ -166,6 +170,12 @@ export function GameDetails() {
                 setShowReviewForm(false);
               }}
             />
+            ) : (
+              <>
+              <h3>Write a review</h3>
+              <p>Log in to rate games and write reviews.</p>
+              </>
+            )}
           </InfoCard>
         </div>
       </div>

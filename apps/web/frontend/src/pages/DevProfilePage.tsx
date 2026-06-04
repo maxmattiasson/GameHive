@@ -5,6 +5,7 @@ import DevGamesList from "../components/games/DevGamesList/DevGamesList";
 import { getDevsOwnGames, deleteGame } from "../services/gameService";
 import type { Game } from "../types/game";
 import styles from "./DevProfilePage.module.css"
+import { useNavigate } from "react-router-dom";
 
 export default function DevProfilePage(){
     const [isUploading, setIsUploading] = useState(false);
@@ -12,13 +13,15 @@ export default function DevProfilePage(){
     const [selectedGame, setSelectedGame] = useState<Game | null>(null);
 
     const { user, loading } = useAuth();
-    
 
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (loading) return;
-        if (!user) return;
-
+        if (!user || user.role !== "dev") {
+            navigate("/");
+            return;
+}
         const fetchGames = async () => {
             try {
                 const data = await getDevsOwnGames();
@@ -29,7 +32,7 @@ export default function DevProfilePage(){
         }
 
         fetchGames();
-    },[loading, user])
+    },[loading, user, navigate])
 
     const handleEdit = (game: Game) => {
         setSelectedGame(game);
