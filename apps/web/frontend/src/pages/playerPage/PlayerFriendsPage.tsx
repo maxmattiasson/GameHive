@@ -1,4 +1,6 @@
 import { useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { slugify } from "../../helpers/slugify";
 import { useAuth } from "../../hooks/useAuth";
 import {
   usePendingRequests,
@@ -90,10 +92,18 @@ export function PlayerFriendsPage() {
               return (
                 <li key={friendship._id} className={styles.card}>
                   <div className={styles.avatar}>{friend.username[0]}</div>
-                  <span className={styles.username}>{friend.username}</span>
-                  <button onClick={() => handleRemoveFriend(friendship._id)}>
-                    Remove
-                  </button>
+                  <span className={styles.username}>
+                    <Link
+                      to={`/users/${slugify(friend.username)}-${friend._id}`}
+                    >
+                      {friend.username}
+                    </Link>
+                  </span>
+                  {isOwnProfile && (
+                    <button onClick={() => handleRemoveFriend(friendship._id)}>
+                      Remove
+                    </button>
+                  )}
                 </li>
               );
             })}
