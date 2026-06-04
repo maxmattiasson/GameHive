@@ -1,9 +1,11 @@
-import { useEffect, useRef, useState } from 'react';
-import type { ChangeEvent } from 'react';
-import type { User } from '../../types/user';
-import Input from './Input';
-import styles from './UsersSearchField.module.css';
-import parentStyles from '../../pages/playerPage/PlayerFriendsPage.module.css';
+import { useEffect, useRef, useState } from "react";
+import type { ChangeEvent } from "react";
+import type { User } from "../../types/user";
+import Input from "./Input";
+import styles from "./UsersSearchField.module.css";
+import parentStyles from "../../pages/playerPage/PlayerFriendsPage.module.css";
+import { Link } from "react-router-dom";
+import { slugify } from "../../helpers/slugify";
 
 const getUsers = async (query: string): Promise<User[]> => {
   const trimmedQuery = query.trim();
@@ -12,7 +14,9 @@ const getUsers = async (query: string): Promise<User[]> => {
   }
 
   try {
-    const response = await fetch(`/api/users/search?query=${encodeURIComponent(trimmedQuery)}`);
+    const response = await fetch(
+      `/api/users/search?query=${encodeURIComponent(trimmedQuery)}`,
+    );
     if (!response.ok) {
       return [];
     }
@@ -24,7 +28,7 @@ const getUsers = async (query: string): Promise<User[]> => {
 };
 
 export default function UsersSearchField() {
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState("");
   const [results, setResults] = useState<User[]>([]);
   const timerRef = useRef<number | null>(null);
 
@@ -53,23 +57,25 @@ export default function UsersSearchField() {
 
   return (
     <>
-        <Input
-           type="search"
-            name="userSearch"
-            value={query}
-            onChange={handleChange}
-            placeholder="Search users"
-            className={styles.searchField}
-        />
-        {results.length > 0 ? (
-            <ul className={`${styles.resultsList} ${parentStyles.card}`}>
-            {results.map((user) => (
-                <li key={user._id}>
-                <a href={`/users/${user._id}`}>{user.username}</a>
-                </li>
-            ))} 
-            </ul>
-        ) : null}
+      <Input
+        type="search"
+        name="userSearch"
+        value={query}
+        onChange={handleChange}
+        placeholder="Search users"
+        className={styles.searchField}
+      />
+      {results.length > 0 ? (
+        <ul className={`${styles.resultsList} ${parentStyles.card}`}>
+          {results.map((user) => (
+            <li key={user._id}>
+              <Link to={`/users/${slugify(user.username)}-${user._id}`}>
+                {user.username}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      ) : null}
     </>
   );
 }
