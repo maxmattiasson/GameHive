@@ -20,10 +20,12 @@ export function PlayerProfile() {
   const [selectedAvatar, setSelectedAvatar] = useState(
     user?.avatar ?? "avatar1"
   );
+  const [showAvatarPicker, setShowAvatarPicker] = useState(false);
 
   const navigate = useNavigate();
 
   const isAdmin = user?.role === "admin";
+  const isOwnProfile = !id || user?._id === id;
 
   const handleDeleteUser = async (id: string) => {
     console.log(id);
@@ -46,6 +48,9 @@ export function PlayerProfile() {
       setSelectedAvatar(user.avatar);
     }
   }, [user?.avatar]);
+  useEffect(() => {
+    setShowAvatarPicker(false);
+  }, [id]);
 
   const onSaveAvatar = async () => {
     try {
@@ -73,9 +78,15 @@ export function PlayerProfile() {
       }
 
       setError("");
+      setShowAvatarPicker(false);
     } catch (error) {
       setError("Something went wrong with saving avatar");
     }
+  };
+
+  const handleChangeAvatar = () => {
+    if (!isOwnProfile) return;
+    setShowAvatarPicker((prev) => !prev);
   };
 
   useEffect(() => {
@@ -110,11 +121,22 @@ export function PlayerProfile() {
         </div>
         <div className={styles.playerImg}>
           <img src={`/images/${selectedAvatar}.jpg`} alt="Player avatar" />
-          <Avatar value={selectedAvatar} onAvatarSelect={handleAvatarSelect} />
-
-          <Button onClick={onSaveAvatar} color="primary">
-            Save
-          </Button>
+          {isOwnProfile && (
+            <Button color="secondary" onClick={handleChangeAvatar}>
+              Change Avatar
+            </Button>
+          )}
+          {isOwnProfile && showAvatarPicker && (
+            <div className="select_avatar_wrapper">
+              <Avatar
+                value={selectedAvatar}
+                onAvatarSelect={handleAvatarSelect}
+              />
+              <Button onClick={onSaveAvatar} color="primary">
+                Save
+              </Button>
+            </div>
+          )}
         </div>
       </div>
 
