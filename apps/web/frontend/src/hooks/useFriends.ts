@@ -45,12 +45,16 @@ export function usePendingRequests() {
   return { data, loading, error, refetch };
 }
 
-export function useFriendsByUserId(userId: string) {
+export function useFriendsByUserId(userIdOrSlug: string | undefined) {
+  const userId = userIdOrSlug?.match(/[0-9a-f]{24}$/i)?.[0];
+
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    if (!userId) return;
+
     getFriendsByUserId(userId)
       .then(setData)
       .catch((err: Error) => setError(err.message))
