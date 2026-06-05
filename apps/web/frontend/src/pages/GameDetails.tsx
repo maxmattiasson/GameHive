@@ -18,6 +18,9 @@ import { updateLibraryEntry } from "../services/libraryService";
 import { deleteGame } from "../services/gameService";
 import { deleteReview } from "../services/reviewService";
 
+import { Link } from "react-router-dom";
+import { slugify } from "../helpers/slugify";
+
 import "./GameDetails.css";
 
 export function GameDetails() {
@@ -37,10 +40,10 @@ export function GameDetails() {
     reviewsError,
     refetchReviews,
     handleVote,
-    averageRating,
+    averageRating
   } = useReviews(id);
 
-  const myReview = reviews.find((review) => review.user._id === user?._id);
+  const myReview = reviews.find((review) => review.user?._id === user?._id);
 
   const handleDeleteReview = async (reviewId: string) => {
     try {
@@ -88,7 +91,17 @@ export function GameDetails() {
               </li>
               <li>
                 <span>Developer</span>
-                <span className="bold">{data.dev}</span>
+                <span className="bold">
+                  {data.ownerUserId ? (
+                    <Link
+                      to={`/users/${slugify(data.dev)}-${data.ownerUserId}`}
+                    >
+                      {data.dev}
+                    </Link>
+                  ) : (
+                    data.dev
+                  )}
+                </span>
               </li>
               <li>
                 <span>Genre</span>
@@ -108,37 +121,36 @@ export function GameDetails() {
           </div>
 
           {user ? (
-          <div className="play-time">
-            <InfoCard>
-              <p>Time Played</p>
-              <p>{playtime} min</p>
+            <div className="play-time">
+              <InfoCard>
+                <p>Time Played</p>
+                <p>{playtime} min</p>
 
-              <Button
-                color="vote"
-                onClick={async () => {
-                  const newTime = playtime - 30;
-                  setPlaytime(newTime);
-                  await updateLibraryEntry(id!, newTime);
-                }}
-                disabled={playtime === 0}
-              >
-                −
-              </Button>
+                <Button
+                  color="vote"
+                  onClick={async () => {
+                    const newTime = playtime - 30;
+                    setPlaytime(newTime);
+                    await updateLibraryEntry(id!, newTime);
+                  }}
+                  disabled={playtime === 0}
+                >
+                  −
+                </Button>
 
-              <Button
-                color="vote"
-                onClick={async () => {
-                  const newTime = playtime + 30;
-                  setPlaytime(newTime);
-                  await updateLibraryEntry(id!, newTime);
-                }}
-              >
-                +
-              </Button>
-            </InfoCard>
-          </div>
-          ) : null
-          }
+                <Button
+                  color="vote"
+                  onClick={async () => {
+                    const newTime = playtime + 30;
+                    setPlaytime(newTime);
+                    await updateLibraryEntry(id!, newTime);
+                  }}
+                >
+                  +
+                </Button>
+              </InfoCard>
+            </div>
+          ) : null}
         </div>
 
         <div className="col-2">
@@ -162,18 +174,18 @@ export function GameDetails() {
         <div className="col-3">
           <InfoCard>
             {user ? (
-            <ReviewForm
-              gameId={id!}
-              existingReview={myReview}
-              onReviewCreated={() => {
-                refetchReviews();
-                setShowReviewForm(false);
-              }}
-            />
+              <ReviewForm
+                gameId={id!}
+                existingReview={myReview}
+                onReviewCreated={() => {
+                  refetchReviews();
+                  setShowReviewForm(false);
+                }}
+              />
             ) : (
               <>
-              <h3>Write a review</h3>
-              <p>Log in to rate games and write reviews.</p>
+                <h3>Write a review</h3>
+                <p>Log in to rate games and write reviews.</p>
               </>
             )}
           </InfoCard>

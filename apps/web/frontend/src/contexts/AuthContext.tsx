@@ -10,6 +10,7 @@ type User = {
   role: "user" | "admin" | "dev";
   loginCount: number;
   userAchievements: string[];
+  avatar: string;
 } | null;
 
 type AuthContextType = {
@@ -26,9 +27,8 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-  
     fetch(`${API_URL}/me`, {
-      credentials: "include",
+      credentials: "include"
     })
       .then((res) => {
         if (!res.ok) throw new Error();
@@ -44,7 +44,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setLoading(false);
       });
   }, []);
-  
+
   const logout = async () => {
     try {
       await fetch(`${API_URL}/logout`, {

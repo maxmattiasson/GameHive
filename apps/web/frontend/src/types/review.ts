@@ -8,7 +8,7 @@ export type ReviewVote = {
 
 export type Review = {
   _id: string;
-  user: User;
+  user: User | null;
   game?: Game;
   text: string;
   rating?: number;

@@ -83,5 +83,5 @@ DELETE http://localhost:3000/api/library/69e62b5d8f1d9f73f49a1fcc
 
 ### Delete user
 
-DELETE http://localhost:3000/api/users/69f103ac455c76bf2b4942e5
+DELETE http://localhost:3000/api/users/6a1d6e47b5b761b8526a1cda
 Cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2YTBiMjE5ZjkxMWVhNzdkZWMzNmI0OTAiLCJlbWFpbCI6ImFkbWluQGV4YW1wbGUuY29tIiwidXNlcm5hbWUiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc3OTczMTQ2NCwiZXhwIjoxNzgwMzM2MjY0fQ.g5Tc8lph9u7Cn4EJUVRMt3iUZ8KP6gOWGjNuyJ-XpRE; Max-Age=604800; Path=/; Expires=Mon, 01 Jun 2026 17:51:04 GMT; HttpOnly; SameSite=Lax
