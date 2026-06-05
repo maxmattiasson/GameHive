@@ -26,6 +26,7 @@ export function PlayerProfile() {
 
   const isAdmin = user?.role === "admin";
   const isOwnProfile = !id || user?._id === id;
+  const displaydAvatar = id ? (otherUser?.avatar ?? "avatar1") : selectedAvatar;
 
   const handleDeleteUser = async (id: string) => {
     console.log(id);
@@ -44,10 +45,10 @@ export function PlayerProfile() {
   };
 
   useEffect(() => {
-    if (user?.avatar) {
+    if (!id && user?.avatar) {
       setSelectedAvatar(user.avatar);
     }
-  }, [user?.avatar]);
+  }, [id, user?.avatar]);
   useEffect(() => {
     setShowAvatarPicker(false);
   }, [id]);
@@ -120,7 +121,7 @@ export function PlayerProfile() {
           <p>Player Profile</p>
         </div>
         <div className={styles.playerImg}>
-          <img src={`/images/${selectedAvatar}.jpg`} alt="Player avatar" />
+          <img src={`/images/${displaydAvatar}.jpg`} alt="Player avatar" />
           {isOwnProfile && (
             <Button color="secondary" onClick={handleChangeAvatar}>
               Change Avatar

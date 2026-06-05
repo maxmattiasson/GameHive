@@ -83,7 +83,7 @@ router.get(
       const id = req.params.id as string;
 
       const user = await UserModel.findById(id).select(
-        "username role userAchievements createdAt"
+        "username role avatar userAchievements createdAt"
       );
 
       if (!user) {
