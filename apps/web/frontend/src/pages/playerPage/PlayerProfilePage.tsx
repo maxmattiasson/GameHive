@@ -92,7 +92,7 @@ export function PlayerProfile() {
       {isAdmin && (
         <div className="container">
           <RemoveButton id={id} onDelete={handleDeleteUser}>
-            Die
+            Delete User
           </RemoveButton>
           <p>{error}</p>
         </div>
