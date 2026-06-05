@@ -1,14 +1,15 @@
 import { Outlet, NavLink, useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { useState, useEffect } from "react";
-import type { User } from "../../types/user";
+// import type { User } from "../../types/user";
 import RemoveButton from "../../components/ui/RemoveButton";
 import deleteUser from "../../services/userService";
 import { AddFriendButton } from "../../components/ui/AddFriendButton";
 import styles from "./PlayerProfile.module.css";
+// import { is } from "zod/v4/locales";
 
 export function PlayerProfile() {
-  const { user, loading: authLoading } = useAuth();
+  const { user, loading: authLoading, logout } = useAuth();
   const { id: slug } = useParams();
   const id = slug?.match(/[0-9a-f]{24}$/i)?.[0];
 
@@ -24,7 +25,8 @@ export function PlayerProfile() {
     console.log(id);
     try {
       await deleteUser(id);
-      navigate("/admin");
+      await logout()
+      navigate(isAdmin ? "/admin" : "/");
     } catch (error) {
       console.error(error);
       setError(error as string);
@@ -95,6 +97,15 @@ export function PlayerProfile() {
           <p>{error}</p>
         </div>
       )}
+      { ((user && !id) || (user && id && user._id === id)) && (
+        <div className="container">
+          <RemoveButton self={user._id} onDelete={handleDeleteUser}>
+            Delete my account
+          </RemoveButton>
+          <p>{error}</p>
+        </div>
+      )
+      }
     </div>
   );
 } 

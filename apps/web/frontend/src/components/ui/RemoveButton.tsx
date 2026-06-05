@@ -8,6 +8,7 @@ interface RemoveButtonProps {
   disabled?: boolean;
   children?: ReactNode;
   id?: string;
+  self?: string;
 }
 
 export default function RemoveButton({
@@ -16,7 +17,8 @@ export default function RemoveButton({
   onDelete,
   disabled,
   children,
-  id
+  id,
+  self,
 }: RemoveButtonProps) {
   const handleDelete = () => {
     if (gameId) {
@@ -43,6 +45,15 @@ export default function RemoveButton({
       );
       if (confirmed) {
         onDelete(id);
+      }
+      return;
+    }
+    if (self) {
+      const confirmed = window.prompt(
+        "Are you sure you want to delete your account? This will remove all your game collection, you reviews, playing time and achievements and CANNOT BE UNDONE! If you still want to be deleted, type in 'delete' in this box and click OK."
+      );
+      if (confirmed === "delete") {
+        onDelete(self);
       }
       return;
     }
