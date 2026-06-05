@@ -1,14 +1,15 @@
 import { Outlet, NavLink, useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
-import { useState, useEffect } from "react";
-import type { User } from "../../types/user";
+import { useState, useEffect, type ChangeEvent } from "react";
 import RemoveButton from "../../components/ui/RemoveButton";
 import deleteUser from "../../services/userService";
 import { AddFriendButton } from "../../components/ui/AddFriendButton";
 import styles from "./PlayerProfile.module.css";
+import Avatar from "../../components/ui/Avatar";
+import Button from "../../components/ui/Button";
 
 export function PlayerProfile() {
-  const { user, loading: authLoading } = useAuth();
+  const { user, setUser, loading: authLoading } = useAuth();
   const { id: slug } = useParams();
   const id = slug?.match(/[0-9a-f]{24}$/i)?.[0];
 
@@ -16,9 +17,16 @@ export function PlayerProfile() {
 
   const [error, setError] = useState("");
 
+  const [selectedAvatar, setSelectedAvatar] = useState(
+    user?.avatar ?? "avatar1"
+  );
+  const [showAvatarPicker, setShowAvatarPicker] = useState(false);
+
   const navigate = useNavigate();
 
   const isAdmin = user?.role === "admin";
+  const isOwnProfile = !id || user?._id === id;
+  const displaydAvatar = id ? (otherUser?.avatar ?? "avatar1") : selectedAvatar;
 
   const handleDeleteUser = async (id: string) => {
     console.log(id);
@@ -29,6 +37,57 @@ export function PlayerProfile() {
       console.error(error);
       setError(error as string);
     }
+  };
+
+  const handleAvatarSelect = async (event: ChangeEvent<HTMLSelectElement>) => {
+    const avatar = event.currentTarget.value;
+    setSelectedAvatar(avatar);
+  };
+
+  useEffect(() => {
+    if (!id && user?.avatar) {
+      setSelectedAvatar(user.avatar);
+    }
+  }, [id, user?.avatar]);
+  useEffect(() => {
+    setShowAvatarPicker(false);
+  }, [id]);
+
+  const onSaveAvatar = async () => {
+    try {
+      const res = await fetch("/api/users/me/avatar", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        credentials: "include",
+        body: JSON.stringify({ avatar: selectedAvatar })
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(data.message ?? "Could not set avatar");
+        return;
+      }
+
+      if (user) {
+        setUser({
+          ...user,
+          avatar: data.user.avatar
+        });
+      }
+
+      setError("");
+      setShowAvatarPicker(false);
+    } catch (error) {
+      setError("Something went wrong with saving avatar");
+    }
+  };
+
+  const handleChangeAvatar = () => {
+    if (!isOwnProfile) return;
+    setShowAvatarPicker((prev) => !prev);
   };
 
   useEffect(() => {
@@ -64,10 +123,23 @@ export function PlayerProfile() {
           <p>Player Profile</p>
         </div>
         <div className={styles.playerImg}>
-          <img
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfJ09O7DcXW62RYeG11IAOVukc5tNBerllXA&s"
-            alt="Player avatar"
-          />
+          <img src={`/images/${displaydAvatar}.jpg`} alt="Player avatar" />
+          {isOwnProfile && (
+            <Button color="secondary" onClick={handleChangeAvatar}>
+              Change Avatar
+            </Button>
+          )}
+          {isOwnProfile && showAvatarPicker && (
+            <div className="select_avatar_wrapper">
+              <Avatar
+                value={selectedAvatar}
+                onAvatarSelect={handleAvatarSelect}
+              />
+              <Button onClick={onSaveAvatar} color="primary">
+                Save
+              </Button>
+            </div>
+          )}
         </div>
       </div>
 

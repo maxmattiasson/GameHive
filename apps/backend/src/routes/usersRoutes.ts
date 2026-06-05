@@ -8,6 +8,8 @@ import { validateRequest } from "../middleware/validate.js";
 import { NotFoundError } from "../errors/AppError.js";
 import { Response, NextFunction } from "express";
 import { deleteUser } from "../controllers/userController.js";
+import updateAvatar from "../controllers/avatarController.js";
+import { avatarSchema } from "../schemas/avatar.schema.js";
 
 const router = Router();
 
@@ -36,36 +38,41 @@ router.get(
   }
 );
 
-router.get("/search", authMiddleware, validateRequest({ query: searchQuerySchema }), async (req: AuthRequest, res: Response, next: NextFunction) => {
-  try {
-    const { query } = req.validatedQuery as { query: string };
+router.get(
+  "/search",
+  authMiddleware,
+  validateRequest({ query: searchQuerySchema }),
+  async (req: AuthRequest, res: Response, next: NextFunction) => {
+    try {
+      const { query } = req.validatedQuery as { query: string };
 
-    const escapedQuery = query.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+      const escapedQuery = query.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&");
 
-    if(req.user?.role === "user" || req.user?.role === "dev") {
-      const users = await UserModel.find({ 
-        role: "user", 
-        $or: [
-          { username: { $regex: escapedQuery, $options: "i" } },
-          { email: { $regex: escapedQuery, $options: "i" } }
-        ]
-       }).select("username createdAt");
-      res.json(users);
+      if (req.user?.role === "user" || req.user?.role === "dev") {
+        const users = await UserModel.find({
+          role: "user",
+          $or: [
+            { username: { $regex: escapedQuery, $options: "i" } },
+            { email: { $regex: escapedQuery, $options: "i" } }
+          ]
+        }).select("username createdAt");
+        res.json(users);
+      }
+      if (req.user?.role === "admin") {
+        const users = await UserModel.find({
+          role: { $in: ["dev", "user"] },
+          $or: [
+            { username: { $regex: escapedQuery, $options: "i" } },
+            { email: { $regex: escapedQuery, $options: "i" } }
+          ]
+        }).select("username role createdAt");
+        res.json(users);
+      }
+    } catch (err) {
+      next(err);
     }
-    if(req.user?.role === "admin") {
-      const users = await UserModel.find({ 
-        role: { $in: ["dev", "user"] }, 
-        $or: [
-          { username: { $regex: escapedQuery, $options: "i" } },
-          { email: { $regex: escapedQuery, $options: "i" } }
-        ]
-       }).select("username role createdAt");
-      res.json(users);
-    }
-  } catch (err) {
-    next(err);
   }
-});
+);
 
 router.get(
   "/:id",
@@ -76,7 +83,7 @@ router.get(
       const id = req.params.id as string;
 
       const user = await UserModel.findById(id).select(
-        "username role userAchievements createdAt"
+        "username role avatar userAchievements createdAt"
       );
 
       if (!user) {
@@ -131,7 +138,12 @@ router.get(
   }
 );
 
-router.get("/:id/reviews", authMiddleware, validateRequest({ params: idParamSchema }), getUserReviews);
+router.get(
+  "/:id/reviews",
+  authMiddleware,
+  validateRequest({ params: idParamSchema }),
+  getUserReviews
+);
 
 router.delete(
   "/:id",
@@ -140,5 +152,11 @@ router.delete(
   deleteUser
 );
 
+router.patch(
+  "/me/avatar",
+  authMiddleware,
+  validateRequest({ body: avatarSchema }),
+  updateAvatar
+);
 
 export default router;
