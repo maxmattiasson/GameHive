@@ -117,7 +117,9 @@ export function PlayerProfile() {
           ) : (
             <h1>{user?.username}</h1>
           )}
-          {id && <AddFriendButton userId={id} />}
+          {id && otherUser?.role === "user" && user?.role === "user" && (
+            <AddFriendButton userId={id} />
+          )}
           <p>Player Profile</p>
         </div>
         <div className={styles.playerImg}>

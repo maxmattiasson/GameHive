@@ -118,6 +118,36 @@ async function rejectFriendRequest(
   }
 }
 
+async function removeFriend(
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction,
+) {
+  const userId = req.user!.userId;
+
+  const result = friendshipParamsSchema.safeParse(req.params);
+  if (!result.success) {
+    return next(new ValidationError());
+  }
+  const { id } = result.data;
+
+  try {
+    const friendship = await FriendshipModel.findOneAndDelete({
+      _id: id,
+      status: "accepted",
+      $or: [{ requester: userId }, { recipient: userId }],
+    });
+
+    if (!friendship) {
+      return res.status(404).json({ message: "Friend not found" });
+    }
+
+    return res.status(200).json({ message: "Friend removed" });
+  } catch (err) {
+    next(err);
+  }
+}
+
 async function getFriends(req: AuthRequest, res: Response, next: NextFunction) {
   const userId = req.user!.userId;
 
@@ -165,6 +195,7 @@ export {
   getPendingRequests,
   acceptFriendRequest,
   rejectFriendRequest,
+  removeFriend,
   getFriends,
   getFriendsByUserId,
 };

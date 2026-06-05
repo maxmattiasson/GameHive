@@ -45,6 +45,17 @@ export const rejectFriendRequest = async (id: string) => {
   return res.json();
 };
 
+export const removeFriend = async (id: string) => {
+  const res = await fetch(`${API_URL}/friends/${id}`, {
+    method: "DELETE",
+    credentials: "include",
+  });
+
+  if (!res.ok) {
+    throw new Error("Could not remove friend");
+  }
+};
+
 export const getFriends = async () => {
   const res = await fetch(`${API_URL}/friends`, {
     credentials: "include",
