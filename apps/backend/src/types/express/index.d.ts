@@ -3,6 +3,7 @@ declare global {
     interface Request {
       validatedBody?: unknown;
       validatedParams?: unknown;
+      validatedQuery?: unknown;
     }
   }
 }

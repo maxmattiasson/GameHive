@@ -3,13 +3,69 @@ import UserModel from "../models/User.js";
 import LibraryModel from "../models/Library.js";
 import { authMiddleware, AuthRequest } from "../auth/authMiddleware.js";
 import { getUserReviews } from "../controllers/reviewController.js";
-import { idParamSchema } from "../schemas/common.schemas.js";
+import { idParamSchema, searchQuerySchema } from "../schemas/common.schemas.js";
 import { validateRequest } from "../middleware/validate.js";
 import { NotFoundError } from "../errors/AppError.js";
 import { Response, NextFunction } from "express";
 import { deleteUser } from "../controllers/userController.js";
 
 const router = Router();
+
+// Endpoint for listing all users
+// Users with "user" role can see only other users, while "admin" can see both "dev" and "user"
+router.get(
+  "/",
+  authMiddleware,
+  async (req: AuthRequest, res: Response, next: NextFunction) => {
+    try {
+      if (req.user?.role === "user" || req.user?.role === "dev") {
+        const users = await UserModel.find({ role: "user" }).select(
+          "username createdAt"
+        );
+        res.json(users);
+      }
+      if (req.user?.role === "admin") {
+        const users = await UserModel.find({
+          role: { $in: ["dev", "user"] }
+        }).select("username role createdAt");
+        res.json(users);
+      }
+    } catch (err) {
+      next(err);
+    }
+  }
+);
+
+router.get("/search", authMiddleware, validateRequest({ query: searchQuerySchema }), async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    const { query } = req.validatedQuery as { query: string };
+
+    const escapedQuery = query.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+
+    if(req.user?.role === "user" || req.user?.role === "dev") {
+      const users = await UserModel.find({ 
+        role: "user", 
+        $or: [
+          { username: { $regex: escapedQuery, $options: "i" } },
+          { email: { $regex: escapedQuery, $options: "i" } }
+        ]
+       }).select("username createdAt");
+      res.json(users);
+    }
+    if(req.user?.role === "admin") {
+      const users = await UserModel.find({ 
+        role: { $in: ["dev", "user"] }, 
+        $or: [
+          { username: { $regex: escapedQuery, $options: "i" } },
+          { email: { $regex: escapedQuery, $options: "i" } }
+        ]
+       }).select("username role createdAt");
+      res.json(users);
+    }
+  } catch (err) {
+    next(err);
+  }
+});
 
 router.get(
   "/:id",
@@ -84,29 +140,5 @@ router.delete(
   deleteUser
 );
 
-// Endpoint for listing all users
-// Users with "user" role can see only other users, while "admin" can see both "dev" and "user"
-router.get(
-  "/",
-  authMiddleware,
-  async (req: AuthRequest, res: Response, next: NextFunction) => {
-    try {
-      if (req.user?.role === "user" || req.user?.role === "dev") {
-        const users = await UserModel.find({ role: "user" }).select(
-          "username createdAt"
-        );
-        res.json(users);
-      }
-      if (req.user?.role === "admin") {
-        const users = await UserModel.find({
-          role: { $in: ["dev", "user"] }
-        }).select("username role createdAt");
-        res.json(users);
-      }
-    } catch (err) {
-      next(err);
-    }
-  }
-);
 
 export default router;

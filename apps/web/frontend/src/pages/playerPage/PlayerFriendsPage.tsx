@@ -7,6 +7,7 @@ import {
 } from "../../hooks/useFriends";
 import { FriendRequestActions } from "../../components/ui/FriendRequestActions";
 import styles from "./PlayerFriendsPage.module.css";
+import UserSearchField from "../../components/ui/UsersSearchField";
 
 export function PlayerFriendsPage() {
   const { id } = useParams();
@@ -82,6 +83,11 @@ export function PlayerFriendsPage() {
             })}
           </ul>
         )}
+      </div>
+
+      <div>
+        <h2 className={styles.heading}>Find More Friends</h2>
+        <UserSearchField />
       </div>
     </section>
   );
