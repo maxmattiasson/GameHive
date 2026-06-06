@@ -7,7 +7,8 @@ import type { Review } from "../../types/review";
 import styles from "./PlayerReviewsPage.module.css";
 
 export function PlayerReviewsPage() {
-  const { id } = useParams();
+  const { id: slug } = useParams();
+  const id = slug?.match(/[0-9a-f]{24}$/i)?.[0];
   const { user } = useAuth();
   const userId = id ?? user?._id;
 
