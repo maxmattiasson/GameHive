@@ -5,6 +5,7 @@ export interface Game {
   title: string;
   release: string;
   dev: string;
+  ownerUserId?: string;
   genres: Genre[];
   platforms: string[];
   desc: string;

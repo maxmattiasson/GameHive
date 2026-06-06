@@ -18,6 +18,9 @@ import { updateLibraryEntry } from "../services/libraryService";
 import { deleteGame } from "../services/gameService";
 import { deleteReview } from "../services/reviewService";
 
+import { Link } from "react-router-dom";
+import { slugify } from "../helpers/slugify";
+
 import "./GameDetails.css";
 
 export function GameDetails() {
@@ -37,10 +40,10 @@ export function GameDetails() {
     reviewsError,
     refetchReviews,
     handleVote,
-    averageRating,
+    averageRating
   } = useReviews(id);
 
-  const myReview = reviews.find((review) => review.user._id === user?._id);
+  const myReview = reviews.find((review) => review.user?._id === user?._id);
 
   const handleDeleteReview = async (reviewId: string) => {
     try {
@@ -88,7 +91,17 @@ export function GameDetails() {
               </li>
               <li>
                 <span>Developer</span>
-                <span className="bold">{data.dev}</span>
+                <span className="bold">
+                  {data.ownerUserId ? (
+                    <Link
+                      to={`/users/${slugify(data.dev)}-${data.ownerUserId}`}
+                    >
+                      {data.dev}
+                    </Link>
+                  ) : (
+                    data.dev
+                  )}
+                </span>
               </li>
               <li>
                 <span>Genre</span>
@@ -107,35 +120,37 @@ export function GameDetails() {
             {data.multiplayer && <Badge label="Multiplayer" />}
           </div>
 
-          <div className="play-time">
-            <InfoCard>
-              <p>Time Played</p>
-              <p>{playtime} min</p>
+          {user ? (
+            <div className="play-time">
+              <InfoCard>
+                <p>Time Played</p>
+                <p>{playtime} min</p>
 
-              <Button
-                color="vote"
-                onClick={async () => {
-                  const newTime = playtime - 30;
-                  setPlaytime(newTime);
-                  await updateLibraryEntry(id!, newTime);
-                }}
-                disabled={playtime === 0}
-              >
-                −
-              </Button>
+                <Button
+                  color="vote"
+                  onClick={async () => {
+                    const newTime = playtime - 30;
+                    setPlaytime(newTime);
+                    await updateLibraryEntry(id!, newTime);
+                  }}
+                  disabled={playtime === 0}
+                >
+                  −
+                </Button>
 
-              <Button
-                color="vote"
-                onClick={async () => {
-                  const newTime = playtime + 30;
-                  setPlaytime(newTime);
-                  await updateLibraryEntry(id!, newTime);
-                }}
-              >
-                +
-              </Button>
-            </InfoCard>
-          </div>
+                <Button
+                  color="vote"
+                  onClick={async () => {
+                    const newTime = playtime + 30;
+                    setPlaytime(newTime);
+                    await updateLibraryEntry(id!, newTime);
+                  }}
+                >
+                  +
+                </Button>
+              </InfoCard>
+            </div>
+          ) : null}
         </div>
 
         <div className="col-2">
@@ -158,18 +173,7 @@ export function GameDetails() {
 
         <div className="col-3">
           <InfoCard>
-            <p className="span-title">Playtime Leaderboard</p>
-            <ul>
-              <li>1. Sascha</li>
-              <li>2. Klas</li>
-              <li>3. Mira</li>
-              <li>4. oskar</li>
-              <li>999. DU</li>
-            </ul>
-          </InfoCard>
-
-          <InfoCard>
-            {showReviewForm ? (
+            {user ? (
               <ReviewForm
                 gameId={id!}
                 existingReview={myReview}
@@ -179,13 +183,10 @@ export function GameDetails() {
                 }}
               />
             ) : (
-              <Button
-                color="primary"
-                type="button"
-                onClick={() => setShowReviewForm(true)}
-              >
-                Write a review
-              </Button>
+              <>
+                <h3>Write a review</h3>
+                <p>Log in to rate games and write reviews.</p>
+              </>
             )}
           </InfoCard>
         </div>
