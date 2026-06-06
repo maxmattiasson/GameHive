@@ -3,6 +3,7 @@ import app from "../src/app.js";
 import { createTestGame } from "./helpers/createGame.js";
 import mongoose from "mongoose";
 import { signUpAndLogin } from "./helpers/auth.js";
+import Game from "../src/models/Game.js";
 
 const validGameBody = (title = "New Game") => ({
     title,
@@ -67,7 +68,6 @@ describe("Game routes", () => {
       .set("Cookie", cookie)
       .send(validGameBody("Dev Test Game"));
 
-      console.log(res.status, res.body);
     expect(res.status).toBe(201);
     expect(res.body.title).toBe("Dev Test Game");
   });
@@ -80,7 +80,6 @@ describe("Game routes", () => {
       .set("Cookie", cookie)
       .send(validGameBody("Admin Test Game"));
 
-      console.log(res.status, res.body);
     expect(res.status).toBe(201);
     expect(res.body.title).toBe("Admin Test Game");
   });
@@ -104,6 +103,7 @@ test("PATCH /api/games/:id updates game for owner dev", async () => {
     expect(res.status).toBe(200);
     expect(res.body.title).toBe("Updated Game");
   });
+
   test("PATCH /api/games/:id updates game for admin", async () => {
     const game = await createTestGame();
     const cookie = await signUpAndLogin("admin");
@@ -116,6 +116,7 @@ test("PATCH /api/games/:id updates game for owner dev", async () => {
     expect(res.status).toBe(200);
     expect(res.body.title).toBe("Admin Updated Game");
   });
+
   test("PATCH /api/games/:id returns 403 for user", async () => {
     const game = await createTestGame();
     const cookie = await signUpAndLogin("user");
@@ -127,6 +128,7 @@ test("PATCH /api/games/:id updates game for owner dev", async () => {
   
     expect(res.status).toBe(403);
   });
+
   test("PATCH /api/games/:id returns 401 when not logged in", async () => {
     const game = await createTestGame();
   
@@ -135,4 +137,67 @@ test("PATCH /api/games/:id updates game for owner dev", async () => {
       .send({ title: "Nope" });
   
     expect(res.status).toBe(401);
+  });
+
+  test("DELETE /api/games/:id returns 401 when not logged in", async () => {
+    const game = await createTestGame();
+  
+    const res = await request(app)
+      .delete(`/api/games/${game._id}`);
+  
+    expect(res.status).toBe(401);
+  });
+
+  test("DELETE /api/games/:id returns 403 for user", async () => {
+    const game = await createTestGame();
+    const cookie = await signUpAndLogin("user");
+  
+    const res = await request(app)
+      .delete(`/api/games/${game._id}`)
+      .set("Cookie", cookie);
+  
+    expect(res.status).toBe(403);
+  });
+
+  test("DELETE /api/games/:id deletes game for owner dev", async () => {
+    const cookie = await signUpAndLogin("dev");
+  
+    const createRes = await request(app)
+      .post("/api/games")
+      .set("Cookie", cookie)
+      .send(validGameBody("Delete Owner Game"));
+  
+    const gameId = createRes.body._id;
+  
+    const res = await request(app)
+      .delete(`/api/games/${gameId}`)
+      .set("Cookie", cookie);
+  
+    expect(res.status).toBe(200);
+    expect(await Game.countDocuments()).toBe(0);
+
+  });
+
+  test("DELETE /api/games/:id deletes game for admin", async () => {
+    const game = await createTestGame();
+    const cookie = await signUpAndLogin("admin");
+  
+    const res = await request(app)
+      .delete(`/api/games/${game._id}`)
+      .set("Cookie", cookie);
+  
+    expect(res.status).toBe(200);
+    expect(await Game.countDocuments()).toBe(0);
+
+  });
+
+  test("DELETE /api/games/:id returns 404 for missing game", async () => {
+    const cookie = await signUpAndLogin("admin");
+    const fakeId = new mongoose.Types.ObjectId();
+  
+    const res = await request(app)
+      .delete(`/api/games/${fakeId}`)
+      .set("Cookie", cookie);
+  
+    expect(res.status).toBe(404);
   });
