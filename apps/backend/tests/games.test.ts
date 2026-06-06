@@ -85,3 +85,54 @@ describe("Game routes", () => {
     expect(res.body.title).toBe("Admin Test Game");
   });
 });
+
+test("PATCH /api/games/:id updates game for owner dev", async () => {
+    const cookie = await signUpAndLogin("dev");
+  
+    const createRes = await request(app)
+      .post("/api/games")
+      .set("Cookie", cookie)
+      .send(validGameBody("Patch Owner Game"));
+  
+    const gameId = createRes.body._id;
+  
+    const res = await request(app)
+      .patch(`/api/games/${gameId}`)
+      .set("Cookie", cookie)
+      .send({ title: "Updated Game" });
+  
+    expect(res.status).toBe(200);
+    expect(res.body.title).toBe("Updated Game");
+  });
+  test("PATCH /api/games/:id updates game for admin", async () => {
+    const game = await createTestGame();
+    const cookie = await signUpAndLogin("admin");
+  
+    const res = await request(app)
+      .patch(`/api/games/${game._id}`)
+      .set("Cookie", cookie)
+      .send({ title: "Admin Updated Game" });
+  
+    expect(res.status).toBe(200);
+    expect(res.body.title).toBe("Admin Updated Game");
+  });
+  test("PATCH /api/games/:id returns 403 for user", async () => {
+    const game = await createTestGame();
+    const cookie = await signUpAndLogin("user");
+  
+    const res = await request(app)
+      .patch(`/api/games/${game._id}`)
+      .set("Cookie", cookie)
+      .send({ title: "Nope" });
+  
+    expect(res.status).toBe(403);
+  });
+  test("PATCH /api/games/:id returns 401 when not logged in", async () => {
+    const game = await createTestGame();
+  
+    const res = await request(app)
+      .patch(`/api/games/${game._id}`)
+      .send({ title: "Nope" });
+  
+    expect(res.status).toBe(401);
+  });
