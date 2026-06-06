@@ -46,3 +46,45 @@ describe("User routes", () => {
     expect(res.body.username).toBe("targetuser");
   });
 });
+
+test("GET /api/users/:id returns 404 for missing user", async () => {
+    const cookie = await signUpAndLogin("user");
+  
+    const fakeId = new UserModel()._id;
+  
+    const res = await request(app)
+      .get(`/api/users/${fakeId}`)
+      .set("Cookie", cookie);
+  
+    expect(res.status).toBe(404);
+  });
+
+  test("GET /api/users/search returns matching users", async () => {
+    const cookie = await signUpAndLogin("user");
+  
+    await UserModel.create({
+      username: "searchtarget",
+      email: "search@test.com",
+      passwordHash: "fake-hash",
+      role: "user",
+    });
+  
+    const res = await request(app)
+      .get("/api/users/search?query=search")
+      .set("Cookie", cookie);
+  
+    expect(res.status).toBe(200);
+    expect(
+      res.body.some((u: any) => u.username === "searchtarget")
+    ).toBe(true);
+  });
+
+  test("GET /api/users/search returns 400 for missing query", async () => {
+    const cookie = await signUpAndLogin("user");
+  
+    const res = await request(app)
+      .get("/api/users/search")
+      .set("Cookie", cookie);
+  
+    expect(res.status).toBe(400);
+  });
