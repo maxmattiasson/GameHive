@@ -5,7 +5,7 @@ import LibraryModel from "../models/Library.js";
 import FriendshipModel from "../models/Friendship.js";
 import Review from "../models/Review.js";
 import Game from "../models/Game.js";
-import { NotFoundError } from "../errors/AppError.js";
+import { ForbiddenError, NotFoundError } from "../errors/AppError.js";
 
 export const deleteUser = async (
   req: AuthRequest,
@@ -13,14 +13,14 @@ export const deleteUser = async (
   next: NextFunction
 ) => {
   try {
-    if (req.user?.role !== "admin") {
-      return res.status(403).json({ message: "Admin only" });
-    }
-
     const id = req.params.id as string;
-    const user = await UserModel.findById(id);
-
-    if (!user) {
+    
+    if (req.user?.role !== "admin" && req.user?.userId !== id) {
+      throw new ForbiddenError("Not authorized to delete");
+    }
+    
+    const deletee = await UserModel.findByIdAndDelete(id);
+    if (!deletee) {
       throw new NotFoundError();
     }
 
@@ -37,7 +37,7 @@ export const deleteUser = async (
 
     res.json({
       message: "User deleted and related data cleaned up",
-      user: { id: user._id, username: user.username, email: user.email }
+      user: { id: deletee._id, username: deletee.username, email: deletee.email }
     });
   } catch (error) {
     next(error);

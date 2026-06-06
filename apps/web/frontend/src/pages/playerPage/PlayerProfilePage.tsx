@@ -9,7 +9,7 @@ import Avatar from "../../components/ui/Avatar";
 import Button from "../../components/ui/Button";
 
 export function PlayerProfile() {
-  const { user, setUser, loading: authLoading } = useAuth();
+  const { user, setUser, loading: authLoading, logout } = useAuth();
   const { id: slug } = useParams();
   const id = slug?.match(/[0-9a-f]{24}$/i)?.[0];
 
@@ -32,7 +32,8 @@ export function PlayerProfile() {
     console.log(id);
     try {
       await deleteUser(id);
-      navigate("/admin");
+      await logout()
+      navigate(isAdmin ? "/admin" : "/");
     } catch (error) {
       console.error(error);
       setError(error as string);
@@ -169,6 +170,15 @@ export function PlayerProfile() {
           <p>{error}</p>
         </div>
       )}
+      { ((user && !id) || (user && id && user._id === id)) && (
+        <div className="container">
+          <RemoveButton self={user._id} onDelete={handleDeleteUser}>
+            Delete my account
+          </RemoveButton>
+          <p>{error}</p>
+        </div>
+      )
+      }
     </div>
   );
 }
