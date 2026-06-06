@@ -8,5 +8,6 @@ export async function createTestGame() {
     multiplayer: false,
     thumb: "test.jpg",
     platforms: ["PC"],
+    genres: [],
   });
   }
