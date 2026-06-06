@@ -16,7 +16,6 @@ export const deleteUser = async (
     const id = req.params.id as string;
     
     if (req.user?.role !== "admin" && req.user?.userId !== id) {
-      // return res.status(403).json({ message: "Admin only" });
       throw new ForbiddenError("Not authorized to delete");
     }
     
