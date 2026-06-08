@@ -2,12 +2,15 @@ import { Request, Response, NextFunction } from "express";
 import Game from "../models/Game.js";
 import { AuthRequest } from "../auth/authMiddleware.js";
 import { ConflictError } from "../errors/AppError.js";
+import mongoose from "mongoose";
+import LibraryModel from "../models/Library.js";
+import Review from "../models/Review.js";
 
 // List all games
 export const getAllGames = async (
   req: Request,
   res: Response,
-  next: NextFunction,
+  next: NextFunction
 ) => {
   try {
     const { title, genre, release, dev, multiplayer } = req.query as {
@@ -42,7 +45,7 @@ export const getGamebyId = (req: Request, res: Response) => {
 export const addNewGame = async (
   req: AuthRequest,
   res: Response,
-  next: NextFunction,
+  next: NextFunction
 ) => {
   if (!req.user) {
     return res.status(401).json({ message: "Unauthorized" });
@@ -59,7 +62,7 @@ export const addNewGame = async (
     multiplayer: req.body.multiplayer,
     avg_rating: req.body.avg_rating,
     review: req.body.review,
-    ownerUserId: req.user.userId,
+    ownerUserId: req.user.userId
   });
 
   try {
@@ -81,7 +84,7 @@ export const addNewGame = async (
 export const updateGame = async (
   req: Request,
   res: Response,
-  next: NextFunction,
+  next: NextFunction
 ) => {
   try {
     const game = res.locals.game;
@@ -110,21 +113,31 @@ export const updateGame = async (
 export const deleteGame = async (
   req: Request,
   res: Response,
-  next: NextFunction,
+  next: NextFunction
 ) => {
+  const session = await mongoose.startSession();
+
   try {
     const game = res.locals.game;
-    await game.deleteOne();
+
+    await session.withTransaction(async () => {
+      await LibraryModel.deleteMany({ gameId: game._id }, { session });
+      await Review.deleteMany({ game: game._id }, { session });
+      await game.deleteOne({ session });
+    });
+
     return res.status(200).json({ message: "Spelet togs bort", game });
   } catch (error) {
     next(error);
+  } finally {
+    await session.endSession();
   }
 };
 
 export const getOwnersGames = async (
   req: AuthRequest,
   res: Response,
-  next: NextFunction,
+  next: NextFunction
 ) => {
   try {
     if (!req.user) {
