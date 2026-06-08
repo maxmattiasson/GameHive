@@ -17,6 +17,11 @@ export const createReview = async (req: AuthRequest, res: Response, next: NextFu
       return res.status(401).json({ message: "Unauthorized" });
     }
 
+    const game = await Game.findById(gameId);
+
+    if (!game) {
+      return res.status(404).json({ message: "Game not found" });
+    }
     const review = new Review({
       game: gameId,
       user: userId,
