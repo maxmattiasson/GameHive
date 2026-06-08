@@ -83,7 +83,6 @@ describe("Game routes", () => {
     expect(res.status).toBe(201);
     expect(res.body.title).toBe("Admin Test Game");
   });
-});
 
 test("PATCH /api/games/:id updates game for owner dev", async () => {
     const cookie = await signUpAndLogin("dev");
@@ -201,3 +200,4 @@ test("PATCH /api/games/:id updates game for owner dev", async () => {
   
     expect(res.status).toBe(404);
   });
+});
