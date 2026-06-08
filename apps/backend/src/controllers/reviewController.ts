@@ -13,10 +13,6 @@ export const createReview = async (req: AuthRequest, res: Response, next: NextFu
     const { gameId } = req.validatedParams as z.infer<typeof gameIdParamsSchema>
     const userId = req.user?.userId;
 
-    if (!userId) {
-      return res.status(401).json({ message: "Unauthorized" });
-    }
-
     const game = await Game.findById(gameId);
 
     if (!game) {
@@ -66,10 +62,6 @@ export const deleteReview = async (
     const userId = req.user?.userId;
     const { reviewId } = req.validatedParams as z.infer<typeof reviewIdParamsSchema>;
 
-    if (!userId) {
-      return res.status(401).json({ message: "Unauthorized" });
-    }
-
     const review = await Review.findById(reviewId);
 
     if (!review) {
@@ -102,10 +94,6 @@ export const voteReview = async (
     const { reviewId } = req.validatedParams as z.infer<typeof reviewIdParamsSchema>;
     const { value } = req.validatedBody as  z.infer<typeof voteReviewSchema>;;
     
-    if (!userId) {
-      return res.status(401).json({ message: "Unauthorized" });
-    }
-
     const review = await Review.findById(reviewId);
 
     if (!review) {
@@ -141,10 +129,6 @@ export const removeReviewVote = async (
   try {
     const userId = req.user?.userId;
     const { reviewId } = req.validatedParams as z.infer<typeof reviewIdParamsSchema>;
-
-    if (!userId) {
-      return res.status(401).json({ message: "Unauthorized" });
-    }
 
     const review = await Review.findById(reviewId);
 
@@ -191,10 +175,6 @@ export const updateReview = async (
 ) => {
   try {
     const userId = req.user?.userId;
-
-    if (!userId) {
-      return res.status(401).json({ message: "Unauthorized" });
-    }
 
     const { reviewId } = req.validatedParams as z.infer<typeof reviewIdParamsSchema>;
     const { text, rating } = req.validatedBody as z.infer<typeof updateReviewSchema>;

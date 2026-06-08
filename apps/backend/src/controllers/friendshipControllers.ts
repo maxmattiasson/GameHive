@@ -75,7 +75,7 @@ async function acceptFriendRequest(
     const friendship = await FriendshipModel.findOneAndUpdate(
       { _id: id, recipient: userId, status: "pending" },
       { status: "accepted" },
-      { new: true },
+      { returnDocument: "after" },
     );
 
     if (!friendship) {
