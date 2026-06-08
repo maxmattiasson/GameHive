@@ -12,6 +12,10 @@ export function Header() {
 
   const navigate = useNavigate();
 
+  function handleNotifTest() {
+    notify("This is an info notification!", { type: "info" });
+  }
+
   const handleLogout = async () => {
     await logout();
     navigate("/");
@@ -59,7 +63,7 @@ export function Header() {
           <Link to="/signup">Sign up</Link>
         </div>
       )}
-      <button>Info</button>
+      <button onClick={handleNotifTest}>Info</button>
     </header>
   );
 }
