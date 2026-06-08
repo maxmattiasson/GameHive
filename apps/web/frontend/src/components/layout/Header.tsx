@@ -4,9 +4,11 @@ import { useAuth } from "../../hooks/useAuth";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import Button from "../ui/Button";
 import { Notifications } from "./Notifications";
+import { useNotifications } from "../../hooks/useNotifications";
 
 export function Header() {
   const { user, loading, logout } = useAuth();
+  const { notify } = useNotifications()
 
   const navigate = useNavigate();
 
@@ -57,6 +59,7 @@ export function Header() {
           <Link to="/signup">Sign up</Link>
         </div>
       )}
+      <button>Info</button>
     </header>
   );
 }
