@@ -63,13 +63,12 @@ export const addNewGame = async (
   });
 
   try {
-    const newGame = await game.save();
-
     const existingGame = await Game.findOne({ title: req.body.title });
 
     if (existingGame) {
       throw new ConflictError("Game already exists");
     }
+    const newGame = await game.save();
 
     res.status(201).json(newGame);
   } catch (error) {
