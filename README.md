@@ -18,6 +18,7 @@ Delivered:
 ## Project Documents
 
 - [Users Data Flows](USERS_DATA_FLOWS.md)
+- [Friends Data Flows](FRIENDS_DATA_FLOWS.md)
 - [Documentation](DOKUMENTATION.md)
 - [Project Description](PROJEKTBESKRIVNING.md)
 
@@ -72,7 +73,6 @@ GameHive/
 
 - Achievements & Genres
 - List achievements
-- Add achievement (admin)
 - List genres
 
 - External Data
