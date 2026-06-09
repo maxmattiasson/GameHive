@@ -19,7 +19,7 @@ const toObjectId = (value: string) => {
 };
 
 // only returns choosen fields from Game-model, for speed.
-const GAME_POPULATE_FIELDS = "title thumb dev genres release multiplayer";
+const GAME_POPULATE_FIELDS = "title thumb dev genres release multiplayer avg_rating";
 
 // validates userId from JWT(req.user), if user is not logged in
 const getUserObjectId = (req: AuthRequest, res: Response) => {
