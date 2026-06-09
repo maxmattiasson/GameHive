@@ -26,7 +26,7 @@ router.post("/signup", validateRequest({ body: signupSchema }), signup);
 router.post("/logout", logout);
 
 
-// Protected routegit 
+// Protected route
 router.get("/me", authMiddleware, async (req: AuthRequest, res, next) => {
 
     try {
