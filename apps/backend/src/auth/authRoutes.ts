@@ -6,6 +6,13 @@ import UserModel from "../models/User.js";
 import { validateRequest } from "../middleware/validate.js";
 import { loginSchema, signupSchema } from "../schemas/auth.schema.js";
 import mongoose from "mongoose";
+import {
+  UnauthorizedError,
+  ValidationError,
+  NotFoundError,
+} from "../errors/index.js";
+import { NextFunction } from "express";
+
  
 const router = Router();
 
@@ -19,31 +26,28 @@ router.post("/signup", validateRequest({ body: signupSchema }), signup);
 router.post("/logout", logout);
 
 
-// Protected route
-router.get("/me", authMiddleware, async (req: AuthRequest, res) => {
+// Protected routegit 
+router.get("/me", authMiddleware, async (req: AuthRequest, res, next) => {
 
     try {
         const userId = req.user?.userId;
 
         if (!userId) {
-          res.status(401).json({ message: "Unauthorized" });
-          return;
+          throw new UnauthorizedError("Unauthorized");
         }
         if (!mongoose.Types.ObjectId.isValid(userId)) {
-          return res.status(400).json({ message: "Invalid user ID" });
+          throw new ValidationError("Invalid user ID");
         }
     
         const user = await UserModel.findById(userId).select("-passwordHash");
     
         if (!user) {
-          res.status(404).json({ message: "User not found" });
-          return;
+          throw new NotFoundError("User not found");
         }
         
         res.status(200).json(user);
       } catch (err) {
-        console.error(err);
-        res.status(500).json({ message: "Server error" });
+        next(err);
       }
     });
 
