@@ -1,78 +1,102 @@
 # GameHive
 
-GameHive is a fullstack "mini-Steam" platform where users can manage their game library, track playtime, unlock achievements, connect with friends, write reviews, and compete on leaderboards.
+GameHive is a fullstack "mini-Steam" platform where users can build and manage a game library, track playtime, unlock achievements, connect with friends, and write reviews.
 
 Developed as part of the Fullstack JavaScript program at Chas Academy.
 
-## Quick Overview
+## Project Status
 
-- Manage your personal game library and track playtime
-- Unlock achievements and view progression
-- Connect with friends and send friend requests
-- Write reviews and rate games
-- Compete on per-game leaderboards
-- Role-based login (player/developer/admin)
+This project is complete for the scope in this repository.
 
-## Folder Structure
+Delivered:
+
+- Backend REST API (Node.js, Express, TypeScript, MongoDB)
+- Web frontend (React, TypeScript, Vite)
+- Authentication with JWT cookie and role-based access control
+- Core social and library flows (friends, reviews, achievements, profile)
+
+## Project Documents
+
+- [Users Data Flows](USERS_DATA_FLOWS.md)
+- [Documentation](DOKUMENTATION.md)
+- [Project Description](PROJEKTBESKRIVNING.md)
+
+## Monorepo Structure
 
 ```text
 GameHive/
   apps/
-    backend/      # REST API, database, authentication, seeders
-    web/frontend/ # React UI, pages, components, hooks
+    backend/      # REST API, authentication, DB models, tests
+    web/frontend/ # React web app
 ```
 
-**backend/**: Node.js/Express, MongoDB, authentication, API, data models, seeders
+## Implemented Features
 
-**web/frontend/**: React, TypeScript, Vite, UI components, hooks, pages
+- Authentication
+- Signup, login, logout, and "me" endpoint
+- JWT cookie-based sessions
+- Role-based authorization (user, dev, admin)
 
-## Features
+- Games
+- List and filter games
+- Get game by id
+- Create/update/delete games (role-protected)
+- Dev-only endpoint for "my games"
 
-- Game catalog with genres and metadata
-- REST API for game resources and filtering
-- Frontend game list and game management views
-- MongoDB persistence with Mongoose models
-- Monorepo setup with separate backend and frontend apps
-
-## Roles (RBAC)
-
-- Admin
-- Developer
-- Player
-
-## Data Models
-
-- User
-- Game
-- Genre
 - Library
-- Achievement
-- UserAchievement
-- Friendship
-- Review
-- Leaderboard
+- Get own library
+- Add game to library
+- Update playtime
+- Remove game from library
 
-## GDPR
+- Reviews
+- Create review per game
+- List reviews per game
+- Update and delete own review (admin override)
+- Vote helpful/not helpful and remove vote
+- Automatic game average rating updates
 
-- User data (games, friends, profile) is treated as personal data
-- Users can export and delete their game history
+- Friends
+- Send friend request
+- List pending requests
+- Accept/reject requests
+- Remove friend
+- List own friends and friends by user id
+
+- Users & Profile
+- List/search users (role-aware output)
+- Get user profile by id
+- Get user library, achievements, and reviews
+- Update own avatar
+- Delete user with related data cleanup
+
+- Achievements & Genres
+- List achievements
+- Add achievement (admin)
+- List genres
+
+- External Data
+- RAWG proxy endpoint for game search
 
 ## Tech Stack
 
-- **Frontend:** React, TypeScript, Vite
-- **Backend:** Node.js, Express, TypeScript
-- **Database:** MongoDB, Mongoose
-- **Repo:** npm workspaces (monorepo)
+- Frontend: React 19, TypeScript, Vite
+- Backend: Node.js, Express 5, TypeScript
+- Database: MongoDB, Mongoose
+- Validation: Zod
+- Testing: Jest + Supertest
+- Workspace: npm workspaces
 
-## Contributing
+## Requirements
 
-1. Fork and create a new branch
-2. Make your changes and commit
-3. Submit a Pull Request
+- Node.js (LTS recommended)
+- npm
+- MongoDB instance (local or cloud)
+- RAWG API key (only needed for `/api/rawg`)
 
-## Installation & Getting Started
+## Installation
 
-### 1. Clone the repo and install dependencies
+### 1. Clone and install dependencies
 
 ```bash
 git clone <repo-url>
@@ -80,81 +104,81 @@ cd GameHive
 npm install
 ```
 
-### 2. Environment variables
+### 2. Configure environment variables
 
 Create a `.env` file in `apps/backend`:
 
 ```env
-MONGO_URI=your_mongodb_url
-NODE_ENV=development
-PORT=3000
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_secret
+RAWG_KEY=your_rawg_api_key
 ```
+
+Notes:
+
+- `MONGO_URI` and `JWT_SECRET` are required.
+- `RAWG_KEY` is required if you use `/api/rawg`.
 
 ### 3. Start the project
 
-Start both backend and frontend:
+Start backend and frontend together:
 
 ```bash
 npm run dev:both
 ```
 
-Backend only:
+Or start separately:
 
 ```bash
 npm run dev:backend
-```
-
-Frontend only:
-
-```bash
 npm run dev:web
 ```
 
-**Default URLs:**
+Default URLs:
 
 - Backend: http://localhost:3000
 - Frontend: http://localhost:5173
 
-## Test the API
+## Testing
 
-Example with [route.rest](apps/backend/route.rest) or curl:
+Run backend test suite:
+
+```bash
+npm run test -w @gamehive/backend
+```
+
+## API Examples
+
+Example with `route.rest` in `apps/backend/route.rest` or curl:
 
 ```bash
 curl http://localhost:3000/api/games
 ```
 
-Example routes:
+Key route groups:
 
-- GET /api/games
-- GET /api/games/:id
-- POST /api/games
-- PATCH /api/games/:id
-- DELETE /api/games/:id
+- `/api/auth`
+- `/api/games`
+- `/api/library`
+- `/api/reviews`
+- `/api/friends`
+- `/api/users`
+- `/api/profile`
+- `/api/achievements`
+- `/api/genres`
+- `/api/rawg`
 
-Filtering on GET /games: `title`, `genre`, `created`, `dev`, `multiplayer`
+## Contributing
 
-## Main Features in This Repository
-
-- REST API for game resources and filtering
-- Frontend game list and game management views
-- MongoDB persistence with Mongoose models
-- Monorepo setup with separate backend and frontend apps
-
-## Planned (Missing / In Progress)
-
-### Planned Backend
-
-- Per-game leaderboard endpoints with ranking
-- Complete RBAC enforcement for Admin, Developer, and Player actions
-- GDPR tools for data export and account/game history deletion
-
-### Planned Frontend
-
-- Leaderboard pages
-- Improved UI for friend management and friend requests
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Open a pull request
 
 ## Contributors
 
-<a href="https://github.com/maxmattiasson/GameHive/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=maxMattiasson/GameHive" alt="contrib.rocks image" />
-</a>
+<p align="center">
+  <a href="https://github.com/maxmattiasson/GameHive/graphs/contributors">
+    <img src="https://contrib.rocks/image?repo=maxMattiasson/GameHive" alt="contrib.rocks image" />
+  </a>
+</p>
