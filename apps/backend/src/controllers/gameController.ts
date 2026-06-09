@@ -1,7 +1,10 @@
 import { Request, Response, NextFunction } from "express";
 import Game from "../models/Game.js";
 import { AuthRequest } from "../auth/authMiddleware.js";
-import { ConflictError } from "../errors/AppError.js";
+import {
+  ConflictError,
+  UnauthorizedError,
+} from "../errors/index.js";
 
 // List all games
 export const getAllGames = async (
@@ -45,7 +48,7 @@ export const addNewGame = async (
   next: NextFunction,
 ) => {
   if (!req.user) {
-    return res.status(401).json({ message: "Unauthorized" });
+    throw new UnauthorizedError("Unauthorized");
   }
 
   const game = new Game({
@@ -127,7 +130,7 @@ export const getOwnersGames = async (
 ) => {
   try {
     if (!req.user) {
-      return res.status(401).json({ message: "Unauthorized" });
+      throw new UnauthorizedError("Unauthorized");
     }
 
     const ownerId = req.user.userId;

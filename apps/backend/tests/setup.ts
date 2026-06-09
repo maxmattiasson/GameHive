@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import { MongoMemoryServer } from "mongodb-memory-server";
 
+process.env.NODE_ENV = "test";
 process.env.JWT_SECRET = "test-secret";
 
 jest.setTimeout(30000);
