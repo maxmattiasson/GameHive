@@ -6,6 +6,11 @@ import Game from "../models/Game.js";
 import { z } from "zod";
 import { createReviewSchema, voteReviewSchema, updateReviewSchema } from "../schemas/review.schema.js";
 import { gameIdParamsSchema, reviewIdParamsSchema, idParamSchema } from "../schemas/common.schemas.js";
+import {
+  NotFoundError,
+  ForbiddenError,
+  UnauthorizedError,
+} from "../errors/AppError.js";
 
 export const createReview = async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
@@ -16,8 +21,9 @@ export const createReview = async (req: AuthRequest, res: Response, next: NextFu
     const game = await Game.findById(gameId);
 
     if (!game) {
-      return res.status(404).json({ message: "Game not found" });
+      throw new NotFoundError("Game not found");
     }
+
     const review = new Review({
       game: gameId,
       user: userId,
@@ -65,11 +71,12 @@ export const deleteReview = async (
     const review = await Review.findById(reviewId);
 
     if (!review) {
-      return res.status(404).json({ message: "Review not found" });
+      throw new NotFoundError("Review not found");
     }
 
+
     if (review.user.toString() !== userId && req.user?.role !== "admin") {
-      return res.status(403).json({ message: "Forbidden" });
+      throw new ForbiddenError("You are not allowed to delete this review");
     }
 
 
@@ -97,7 +104,7 @@ export const voteReview = async (
     const review = await Review.findById(reviewId);
 
     if (!review) {
-      return res.status(404).json({ message: "Review not found" });
+      throw new NotFoundError("Review not found");
     }
 
     const existingVote = review.votes.find(
@@ -133,7 +140,7 @@ export const removeReviewVote = async (
     const review = await Review.findById(reviewId);
 
     if (!review) {
-      return res.status(404).json({ message: "Review not found" });
+      throw new NotFoundError("Review not found");
     }
 
     review.votes = review.votes.filter(
@@ -182,11 +189,11 @@ export const updateReview = async (
     const review = await Review.findById(reviewId);
 
     if (!review) {
-      return res.status(404).json({ message: "Review not found" });
+      throw new NotFoundError("Review not found");
     }
-
+  
     if (review.user.toString() !== userId && req.user?.role !== "admin") {
-      return res.status(403).json({ message: "Forbidden" });
+      throw new ForbiddenError("You are not allowed to update this review");
     }
 
     if (text !== undefined) review.text = text;
