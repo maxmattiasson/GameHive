@@ -171,6 +171,14 @@ Key route groups:
 - `/api/genres`
 - `/api/rawg`
 
+## Swagger API Documentation
+
+The backend exposes static API docs at:
+
+- `http://localhost:3000/api/docs`
+
+This UI is driven by `apps/backend/src/swagger.json` and documents the available REST endpoints, request bodies, and response models.
+
 ## Contributing
 
 1. Fork the repository

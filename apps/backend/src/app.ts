@@ -19,7 +19,7 @@ import reviewRoutes from "./routes/reviewRoutes.js";
 import rawgRoutes from "./routes/rawgRoutes.js";
 
 import swaggerUi from "swagger-ui-express";
-import swaggerSpec from "./swagger.js";
+import swaggerDoc from "./swagger.json" with { type: "json" };
 
 import "./models/Genre.js";
 
@@ -51,7 +51,7 @@ app.use("/api/friends", friendshipRoutes);
 app.use("/api/genres", genresRoutes);
 app.use("/api/achievements", achievementsRoutes);
 app.use("/api/reviews", reviewRoutes);
-app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(require("./swagger.json")));
+app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerDoc));
 
 app.get("/", (req, res) => {
   res.send("funking tjoho");
