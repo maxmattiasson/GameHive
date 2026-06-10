@@ -114,10 +114,13 @@ JWT_SECRET=your_secret
 RAWG_KEY=your_rawg_api_key
 ```
 
-Notes:
+**Notes:**
 
-- `MONGO_URI` and `JWT_SECRET` are required.
-- `RAWG_KEY` is required if you use `/api/rawg`.
+`MONGO_URI` and `JWT_SECRET` are required. To generate a secure `JWT_SECRET`, we recommend running the following command in your terminal: 
+```
+node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
+``` 
+`RAWG_KEY` is required if you use `/api/rawg`.
 
 ### 3. Start the project
 
