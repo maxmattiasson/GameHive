@@ -875,34 +875,6 @@
             "content": { "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/Achievement" } } } }
           }
         }
-      },
-      "post": {
-        "tags": ["Achievements"],
-        "summary": "Create a new achievement",
-        "security": [{ "cookieAuth": [] }],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": ["title", "criteria", "category"],
-                "properties": {
-                  "title": { "type": "string" },
-                  "description": { "type": "string" },
-                  "criteria": { "type": "number" },
-                  "category": { "type": "string" }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Achievement created",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Achievement" } } }
-          }
-        }
       }
     },
     "/profile": {
