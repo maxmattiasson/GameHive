@@ -22,6 +22,10 @@ export const authMiddleware = (
     const token = req.cookies.token;
 
     if (!token) {
+      logger.warn(
+        { event: "auth.no_token" },
+        "Access denied, no token provided",
+      );
       throw new UnauthorizedError("No token provided");
     }
 
