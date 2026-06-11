@@ -1,9 +1,10 @@
+import logger from "./logger.js";
 // Global error handlers för att fånga oväntade fel
 process.on("uncaughtException", (err) => {
-  console.error("Uncaught Exception:", err);
+  logger.error({ err }, "Uncaught Exception:");
 });
 process.on("unhandledRejection", (err) => {
-  console.error("Unhandled Rejection:", err);
+  logger.error({ err }, "Unhandled Rejection");
 });
 import express from "express";
 import cors from "cors";
@@ -33,8 +34,8 @@ const app = express();
 app.use(
   cors({
     origin: ["http://localhost:5173", "http://127.0.0.1:5173"],
-    credentials: true
-  })
+    credentials: true,
+  }),
 );
 app.use(express.json());
 app.use(cookieParser());
