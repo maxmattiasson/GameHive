@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { AppError } from "../errors/AppError.js";
+import logger from "../logger.js";
 
 export function errorHandler(
   err: any,
@@ -11,20 +12,26 @@ export function errorHandler(
 
   // 1. Internal logging - allways verbose
   if (!err.isOperational) {
-    console.error("UNEXPECTED ERROR: ", {
-      timestamp: new Date().toISOString(),
-      method: req.method,
-      path: req.path,
-      message: err.message,
-      stack: err.stack,
-    });
+    logger.error(
+      {
+        timestamp: new Date().toISOString(),
+        method: req.method,
+        path: req.path,
+        message: err.message,
+        stack: err.stack,
+      },
+      "UNEXPECTED ERROR",
+    );
   } else {
-    console.warn("Application errr: ", {
-      method: req.method,
-      path: req.path,
-      status: err.statusCode,
-      message: err.message,
-    });
+    logger.warn(
+      {
+        method: req.method,
+        path: req.path,
+        status: err.statusCode,
+        message: err.message,
+      },
+      "Application error",
+    );
   }
 
   // 2. Expected application errors - respond with their messages

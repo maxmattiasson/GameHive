@@ -1,17 +1,19 @@
 import bcrypt from "bcrypt";
 import UserModel from "../models/User.js";
 import { NextFunction, Request, Response } from "express";
-import jwt  from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import type { z } from "zod";
 import { signupSchema, loginSchema } from "../schemas/auth.schema.js";
+import logger from "../logger.js";
 
 export const signup = async (req: Request, res: Response) => {
-    try {
-    const { username, email, password } = req.validatedBody as z.infer<typeof signupSchema>;
-
+  try {
+    const { username, email, password } = req.validatedBody as z.infer<
+      typeof signupSchema
+    >;
 
     const existingUser = await UserModel.findOne({
-      email: email.toLowerCase()
+      email: email.toLowerCase(),
     });
 
     if (existingUser) {
@@ -23,11 +25,13 @@ export const signup = async (req: Request, res: Response) => {
     const user = new UserModel({
       username,
       passwordHash,
-      email: email.toLowerCase()
+      email: email.toLowerCase(),
     });
 
     await user.save();
-    
+
+    logger.info({ userId: user._id }, "User signed up");
+
     const token = jwt.sign(
       {
         userId: user._id,
@@ -36,24 +40,24 @@ export const signup = async (req: Request, res: Response) => {
         role: user.role,
       },
       getJwtSecret(),
-      { expiresIn: "7d" }
+      { expiresIn: "7d" },
     );
-    
+
     res.cookie("token", token, {
       httpOnly: true,
       secure: false,
       sameSite: "lax",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
-    
+
     const { passwordHash: _, ...userWithoutPassword } = user.toObject();
-    
+
     return res.status(201).json({
       message: "User created",
       user: userWithoutPassword,
     });
   } catch (err) {
-    console.error("[signup] error:", err);
+    logger.error({ err }, "Signup error");
     return res.status(500).json({ message: "Server error" });
   }
 };
@@ -61,23 +65,27 @@ export const signup = async (req: Request, res: Response) => {
 export const login = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
-    const { email, password } = req.validatedBody as z.infer<typeof loginSchema>;;
-    
+    const { email, password } = req.validatedBody as z.infer<
+      typeof loginSchema
+    >;
+
     const normalizedEmail = email.toLowerCase().trim();
 
     const user = await UserModel.findOne({ email: normalizedEmail });
 
     if (!user) {
       res.status(401).json({ message: "Invalid email or password" });
+      logger.warn({ event: "login.failed" }, "Invalid login attempt");
       return;
     }
 
     const match = await bcrypt.compare(password, user.passwordHash);
     if (!match) {
       res.status(401).json({ message: "Invalid email or password" });
+      logger.warn({ event: "login.failed" }, "Invalid login attempt");
       return;
     }
 
@@ -86,25 +94,26 @@ export const login = async (
         userId: user._id,
         email: user.email,
         username: user.username,
-        role: user.role
+        role: user.role,
       },
       getJwtSecret(),
-      { expiresIn: "7d" }
+      { expiresIn: "7d" },
     );
 
     res.cookie("token", token, {
       httpOnly: true,
       secure: false,
       sameSite: "lax",
-      maxAge: 7 * 24 * 60 * 60 * 1000
+      maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
     const { passwordHash, ...userWithoutPassword } = user.toObject();
     req.body = { user: userWithoutPassword };
 
+    logger.info({ userId: user._id }, "User logged in");
     next();
   } catch (err) {
-    console.log(err);
+    logger.error({ err }, "Login error");
     res.status(500).json({ message: "Server error" });
   }
 };
@@ -113,8 +122,10 @@ export const logout = (req: Request, res: Response) => {
   res.clearCookie("token", {
     httpOnly: true,
     secure: false,
-    sameSite: "lax"
+    sameSite: "lax",
   });
+
+  logger.info({ userId: (req as any).user?.userId }, "User logged out");
 
   return res.status(200).json({ message: "Logged out" });
 };
