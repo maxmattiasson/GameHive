@@ -7,18 +7,21 @@ process.on("unhandledRejection", (err) => {
 });
 import express from "express";
 import cors from "cors";
-import gamesRoutes from "./routes/gamesRoutes.js";
-import rawgRoutes from "./routes/rawgRoutes.js";
-import authRoutes from "./auth/authRoutes.js";
-import friendshipRoutes from "./routes/friendshipRoutes.js";
-
-import achievementsRoutes from "./routes/achievementsRoutes.js";
 import cookieParser from "cookie-parser";
-import "./models/Genre.js";
+import authRoutes from "./auth/authRoutes.js";
+import gamesRoutes from "./routes/gamesRoutes.js";
+import friendshipRoutes from "./routes/friendshipRoutes.js";
+import achievementsRoutes from "./routes/achievementsRoutes.js";
 import profileRoutes from "./routes/profileRoutes.js";
 import genresRoutes from "./routes/genresRoutes.js";
 import libraryRoutes from "./routes/libraryRoutes.js";
 import reviewRoutes from "./routes/reviewRoutes.js";
+import rawgRoutes from "./routes/rawgRoutes.js";
+
+import swaggerUi from "swagger-ui-express";
+import swaggerDoc from "./swagger.json" with { type: "json" };
+
+import "./models/Genre.js";
 
 import { errorMiddleware } from "./middleware/errorMiddleware.js";
 import { notFoundMiddleware } from "./middleware/notFoundMiddleware.js";
@@ -48,6 +51,7 @@ app.use("/api/friends", friendshipRoutes);
 app.use("/api/genres", genresRoutes);
 app.use("/api/achievements", achievementsRoutes);
 app.use("/api/reviews", reviewRoutes);
+app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerDoc));
 
 app.get("/", (req, res) => {
   res.send("funking tjoho");
