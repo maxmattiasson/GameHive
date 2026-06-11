@@ -7,6 +7,57 @@ import Review from "../models/Review.js";
 import Game from "../models/Game.js";
 import { ForbiddenError, NotFoundError } from "../errors/AppError.js";
 
+export const getUsers = async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    if (req.user?.role === "user" || req.user?.role === "dev") {
+      const users = await UserModel.find({ role: "user" }).select(
+        "username createdAt"
+      );
+      res.json(users);
+    }
+    if (req.user?.role === "admin") {
+      const users = await UserModel.find({
+        role: { $in: ["dev", "user"] }
+      }).select("username role createdAt");
+      res.json(users);
+    }
+  } catch (err) {
+    next(err);
+  }
+}
+
+export const searchUsersFreeText = async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    const { query } = req.validatedQuery as { query: string };
+
+    const escapedQuery = query.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&");
+
+    if (req.user?.role === "user" || req.user?.role === "dev") {
+      const users = await UserModel.find({
+        role: "user",
+        $or: [
+          { username: { $regex: escapedQuery, $options: "i" } },
+          { email: { $regex: escapedQuery, $options: "i" } }
+        ]
+      }).select("username createdAt");
+      res.json(users);
+    }
+    if (req.user?.role === "admin") {
+      const users = await UserModel.find({
+        role: { $in: ["dev", "user"] },
+        $or: [
+          { username: { $regex: escapedQuery, $options: "i" } },
+          { email: { $regex: escapedQuery, $options: "i" } }
+        ]
+      }).select("username role createdAt");
+      res.json(users);
+    }
+  } catch (err) {
+    next(err);
+  }
+}
+
+
 export const deleteUser = async (
   req: AuthRequest,
   res: Response,
