@@ -144,11 +144,12 @@ export function PlayerProfile() {
         </div>
       </div>
 
-      <ul className={styles.nav}>
-        <li>
-          <NavLink to="library">Library</NavLink>
-        </li>
-        <li>
+      {otherUser?.role === "user" && (
+        <ul className={styles.nav}>
+          <li>
+            <NavLink to="library">Library</NavLink>
+          </li>
+          <li>
           <NavLink to="friends">Friends</NavLink>
         </li>
         <li>
@@ -158,7 +159,8 @@ export function PlayerProfile() {
           <NavLink to="reviews">Reviews</NavLink>
         </li>
       </ul>
-
+      )}
+      
       <div className={styles.profileSection}>
         <Outlet />
       </div>
