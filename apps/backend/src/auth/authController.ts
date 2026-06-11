@@ -57,7 +57,7 @@ export const signup = async (req: Request, res: Response) => {
       user: userWithoutPassword,
     });
   } catch (err) {
-    logger.error({ err }, "Signup error");
+    logger.error({ err, operation: "signup" }, "Signup error");
     return res.status(500).json({ message: "Server error" });
   }
 };
@@ -113,7 +113,7 @@ export const login = async (
     logger.info({ userId: user._id }, "User logged in");
     next();
   } catch (err) {
-    logger.error({ err }, "Login error");
+    logger.error({ err, operation: "login" }, "Login error");
     res.status(500).json({ message: "Server error" });
   }
 };
