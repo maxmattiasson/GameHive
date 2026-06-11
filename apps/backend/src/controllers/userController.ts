@@ -26,6 +26,24 @@ export const getUsers = async (req: AuthRequest, res: Response, next: NextFuncti
   }
 }
 
+export const getUserById = async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    const id = req.params.id as string;
+
+    const user = await UserModel.findById(id).select(
+      "username role avatar userAchievements createdAt"
+    );
+
+    if (!user) {
+      throw new NotFoundError();
+    }
+
+    res.json(user);
+  } catch (err) {
+    next(err);
+  }
+}
+
 export const searchUsersFreeText = async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
     const { query } = req.validatedQuery as { query: string };
@@ -57,6 +75,36 @@ export const searchUsersFreeText = async (req: AuthRequest, res: Response, next:
   }
 }
 
+export const getUserLibrary = async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    const id = req.params.id as string;
+    const library = await LibraryModel.find({ userId: id }).populate({
+      path: "gameId",
+      select: "title thumb dev genres release multiplayer",
+      populate: { path: "genres", select: "name" }
+    });
+
+    res.json(library);
+  } catch (err) {
+    next(err);
+  }
+}
+
+export const getUserAchievements = async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    const id = req.params.id as string;
+
+    const user = await UserModel.findById(id).populate("userAchievements");
+
+    if (!user) {
+      throw new NotFoundError();
+    }
+
+    res.json(user.userAchievements);
+  } catch (err) {
+    next(err);
+  }
+}
 
 export const deleteUser = async (
   req: AuthRequest,
