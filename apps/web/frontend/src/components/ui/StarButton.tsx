@@ -40,17 +40,18 @@ export function StarButton({ game, showOnDetails = false }: StarButtonProps) {
       if (!confirmed) return;
       await removeFromLibrary(game._id);
       refetch();
-    } else {
-      const apiResponse = await addToLibrary(game._id);
-      const { newUnlocks } = apiResponse;
-      if (newUnlocks && newUnlocks.length > 0) {
-        notify(
-          `Achievement unlocked: ${newUnlocks.length} new achievement(s) unlocked!`
-        );
-      }
-      console.log("apiResponse from addToLibrary:", apiResponse);
-      refetch();
     }
+    // else {
+    //   const apiResponse = await addToLibrary(game._id);
+    //   const { newUnlocks } = apiResponse;
+    //   if (newUnlocks && newUnlocks.length > 0) {
+    //     notify(
+    //       `Achievement unlocked: ${newUnlocks.length} new achievement(s) unlocked!`
+    //     );
+    //   }
+    //   console.log("apiResponse from addToLibrary:", apiResponse);
+    //   refetch();
+    // }
   };
 
   return (
