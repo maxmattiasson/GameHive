@@ -33,7 +33,7 @@ export function GameDetails() {
   const { playtime, setPlaytime } = usePlaytime(id);
   const { user } = useAuth();
 
-  const [showReviewForm, setShowReviewForm] = useState(false);
+  // const [showReviewForm, setShowReviewForm] = useState(false);
 
   const {
     reviews,
@@ -183,7 +183,7 @@ export function GameDetails() {
                 existingReview={myReview}
                 onReviewCreated={() => {
                   refetchReviews();
-                  setShowReviewForm(false);
+                  // setShowReviewForm(false);
                 }}
               />
             ) : (
