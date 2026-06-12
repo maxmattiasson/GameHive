@@ -10,8 +10,10 @@ const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
 async function main() {
   await connectDB();
 
+  const PORT = process.env.PORT || 3000;
+
   app.listen(PORT, () => {
-    logger.info(`Server running on http://localhost:${PORT}`);
+    console.log(`Server running on port ${PORT}`);
   });
 }
 
