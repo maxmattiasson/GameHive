@@ -81,6 +81,9 @@ export function GameDetails() {
         <p>
           {data.genres.map((g) => g.name).join(", ")} - {data.dev}
         </p>
+        <p>
+          {data.desc || " "}
+        </p>
       </div>
 
       <div className="details-container">

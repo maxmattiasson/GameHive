@@ -38,6 +38,19 @@ export default function DevProfilePage() {
     setIsUploading(true);
   };
 
+  const handleFormSuccess = (savedGame: Game) => {
+  if (selectedGame) {
+    setGamesList((prev) =>
+      prev.map((game) =>
+        game._id === savedGame._id ? savedGame : game
+      )
+    );
+  } else {
+    setGamesList((prev) => [savedGame, ...prev]);
+  }
+  setSelectedGame(null);
+  setIsUploading(false);
+  };
   const handleDelete = async (id: string) => {
     try {
       await deleteGame(id);
@@ -67,6 +80,7 @@ export default function DevProfilePage() {
         <DevGameForm
           key={selectedGame?._id ?? "new"}
           selectedGame={selectedGame}
+          onSuccess={handleFormSuccess}
         />
       )}
 
