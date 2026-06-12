@@ -1,0 +1,939 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "GameHive API",
+    "version": "1.0.0",
+    "description": "Static OpenAPI documentation for the GameHive backend."
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/api",
+      "description": "Local development server"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "cookieAuth": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "token"
+      }
+    },
+    "schemas": {
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "AuthResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "user": {
+            "$ref": "#/components/schemas/UserProfile"
+          }
+        }
+      },
+      "UserSummary": {
+        "type": "object",
+        "properties": {
+          "username": { "type": "string" },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "role": { "type": "string" }
+        }
+      },
+      "UserProfile": {
+        "type": "object",
+        "properties": {
+          "_id": { "type": "string" },
+          "username": { "type": "string" },
+          "email": { "type": "string" },
+          "role": { "type": "string" },
+          "avatar": { "type": "string" },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "loginCount": { "type": "integer" },
+          "userAchievements": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Achievement" }
+          }
+        }
+      },
+      "Genre": {
+        "type": "object",
+        "properties": {
+          "_id": { "type": "string" },
+          "name": { "type": "string" },
+          "slug": { "type": "string" }
+        }
+      },
+      "Achievement": {
+        "type": "object",
+        "properties": {
+          "_id": { "type": "string" },
+          "title": { "type": "string" },
+          "description": { "type": "string" },
+          "criteria": { "type": "number" },
+          "category": { "type": "string" }
+        }
+      },
+      "Game": {
+        "type": "object",
+        "properties": {
+          "_id": { "type": "string" },
+          "title": { "type": "string" },
+          "ownerUserId": { "type": "string" },
+          "dev": { "type": "string" },
+          "release": { "type": "string", "format": "date-time" },
+          "genres": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Genre" }
+          },
+          "platforms": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "desc": { "type": "string" },
+          "thumb": { "type": "string" },
+          "multiplayer": { "type": "boolean" },
+          "avg_rating": { "type": "number" }
+        }
+      },
+      "GameCreate": {
+        "type": "object",
+        "required": ["title", "release", "genres", "platforms", "thumb", "multiplayer"],
+        "properties": {
+          "title": { "type": "string", "maxLength": 100 },
+          "release": { "type": "string", "format": "date" },
+          "genres": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "platforms": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": ["Multi", "Wii", "PS4", "Xbox One", "PC", "Switch", "Console", "PS5", "Xbox Series X/S", "Xbox", "Wii U"]
+            }
+          },
+          "desc": { "type": "string", "maxLength": 500 },
+          "thumb": { "type": "string" },
+          "multiplayer": { "type": "boolean" }
+        }
+      },
+      "GameUpdate": {
+        "type": "object",
+        "properties": {
+          "title": { "type": "string", "maxLength": 100 },
+          "release": { "type": "string", "format": "date" },
+          "genres": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "platforms": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": ["Multi", "Wii", "PS4", "Xbox One", "PC", "Switch", "Console", "PS5", "Xbox Series X/S", "Xbox", "Wii U"]
+            }
+          },
+          "desc": { "type": "string", "maxLength": 500 },
+          "thumb": { "type": "string" },
+          "multiplayer": { "type": "boolean" }
+        }
+      },
+      "ReviewCreate": {
+        "type": "object",
+        "properties": {
+          "text": { "type": "string", "maxLength": 1000 },
+          "rating": { "type": "integer", "minimum": 1, "maximum": 5 }
+        }
+      },
+      "ReviewUpdate": {
+        "type": "object",
+        "properties": {
+          "text": { "type": "string", "maxLength": 1000 },
+          "rating": { "type": "integer", "minimum": 1, "maximum": 5 }
+        }
+      },
+      "VoteReview": {
+        "type": "object",
+        "required": ["value"],
+        "properties": {
+          "value": { "type": "integer", "enum": [1, -1] }
+        }
+      },
+      "Review": {
+        "type": "object",
+        "properties": {
+          "_id": { "type": "string" },
+          "game": { "type": "string" },
+          "user": { "type": "string" },
+          "text": { "type": "string" },
+          "rating": { "type": "integer" },
+          "votes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "user": { "type": "string" },
+                "value": { "type": "integer", "enum": [1, -1] }
+              }
+            }
+          },
+          "createdAt": { "type": "string", "format": "date-time" }
+        }
+      },
+      "LibraryEntry": {
+        "type": "object",
+        "properties": {
+          "_id": { "type": "string" },
+          "userId": { "type": "string" },
+          "gameId": { "type": "string" },
+          "playtimeMinutes": { "type": "integer" }
+        }
+      },
+      "Friendship": {
+        "type": "object",
+        "properties": {
+          "_id": { "type": "string" },
+          "requester": { "type": "string" },
+          "recipient": { "type": "string" },
+          "status": { "type": "string", "enum": ["pending", "accepted"] },
+          "createdAt": { "type": "string", "format": "date-time" }
+        }
+      },
+      "LibraryAdd": {
+        "type": "object",
+        "required": ["gameId"],
+        "properties": {
+          "gameId": { "type": "string" }
+        }
+      },
+      "LibraryUpdate": {
+        "type": "object",
+        "properties": {
+          "playtimeMinutes": { "type": "integer", "minimum": 0 }
+        }
+      },
+      "FriendRequest": {
+        "type": "object",
+        "required": ["recipient"],
+        "properties": {
+          "recipient": { "type": "string" }
+        }
+      },
+      "AvatarUpdate": {
+        "type": "object",
+        "required": ["avatar"],
+        "properties": {
+          "avatar": { "type": "string" }
+        }
+      },
+      "LoginRequest": {
+        "type": "object",
+        "required": ["email", "password"],
+        "properties": {
+          "email": { "type": "string", "format": "email" },
+          "password": { "type": "string" }
+        }
+      },
+      "SignupRequest": {
+        "type": "object",
+        "required": ["username", "email", "password"],
+        "properties": {
+          "username": { "type": "string", "minLength": 2, "maxLength": 20 },
+          "email": { "type": "string", "format": "email" },
+          "password": { "type": "string", "minLength": 6 }
+        }
+      }
+    },
+    "parameters": {
+      "IdParam": {
+        "name": "id",
+        "in": "path",
+        "required": true,
+        "schema": { "type": "string" }
+      },
+      "GameIdParam": {
+        "name": "gameId",
+        "in": "path",
+        "required": true,
+        "schema": { "type": "string" }
+      },
+      "ReviewIdParam": {
+        "name": "reviewId",
+        "in": "path",
+        "required": true,
+        "schema": { "type": "string" }
+      }
+    }
+  },
+  "paths": {
+    "/auth/login": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Login user",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/LoginRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login successful",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AuthResponse" }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid credentials",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } }
+          }
+        }
+      }
+    },
+    "/auth/signup": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Create a new account",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/SignupRequest" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User created",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AuthResponse" }
+              }
+            }
+          },
+          "400": {
+            "description": "User already exists or validation failed",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } }
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Logout current user",
+        "responses": {
+          "200": {
+            "description": "Logged out",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } }
+          }
+        }
+      }
+    },
+    "/auth/me": {
+      "get": {
+        "tags": ["Auth"],
+        "summary": "Get currently authenticated user",
+        "security": [{ "cookieAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "Authenticated user info",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/UserProfile" } } }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } }
+          }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "List users",
+        "security": [{ "cookieAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "List of users",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/UserSummary" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/search": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Search users by query",
+        "security": [{ "cookieAuth": [] }],
+        "parameters": [
+          {
+            "name": "query",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "minLength": 1, "maxLength": 100 }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Search results",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/UserSummary" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Get a user by ID",
+        "security": [{ "cookieAuth": [] }],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "responses": {
+          "200": {
+            "description": "User data",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/UserProfile" } } }
+          },
+          "404": {
+            "description": "User not found",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Users"],
+        "summary": "Delete a user by ID",
+        "security": [{ "cookieAuth": [] }],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "responses": {
+          "200": {
+            "description": "User deleted",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } }
+          }
+        }
+      }
+    },
+    "/users/{id}/library": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Get a user's library",
+        "security": [{ "cookieAuth": [] }],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "responses": {
+          "200": {
+            "description": "User library entries",
+            "content": { "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/LibraryEntry" } } } }
+          }
+        }
+      }
+    },
+    "/users/{id}/achievements": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Get achievements for a user",
+        "security": [{ "cookieAuth": [] }],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "responses": {
+          "200": {
+            "description": "User achievements",
+            "content": { "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/Achievement" } } } }
+          }
+        }
+      }
+    },
+    "/users/{id}/reviews": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Get reviews written by a user",
+        "security": [{ "cookieAuth": [] }],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "responses": {
+          "200": {
+            "description": "User reviews",
+            "content": { "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/Review" } } } }
+          }
+        }
+      }
+    },
+    "/users/me/avatar": {
+      "patch": {
+        "tags": ["Users"],
+        "summary": "Update avatar for authenticated user",
+        "security": [{ "cookieAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/AvatarUpdate" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Avatar updated",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } }
+          }
+        }
+      }
+    },
+    "/games": {
+      "get": {
+        "tags": ["Games"],
+        "summary": "List all games",
+        "responses": {
+          "200": {
+            "description": "List of games",
+            "content": { "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/Game" } } } }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Games"],
+        "summary": "Create a new game",
+        "security": [{ "cookieAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/GameCreate" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Game created",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Game" } } }
+          }
+        }
+      }
+    },
+    "/games/my-games": {
+      "get": {
+        "tags": ["Games"],
+        "summary": "List games owned by authenticated developer",
+        "security": [{ "cookieAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "Developer owned games",
+            "content": { "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/Game" } } } }
+          }
+        }
+      }
+    },
+    "/games/{id}": {
+      "get": {
+        "tags": ["Games"],
+        "summary": "Get game details",
+        "parameters": [{ "$ref": "#/components/parameters/IdParam" }],
+        "responses": {
+          "200": {
+            "description": "Game details",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Game" } } }
+          }
+        }
+      },
+      "patch": {
+        "tags": ["Games"],
+        "summary": "Update a game",
+        "security": [{ "cookieAuth": [] }],
+        "parameters": [{ "$ref": "#/components/parameters/IdParam" }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/GameUpdate" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Game updated",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Game" } } }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Games"],
+        "summary": "Delete a game",
+        "security": [{ "cookieAuth": [] }],
+        "parameters": [{ "$ref": "#/components/parameters/IdParam" }],
+        "responses": {
+          "200": {
+            "description": "Game deleted",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } }
+          }
+        }
+      }
+    },
+    "/games/{gameId}/reviews": {
+      "get": {
+        "tags": ["Reviews"],
+        "summary": "List reviews for a game",
+        "parameters": [{ "$ref": "#/components/parameters/GameIdParam" }],
+        "responses": {
+          "200": {
+            "description": "Game reviews",
+            "content": { "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/Review" } } } }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Reviews"],
+        "summary": "Create a review for a game",
+        "security": [{ "cookieAuth": [] }],
+        "parameters": [{ "$ref": "#/components/parameters/GameIdParam" }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ReviewCreate" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Review created",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Review" } } }
+          }
+        }
+      }
+    },
+    "/library": {
+      "get": {
+        "tags": ["Library"],
+        "summary": "Get current user's library",
+        "security": [{ "cookieAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "Library entries",
+            "content": { "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/LibraryEntry" } } } }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Library"],
+        "summary": "Add a game to library",
+        "security": [{ "cookieAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/LibraryAdd" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Game added to library",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/LibraryEntry" } } }
+          }
+        }
+      }
+    },
+    "/library/{gameId}": {
+      "patch": {
+        "tags": ["Library"],
+        "summary": "Update library entry",
+        "security": [{ "cookieAuth": [] }],
+        "parameters": [{ "$ref": "#/components/parameters/GameIdParam" }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/LibraryUpdate" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Library entry updated",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/LibraryEntry" } } }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Library"],
+        "summary": "Remove a game from library",
+        "security": [{ "cookieAuth": [] }],
+        "parameters": [{ "$ref": "#/components/parameters/GameIdParam" }],
+        "responses": {
+          "200": {
+            "description": "Library entry removed",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } }
+          }
+        }
+      }
+    },
+    "/friends/requests": {
+      "post": {
+        "tags": ["Friendship"],
+        "summary": "Send a friend request",
+        "security": [{ "cookieAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/FriendRequest" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Friend request sent",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Friendship"],
+        "summary": "Get pending friend requests",
+        "security": [{ "cookieAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "Pending requests",
+            "content": { "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/Friendship" } } } }
+          }
+        }
+      }
+    },
+    "/friends/requests/{id}/accept": {
+      "patch": {
+        "tags": ["Friendship"],
+        "summary": "Accept a friend request",
+        "security": [{ "cookieAuth": [] }],
+        "parameters": [{ "$ref": "#/components/parameters/IdParam" }],
+        "responses": {
+          "200": {
+            "description": "Request accepted",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } }
+          }
+        }
+      }
+    },
+    "/friends/requests/{id}": {
+      "delete": {
+        "tags": ["Friendship"],
+        "summary": "Reject a friend request",
+        "security": [{ "cookieAuth": [] }],
+        "parameters": [{ "$ref": "#/components/parameters/IdParam" }],
+        "responses": {
+          "200": {
+            "description": "Request rejected",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } }
+          }
+        }
+      }
+    },
+    "/friends/{id}": {
+      "delete": {
+        "tags": ["Friendship"],
+        "summary": "Remove a friend",
+        "security": [{ "cookieAuth": [] }],
+        "parameters": [{ "$ref": "#/components/parameters/IdParam" }],
+        "responses": {
+          "200": {
+            "description": "Friend removed",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Friendship"],
+        "summary": "Get friends for a user",
+        "security": [{ "cookieAuth": [] }],
+        "parameters": [{ "$ref": "#/components/parameters/IdParam" }],
+        "responses": {
+          "200": {
+            "description": "Friends list",
+            "content": { "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/UserSummary" } } } }
+          }
+        }
+      }
+    },
+    "/friends": {
+      "get": {
+        "tags": ["Friendship"],
+        "summary": "Get the current user's friends",
+        "security": [{ "cookieAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "Friends list",
+            "content": { "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/UserSummary" } } } }
+          }
+        }
+      }
+    },
+    "/reviews/{reviewId}": {
+      "delete": {
+        "tags": ["Reviews"],
+        "summary": "Delete a review",
+        "security": [{ "cookieAuth": [] }],
+        "parameters": [{ "$ref": "#/components/parameters/ReviewIdParam" }],
+        "responses": {
+          "200": {
+            "description": "Review deleted",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } }
+          }
+        }
+      },
+      "patch": {
+        "tags": ["Reviews"],
+        "summary": "Update a review",
+        "security": [{ "cookieAuth": [] }],
+        "parameters": [{ "$ref": "#/components/parameters/ReviewIdParam" }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ReviewUpdate" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Review updated",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Review" } } }
+          }
+        }
+      }
+    },
+    "/reviews/{reviewId}/vote": {
+      "post": {
+        "tags": ["Reviews"],
+        "summary": "Vote on a review",
+        "security": [{ "cookieAuth": [] }],
+        "parameters": [{ "$ref": "#/components/parameters/ReviewIdParam" }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/VoteReview" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Vote added",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Reviews"],
+        "summary": "Remove a vote from a review",
+        "security": [{ "cookieAuth": [] }],
+        "parameters": [{ "$ref": "#/components/parameters/ReviewIdParam" }],
+        "responses": {
+          "200": {
+            "description": "Vote removed",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } }
+          }
+        }
+      }
+    },
+    "/achievements": {
+      "get": {
+        "tags": ["Achievements"],
+        "summary": "List all achievements",
+        "responses": {
+          "200": {
+            "description": "Achievement list",
+            "content": { "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/Achievement" } } } }
+          }
+        }
+      }
+    },
+    "/profile": {
+      "get": {
+        "tags": ["Profile"],
+        "summary": "Get authenticated profile",
+        "security": [{ "cookieAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "Current user profile",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/UserProfile" } } }
+          }
+        }
+      }
+    },
+    "/profile/dev": {
+      "get": {
+        "tags": ["Profile"],
+        "summary": "Get authenticated developer profile",
+        "security": [{ "cookieAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "Developer profile",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/UserProfile" } } }
+          }
+        }
+      }
+    },
+    "/genres": {
+      "get": {
+        "tags": ["Genres"],
+        "summary": "List all genres",
+        "responses": {
+          "200": {
+            "description": "Genre list",
+            "content": { "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/Genre" } } } }
+          }
+        }
+      }
+    },
+    "/rawg": {
+      "get": {
+        "tags": ["RAWG"],
+        "summary": "Search external RAWG game data",
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "RAWG external API response",
+            "content": { "application/json": { "schema": { "type": "object" } } }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { login, signup, logout } from "./authController.js" 
+import { login, signup, logout } from "./authController.js";
 import { authMiddleware, AuthRequest } from "./authMiddleware.js";
 import { checkLoginCount } from "../middleware/achievementMiddleware.js";
 import UserModel from "../models/User.js";
@@ -12,44 +12,49 @@ import {
   NotFoundError,
 } from "../errors/index.js";
 import { NextFunction } from "express";
+import logger from "../logger.js";
 
- 
 const router = Router();
 
-router.post("/login", validateRequest({ body: loginSchema}), login, checkLoginCount, (req, res) => {
-  res.status(200).json({
+router.post(
+  "/login",
+  validateRequest({ body: loginSchema }),
+  login,
+  checkLoginCount,
+  (req, res) => {
+    res.status(200).json({
       message: "Login successful",
-      user: { ...req.body.user }
-  });
-});
+      user: { ...req.body.user },
+    });
+  },
+);
 router.post("/signup", validateRequest({ body: signupSchema }), signup);
 router.post("/logout", logout);
 
-
 // Protected route
 router.get("/me", authMiddleware, async (req: AuthRequest, res, next) => {
+  try {
+    const userId = req.user?.userId;
 
-    try {
-        const userId = req.user?.userId;
+    if (!userId) {
+      throw new UnauthorizedError("Unauthorized");
+    }
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+      throw new ValidationError("Invalid user ID");
+    }
 
-        if (!userId) {
-          throw new UnauthorizedError("Unauthorized");
-        }
-        if (!mongoose.Types.ObjectId.isValid(userId)) {
-          throw new ValidationError("Invalid user ID");
-        }
-    
-        const user = await UserModel.findById(userId).select("-passwordHash");
-    
-        if (!user) {
-          throw new NotFoundError("User not found");
-        }
-        
-        res.status(200).json(user);
-      } catch (err) {
-        next(err);
-      }
-    });
+    const user = await UserModel.findById(userId).select("-passwordHash");
+
+    if (!user) {
+      throw new NotFoundError("User not found");
+    }
+
+    logger.info({ userId }, "User fetched own profile");
+
+    res.status(200).json(user);
+  } catch (err) {
+    next(err);
+  }
+});
 
 export default router;
-

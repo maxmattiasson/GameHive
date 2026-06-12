@@ -8,12 +8,13 @@ import { useNotifications } from "../../hooks/useNotifications";
 
 interface StarButtonProps {
   game: Game;
+  showOnDetails?: boolean;
 }
 
-export function StarButton({ game }: StarButtonProps) {
+export function StarButton({ game, showOnDetails = false }: StarButtonProps) {
   const { id } = useParams();
   const { notify } = useNotifications();
-  if (id) return null;
+  if (id && !showOnDetails) return null;
 
   const [isInLibrary, setIsInLibrary] = useState(false);
   const { data: playerLibrary, refetch } = useLibrary();
@@ -41,8 +42,8 @@ export function StarButton({ game }: StarButtonProps) {
       refetch();
     } else {
       const apiResponse = await addToLibrary(game._id);
-      const {newUnlocks} = apiResponse
-      if(newUnlocks && newUnlocks.length > 0) {
+      const { newUnlocks } = apiResponse;
+      if (newUnlocks && newUnlocks.length > 0) {
         notify(
           `Achievement unlocked: ${newUnlocks.length} new achievement(s) unlocked!`
         );
