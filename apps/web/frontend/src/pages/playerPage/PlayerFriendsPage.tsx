@@ -1,12 +1,17 @@
 import { useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { slugify } from "../../helpers/slugify";
 import { useAuth } from "../../hooks/useAuth";
 import {
   usePendingRequests,
   useFriends,
-  useFriendsByUserId
+  useFriendsByUserId,
 } from "../../hooks/useFriends";
 import { FriendRequestActions } from "../../components/ui/FriendRequestActions";
 import styles from "./PlayerFriendsPage.module.css";
+import UserSearchField from "../../components/ui/UsersSearchField";
+import { removeFriend } from "../../services/friendshipService";
+import Button from "../../components/ui/Button";
 
 export function PlayerFriendsPage() {
   const { id } = useParams();
@@ -16,7 +21,7 @@ export function PlayerFriendsPage() {
   const {
     data: pendingRequests,
     loading: pendingLoading,
-    refetch: pendingRefetch
+    refetch: pendingRefetch,
   } = usePendingRequests();
 
   const ownFriends = useFriends();
@@ -24,9 +29,19 @@ export function PlayerFriendsPage() {
   const friends = id ? otherFriends.data : ownFriends.data;
   const friendsLoading = id ? otherFriends.loading : ownFriends.loading;
   const friendsRefetch = ownFriends.refetch;
+  const profileUserId = id ? id.match(/[0-9a-f]{24}$/i)?.[0] : user?._id;
 
   if (pendingLoading || friendsLoading)
     return <p className={styles.empty}>Loading...</p>;
+
+  async function handleRemoveFriend(friendshipId: string) {
+    try {
+      await removeFriend(friendshipId);
+      friendsRefetch();
+    } catch (err) {
+      console.error(err);
+    }
+  }
 
   return (
     <section className={styles.section}>
@@ -43,7 +58,9 @@ export function PlayerFriendsPage() {
                     {request.requester.username[0]}
                   </div>
                   <span className={styles.username}>
-                    {request.requester.username}
+                    <a href={`/users/${request.requester._id}`}>
+                      {request.requester.username}
+                    </a>
                   </span>
                   <div className={styles.requestActions}>
                     <FriendRequestActions
@@ -69,19 +86,38 @@ export function PlayerFriendsPage() {
           <ul className={styles.list}>
             {friends.map((friendship) => {
               const friend =
-                friendship.requester._id === user?._id
+                friendship.requester._id === profileUserId
                   ? friendship.recipient
                   : friendship.requester;
 
               return (
                 <li key={friendship._id} className={styles.card}>
                   <div className={styles.avatar}>{friend.username[0]}</div>
-                  <span className={styles.username}>{friend.username}</span>
+                  <span className={styles.username}>
+                    <Link
+                      to={`/users/${slugify(friend.username)}-${friend._id}`}
+                    >
+                      {friend.username}
+                    </Link>
+                  </span>
+                  {isOwnProfile && (
+                    <Button
+                      color="vote"
+                      onClick={() => handleRemoveFriend(friendship._id)}
+                    >
+                      Remove
+                    </Button>
+                  )}
                 </li>
               );
             })}
           </ul>
         )}
+      </div>
+
+      <div>
+        <h2 className={styles.heading}>Find More Friends</h2>
+        <UserSearchField />
       </div>
     </section>
   );

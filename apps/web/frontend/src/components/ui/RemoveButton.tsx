@@ -8,6 +8,7 @@ interface RemoveButtonProps {
   disabled?: boolean;
   children?: ReactNode;
   id?: string;
+  self?: string;
 }
 
 export default function RemoveButton({
@@ -16,12 +17,13 @@ export default function RemoveButton({
   onDelete,
   disabled,
   children,
-  id
+  id,
+  self
 }: RemoveButtonProps) {
   const handleDelete = () => {
     if (gameId) {
       const confirmed = window.confirm(
-        "Are you sure you want to delete this game? This can not be undone!"
+        "Are you sure you want to delete this game? This CANNOT be undone!"
       );
       if (confirmed) {
         onDelete(gameId);
@@ -30,7 +32,7 @@ export default function RemoveButton({
     }
     if (reviewId) {
       const confirmed = window.confirm(
-        "Are you sure you want to delete this review? This can not be undone!"
+        "Are you sure you want to delete this review? This CANNOT be undone!"
       );
       if (confirmed) {
         onDelete(reviewId);
@@ -38,11 +40,20 @@ export default function RemoveButton({
       return;
     }
     if (id) {
-      const confirmed = window.confirm(
-        "Are you sure you want to delete this user? This can not be undone!"
+      const confirmed = window.prompt(
+        "Are you sure you want to delete this user and all their data? This CANNOT be undone!"
       );
-      if (confirmed) {
+      if (confirmed === "delete") {
         onDelete(id);
+      }
+      return;
+    }
+    if (self) {
+      const confirmed = window.prompt(
+        "Are you sure you want to delete your account? This will remove all your game collection, you reviews, playing time and achievements and CANNOT BE UNDONE! If you still want to be deleted, type in 'delete' in this box and click OK."
+      );
+      if (confirmed === "delete") {
+        onDelete(self);
       }
       return;
     }

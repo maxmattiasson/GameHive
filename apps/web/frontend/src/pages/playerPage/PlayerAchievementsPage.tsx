@@ -9,7 +9,8 @@ import styles from "./PlayerAchievementsPage.module.css";
 
 export function PlayerachievementsPage() {
   const { user } = useAuth();
-  const { id } = useParams();
+  const { id: slug } = useParams();
+  const id = slug?.match(/[0-9a-f]{24}$/i)?.[0];
 
   const visitedAchievements = useUserAchievements(id);
   const userAchievementIds = id

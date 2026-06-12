@@ -4,66 +4,79 @@ import { useState, useEffect } from "react";
 import DevGamesList from "../components/games/DevGamesList/DevGamesList";
 import { getDevsOwnGames, deleteGame } from "../services/gameService";
 import type { Game } from "../types/game";
-import styles from "./DevProfilePage.module.css"
+import styles from "./DevProfilePage.module.css";
+import { useNavigate } from "react-router-dom";
+import Button from "../components/ui/Button";
 
-export default function DevProfilePage(){
-    const [isUploading, setIsUploading] = useState(false);
-    const [gamesList, setGamesList] = useState<Game[]>([]);
-    const [selectedGame, setSelectedGame] = useState<Game | null>(null);
+export default function DevProfilePage() {
+  const [isUploading, setIsUploading] = useState(false);
+  const [gamesList, setGamesList] = useState<Game[]>([]);
+  const [selectedGame, setSelectedGame] = useState<Game | null>(null);
 
-    const { user, loading } = useAuth();
-    
+  const { user, loading } = useAuth();
+  const navigate = useNavigate();
 
-
-    useEffect(() => {
-        if (loading) return;
-        if (!user) return;
-
-        const fetchGames = async () => {
-            try {
-                const data = await getDevsOwnGames();
-                setGamesList(data)
-            } catch (err) {
-                console.error(err)
-            }
-        }
-
-        fetchGames();
-    },[loading, user])
-
-    const handleEdit = (game: Game) => {
-        setSelectedGame(game);
-        setIsUploading(true);
-      };
-    
-    const handleDelete = async (id: string) => {
-    try {
-        await deleteGame(id);
-        setGamesList(prev => prev.filter(game => game._id !== id));
-        console.log("deleted game with id:", id);
+  useEffect(() => {
+    if (loading) return;
+    if (!user || user.role !== "dev") {
+      navigate("/");
+      return;
+    }
+    const fetchGames = async () => {
+      try {
+        const data = await getDevsOwnGames();
+        setGamesList(data);
       } catch (err) {
         console.error(err);
       }
     };
+    fetchGames();
+  }, [loading, user, navigate]);
 
-    const handleToggleForm = () => {
-        setSelectedGame(null);
-        setIsUploading((prev) => !prev);
-      };
+  const handleEdit = (game: Game) => {
+    setSelectedGame(game);
+    setIsUploading(true);
+  };
 
-      
-    return (
-        <section className={styles.DevPage}>
-            <h1>DEV PAGE</h1>
-            <p>{user?.username}</p>
+  const handleDelete = async (id: string) => {
+    try {
+      await deleteGame(id);
+      setGamesList((prev) => prev.filter((game) => game._id !== id));
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
-            <button onClick={handleToggleForm}>Upload game</button>
+  const handleToggleForm = () => {
+    setSelectedGame(null);
+    setIsUploading((prev) => !prev);
+  };
 
-            {isUploading && <DevGameForm key={selectedGame?._id ?? "new"} selectedGame={selectedGame} />}
+  return (
+    <section className={styles.page}>
+      <div>
+        <h1 className={styles.heading}>Dev Page</h1>
+        <p className={styles.username}>{user?.username}</p>
+      </div>
 
-            <div className={styles.DevGameList}>
-                <DevGamesList onDelete={handleDelete} onEdit={handleEdit} games={gamesList}/>
-            </div>
-        </section>
-    )
+      <Button color="primary" onClick={handleToggleForm}>
+        {isUploading ? "Cancel" : "Upload game"}
+      </Button>
+
+      {isUploading && (
+        <DevGameForm
+          key={selectedGame?._id ?? "new"}
+          selectedGame={selectedGame}
+        />
+      )}
+
+      <div className={styles.gameList}>
+        <DevGamesList
+          onDelete={handleDelete}
+          onEdit={handleEdit}
+          games={gamesList}
+        />
+      </div>
+    </section>
+  );
 }

@@ -15,7 +15,6 @@ export class AppError extends Error {
 }
 
 // 400 - Validation error, faulty in-data
-
 export class ValidationError extends AppError {
   errors: any[];
 
@@ -25,8 +24,7 @@ export class ValidationError extends AppError {
   }
 }
 
-// 401 - Authorization is required (useable in week 7)
-
+// 401 - Authorization is required
 export class UnauthorizedError extends AppError {
   errors: any[];
 
@@ -39,8 +37,7 @@ export class UnauthorizedError extends AppError {
   }
 }
 
-// 403 - Access Denied (usable in week 7)
-
+// 403 - Access Denied 
 export class ForbiddenError extends AppError {
   constructor(message: string = "Access Denied") {
     super(message, 403);
@@ -48,7 +45,6 @@ export class ForbiddenError extends AppError {
 }
 
 // 404 - Not found
-
 export class NotFoundError extends AppError {
   constructor(message: string = "The resource could not be located") {
     super(message, 404);

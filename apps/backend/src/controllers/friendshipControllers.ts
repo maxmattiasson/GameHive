@@ -20,6 +20,10 @@ async function sendFriendRequest(
   }
   const { recipient } = result.data;
 
+  if (requester === recipient) {
+    return next(new ValidationError("You can't add yourself as a friend"));
+  }
+
   try {
     const friendship = await FriendshipModel.create({
       requester,
@@ -71,7 +75,7 @@ async function acceptFriendRequest(
     const friendship = await FriendshipModel.findOneAndUpdate(
       { _id: id, recipient: userId, status: "pending" },
       { status: "accepted" },
-      { new: true },
+      { returnDocument: "after" },
     );
 
     if (!friendship) {
@@ -109,6 +113,36 @@ async function rejectFriendRequest(
     }
 
     return res.status(200).json({ message: "Friend request rejected" });
+  } catch (err) {
+    next(err);
+  }
+}
+
+async function removeFriend(
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction,
+) {
+  const userId = req.user!.userId;
+
+  const result = friendshipParamsSchema.safeParse(req.params);
+  if (!result.success) {
+    return next(new ValidationError());
+  }
+  const { id } = result.data;
+
+  try {
+    const friendship = await FriendshipModel.findOneAndDelete({
+      _id: id,
+      status: "accepted",
+      $or: [{ requester: userId }, { recipient: userId }],
+    });
+
+    if (!friendship) {
+      return res.status(404).json({ message: "Friend not found" });
+    }
+
+    return res.status(200).json({ message: "Friend removed" });
   } catch (err) {
     next(err);
   }
@@ -161,6 +195,7 @@ export {
   getPendingRequests,
   acceptFriendRequest,
   rejectFriendRequest,
+  removeFriend,
   getFriends,
   getFriendsByUserId,
 };

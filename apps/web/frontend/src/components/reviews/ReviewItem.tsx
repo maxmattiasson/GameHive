@@ -17,19 +17,21 @@ export default function ReviewItem({
   currentUserId,
   onVote,
   onDelete,
-  showGameTitle = false,
+  showGameTitle = false
 }: ReviewItemProps) {
   const { user } = useAuth();
 
   const helpfulCount = review.votes.filter((v) => v.value === 1).length;
   const notHelpfulCount = review.votes.filter((v) => v.value === -1).length;
-  const isOwnReview = review.user._id === currentUserId;
+  const isOwnReview = review.user?._id === currentUserId;
   const isAdmin = user?.role === "admin";
 
   return (
     <article className={styles.reviewCont}>
       {showGameTitle && review.game && (
-        <h3 className={styles.gameTitle}>{review.game.title}</h3>
+        <h3 className={styles.gameTitle}>
+          <a href={`/games/${review.game._id}`}>{review.game.title}</a>
+        </h3>
       )}
       <div className={styles.reviewHeader}>
         {isAdmin && onDelete && (
@@ -38,7 +40,11 @@ export default function ReviewItem({
           </RemoveButton>
         )}
       </div>
-      <p className={styles.reviewerName}>{review.user.username}</p>
+      <p className={styles.reviewerName}>
+        <a href={`/users/${review.user?._id}`}>
+          {review.user?.username ?? "Deleted user"}
+        </a>
+      </p>
       {review.rating !== undefined && (
         <p className={styles.rating}>Rating: {review.rating}/5</p>
       )}

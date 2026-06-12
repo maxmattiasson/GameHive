@@ -6,6 +6,11 @@ import Game from "../models/Game.js";
 import { z } from "zod";
 import { createReviewSchema, voteReviewSchema, updateReviewSchema } from "../schemas/review.schema.js";
 import { gameIdParamsSchema, reviewIdParamsSchema, idParamSchema } from "../schemas/common.schemas.js";
+import {
+  NotFoundError,
+  ForbiddenError,
+  UnauthorizedError,
+} from "../errors/AppError.js";
 
 export const createReview = async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
@@ -13,8 +18,10 @@ export const createReview = async (req: AuthRequest, res: Response, next: NextFu
     const { gameId } = req.validatedParams as z.infer<typeof gameIdParamsSchema>
     const userId = req.user?.userId;
 
-    if (!userId) {
-      return res.status(401).json({ message: "Unauthorized" });
+    const game = await Game.findById(gameId);
+
+    if (!game) {
+      throw new NotFoundError("Game not found");
     }
 
     const review = new Review({
@@ -61,18 +68,15 @@ export const deleteReview = async (
     const userId = req.user?.userId;
     const { reviewId } = req.validatedParams as z.infer<typeof reviewIdParamsSchema>;
 
-    if (!userId) {
-      return res.status(401).json({ message: "Unauthorized" });
-    }
-
     const review = await Review.findById(reviewId);
 
     if (!review) {
-      return res.status(404).json({ message: "Review not found" });
+      throw new NotFoundError("Review not found");
     }
 
+
     if (review.user.toString() !== userId && req.user?.role !== "admin") {
-      return res.status(403).json({ message: "Forbidden" });
+      throw new ForbiddenError("You are not allowed to delete this review");
     }
 
 
@@ -97,14 +101,10 @@ export const voteReview = async (
     const { reviewId } = req.validatedParams as z.infer<typeof reviewIdParamsSchema>;
     const { value } = req.validatedBody as  z.infer<typeof voteReviewSchema>;;
     
-    if (!userId) {
-      return res.status(401).json({ message: "Unauthorized" });
-    }
-
     const review = await Review.findById(reviewId);
 
     if (!review) {
-      return res.status(404).json({ message: "Review not found" });
+      throw new NotFoundError("Review not found");
     }
 
     const existingVote = review.votes.find(
@@ -137,14 +137,10 @@ export const removeReviewVote = async (
     const userId = req.user?.userId;
     const { reviewId } = req.validatedParams as z.infer<typeof reviewIdParamsSchema>;
 
-    if (!userId) {
-      return res.status(401).json({ message: "Unauthorized" });
-    }
-
     const review = await Review.findById(reviewId);
 
     if (!review) {
-      return res.status(404).json({ message: "Review not found" });
+      throw new NotFoundError("Review not found");
     }
 
     review.votes = review.votes.filter(
@@ -187,21 +183,17 @@ export const updateReview = async (
   try {
     const userId = req.user?.userId;
 
-    if (!userId) {
-      return res.status(401).json({ message: "Unauthorized" });
-    }
-
     const { reviewId } = req.validatedParams as z.infer<typeof reviewIdParamsSchema>;
     const { text, rating } = req.validatedBody as z.infer<typeof updateReviewSchema>;
 
     const review = await Review.findById(reviewId);
 
     if (!review) {
-      return res.status(404).json({ message: "Review not found" });
+      throw new NotFoundError("Review not found");
     }
-
+  
     if (review.user.toString() !== userId && req.user?.role !== "admin") {
-      return res.status(403).json({ message: "Forbidden" });
+      throw new ForbiddenError("You are not allowed to update this review");
     }
 
     if (text !== undefined) review.text = text;

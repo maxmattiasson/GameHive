@@ -32,13 +32,12 @@ export function GameCard({ game, compact, featured }: Props) {
           alt={game.title}
         />
       </div>
-      <div className="inner">
+      <div className={styles.inner}>
         <h3>{game.title}</h3>
         <h4>{game.dev}</h4>
-        {!compact && <p className="meta">Rating: {game.avg_rating ? game.avg_rating.toFixed(1): "0"}/5</p>}
-        {!compact && <p className="desc">{game.desc}</p>}
+       {!compact && <p className="desc">{game.desc}</p>}
         {!compact && (
-          <p className={styles.meta}>Rating: {game.avg_rating}/10</p>
+          <p className={styles.meta}>Rating: {Number(game.avg_rating ?? 0).toFixed(1).replace(/\.0$/, "")}/5</p>
         )}
         {!compact && (
           <p className={styles.meta}>
