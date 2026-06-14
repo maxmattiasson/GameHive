@@ -6,7 +6,7 @@ import {
 import { useAuth } from "../hooks/useAuth";
 
 // get all player library games, show status and throw errors
-function useLibrary(): {
+export function useLibrary(): {
   data: LibraryEntry[];
   loading: boolean;
   error: string | null;
