@@ -7,156 +7,26 @@ import { idParamSchema, searchQuerySchema } from "../schemas/common.schemas.js";
 import { validateRequest } from "../middleware/validate.js";
 import { NotFoundError } from "../errors/AppError.js";
 import { Response, NextFunction } from "express";
-import { deleteUser } from "../controllers/userController.js";
+import { deleteUser, getUserById, getUserLibrary, getUsers, searchUsersFreeText, getUserAchievements } from "../controllers/userController.js";
 import updateAvatar from "../controllers/avatarController.js";
 import { avatarSchema } from "../schemas/avatar.schema.js";
 
 const router = Router();
 
-// Endpoint for listing all users
-// Users with "user" role can see only other users, while "admin" can see both "dev" and "user"
-router.get(
-  "/",
-  authMiddleware,
-  async (req: AuthRequest, res: Response, next: NextFunction) => {
-    try {
-      if (req.user?.role === "user" || req.user?.role === "dev") {
-        const users = await UserModel.find({ role: "user" }).select(
-          "username createdAt"
-        );
-        res.json(users);
-      }
-      if (req.user?.role === "admin") {
-        const users = await UserModel.find({
-          role: { $in: ["dev", "user"] }
-        }).select("username role createdAt");
-        res.json(users);
-      }
-    } catch (err) {
-      next(err);
-    }
-  }
-);
+router.get("/", authMiddleware, getUsers);
 
-router.get(
-  "/search",
-  authMiddleware,
-  validateRequest({ query: searchQuerySchema }),
-  async (req: AuthRequest, res: Response, next: NextFunction) => {
-    try {
-      const { query } = req.validatedQuery as { query: string };
+router.get("/search", authMiddleware, validateRequest({ query: searchQuerySchema }), searchUsersFreeText);
 
-      const escapedQuery = query.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&");
+router.get("/:id", authMiddleware, validateRequest({ params: idParamSchema }), getUserById);
 
-      if (req.user?.role === "user" || req.user?.role === "dev") {
-        const users = await UserModel.find({
-          role: "user",
-          $or: [
-            { username: { $regex: escapedQuery, $options: "i" } },
-            { email: { $regex: escapedQuery, $options: "i" } }
-          ]
-        }).select("username createdAt");
-        res.json(users);
-      }
-      if (req.user?.role === "admin") {
-        const users = await UserModel.find({
-          role: { $in: ["dev", "user"] },
-          $or: [
-            { username: { $regex: escapedQuery, $options: "i" } },
-            { email: { $regex: escapedQuery, $options: "i" } }
-          ]
-        }).select("username role createdAt");
-        res.json(users);
-      }
-    } catch (err) {
-      next(err);
-    }
-  }
-);
+router.get("/:id/library", authMiddleware, validateRequest({ params: idParamSchema }), getUserLibrary);
 
-router.get(
-  "/:id",
-  authMiddleware,
-  validateRequest({ params: idParamSchema }),
-  async (req: AuthRequest, res: Response, next: NextFunction) => {
-    try {
-      const id = req.params.id as string;
+router.get("/:id/achievements", authMiddleware, validateRequest({ params: idParamSchema }), getUserAchievements);
 
-      const user = await UserModel.findById(id).select(
-        "username role avatar userAchievements createdAt"
-      );
+router.get("/:id/reviews", authMiddleware, validateRequest({ params: idParamSchema }), getUserReviews);
 
-      if (!user) {
-        throw new NotFoundError();
-      }
+router.delete("/:id", authMiddleware, validateRequest({ params: idParamSchema }), deleteUser);
 
-      res.json(user);
-    } catch (err) {
-      next(err);
-    }
-  }
-);
-
-router.get(
-  "/:id/library",
-  authMiddleware,
-  validateRequest({ params: idParamSchema }),
-  async (req: AuthRequest, res: Response, next: NextFunction) => {
-    try {
-      const id = req.params.id as string;
-      const library = await LibraryModel.find({ userId: id }).populate({
-        path: "gameId",
-        select: "title thumb dev genres release multiplayer",
-        populate: { path: "genres", select: "name" }
-      });
-
-      res.json(library);
-    } catch (err) {
-      next(err);
-    }
-  }
-);
-
-router.get(
-  "/:id/achievements",
-  authMiddleware,
-  validateRequest({ params: idParamSchema }),
-  async (req: AuthRequest, res: Response, next: NextFunction) => {
-    try {
-      const id = req.params.id as string;
-
-      const user = await UserModel.findById(id).populate("userAchievements");
-
-      if (!user) {
-        throw new NotFoundError();
-      }
-
-      res.json(user.userAchievements);
-    } catch (err) {
-      next(err);
-    }
-  }
-);
-
-router.get(
-  "/:id/reviews",
-  authMiddleware,
-  validateRequest({ params: idParamSchema }),
-  getUserReviews
-);
-
-router.delete(
-  "/:id",
-  authMiddleware,
-  validateRequest({ params: idParamSchema }),
-  deleteUser
-);
-
-router.patch(
-  "/me/avatar",
-  authMiddleware,
-  validateRequest({ body: avatarSchema }),
-  updateAvatar
-);
+router.patch("/me/avatar", authMiddleware, validateRequest({ body: avatarSchema }), updateAvatar);
 
 export default router;

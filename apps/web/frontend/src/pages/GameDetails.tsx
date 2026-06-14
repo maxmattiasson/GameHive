@@ -22,6 +22,7 @@ import { Link } from "react-router-dom";
 import { slugify } from "../helpers/slugify";
 
 import "./GameDetails.css";
+import { StarButton } from "../components/ui/StarButton";
 
 export function GameDetails() {
   const navigate = useNavigate();
@@ -74,6 +75,9 @@ export function GameDetails() {
       <div className="header" style={{ backgroundImage: `url(${data.thumb})` }}>
         <h1>{data.title}</h1>
         <p>Rating: {averageRating ? averageRating.toFixed(1) : "0"}/5</p>
+        <div className="star-button-wrapper">
+          <StarButton game={data} showOnDetails={true} />
+        </div>
         <p>
           {data.genres.map((g) => g.name).join(", ")} - {data.dev}
         </p>

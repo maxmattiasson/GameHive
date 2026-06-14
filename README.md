@@ -114,10 +114,13 @@ JWT_SECRET=your_secret
 RAWG_KEY=your_rawg_api_key
 ```
 
-Notes:
+**Notes:**
 
-- `MONGO_URI` and `JWT_SECRET` are required.
-- `RAWG_KEY` is required if you use `/api/rawg`.
+`MONGO_URI` and `JWT_SECRET` are required. To generate a secure `JWT_SECRET`, we recommend running the following command in your terminal: 
+```
+node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
+``` 
+`RAWG_KEY` is required if you use `/api/rawg`.
 
 ### 3. Start the project
 
@@ -167,6 +170,19 @@ Key route groups:
 - `/api/achievements`
 - `/api/genres`
 - `/api/rawg`
+
+## Swagger API Documentation
+
+The backend exposes static API docs at:
+
+- `http://localhost:3000/api/docs`
+
+This UI is driven by `apps/backend/src/swagger.json` and documents the available REST endpoints, request bodies, and response models.
+
+**Note:**
+
+- This tool is setup to only work in development mode on a local instance. It is not intended for production use but is a helpful reference for development and testing.
+- The documentation is manually maintained, so if changes are made to the API routes, the `swagger.json` file should be updated accordingly to keep the docs accurate.
 
 ## Contributing
 
