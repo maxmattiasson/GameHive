@@ -33,7 +33,7 @@ export function GameDetails() {
   const { playtime, setPlaytime } = usePlaytime(id);
   const { user } = useAuth();
 
-  const [showReviewForm, setShowReviewForm] = useState(false);
+  const [, setShowReviewForm] = useState(false);
 
   const {
     reviews,
