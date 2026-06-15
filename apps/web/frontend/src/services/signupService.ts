@@ -1,9 +1,11 @@
+import { API_BASE_URL } from "../config/api";
+
 export async function signupUser(formData: {
   username: string;
   email: string;
   password: string;
 }) {
-  const response = await fetch("/api/auth/signup", {
+  const response = await fetch(`${API_BASE_URL}/auth/signup`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     credentials: "include",
