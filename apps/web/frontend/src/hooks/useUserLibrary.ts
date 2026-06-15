@@ -10,7 +10,7 @@ export function useUserLibrary(idOrSlug: string | undefined) {
 
   useEffect(() => {
     if (!id) return;
-    fetch(`${API_BASE_URL}${id}/library`)
+    fetch(`${API_BASE_URL}/users/${id}/library`)
       .then((res) => res.json())
       .then((data) => setData(Array.isArray(data) ? data : []))
       .finally(() => setLoading(false));
