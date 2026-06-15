@@ -1,4 +1,5 @@
 import type { Game } from "../../../types/game";
+import { Link } from "react-router-dom";
 import styles from "./DevGamesList.module.css";
 import Button from "../../ui/Button";
 
@@ -17,9 +18,9 @@ export default function DevGamesList({ games, onEdit, onDelete }: Props) {
       ) : (
         games.map((game) => (
           <div key={game._id} className={styles.item}>
-            <a href={`/games/${game._id}`} className={styles.gameLink}>
+            <Link to={`/games/${game._id}`} className={styles.gameLink}>
               {game.title}
-            </a>
+            </Link>
             <div className={styles.actions}>
               <Button color="secondary" onClick={() => onEdit(game)}>
                 Edit

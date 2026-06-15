@@ -32,7 +32,7 @@ export function GameDetails() {
   const { playtime, setPlaytime } = usePlaytime(id);
   const { user } = useAuth();
 
-  // const [showReviewForm, setShowReviewForm] = useState(false);
+  const [, setShowReviewForm] = useState(false);
 
   const {
     reviews,
@@ -40,7 +40,7 @@ export function GameDetails() {
     reviewsError,
     refetchReviews,
     handleVote,
-    averageRating
+    averageRating,
   } = useReviews(id);
 
   const myReview = reviews.find((review) => review.user?._id === user?._id);
@@ -87,7 +87,8 @@ export function GameDetails() {
           <InfoCard>
             <ul>
               <li>
-                <span>Release</span>
+                <span>Release</span>const [, setShowReviewForm] =
+                useState(false);
                 <span className="bold">
                   {new Date(data.release).toLocaleDateString()}
                 </span>
