@@ -95,7 +95,9 @@ export function PlayerProfile() {
   useEffect(() => {
     if (!id) return;
 
-    fetch(`${API_BASE_URL}/users/${id}`)
+    fetch(`${API_BASE_URL}/users/${id}`, {
+      credentials: "include"
+    })
       .then((res) => res.json())
       .then((data) => setOtherUser(data));
   }, [id]);
