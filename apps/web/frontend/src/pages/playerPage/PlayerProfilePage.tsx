@@ -57,7 +57,7 @@ export function PlayerProfile() {
 
   const onSaveAvatar = async () => {
     try {
-      const res = await fetch("/api/users/me/avatar", {
+      const res = await fetch(`${API_BASE_URL}/users/me/avatar`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json"
