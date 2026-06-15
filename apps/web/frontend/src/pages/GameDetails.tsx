@@ -32,8 +32,6 @@ export function GameDetails() {
   const { playtime, setPlaytime } = usePlaytime(id);
   const { user } = useAuth();
 
-  const [, setShowReviewForm] = useState(false);
-
   const {
     reviews,
     reviewsLoading,
@@ -87,8 +85,8 @@ export function GameDetails() {
           <InfoCard>
             <ul>
               <li>
-                <span>Release</span>const [, setShowReviewForm] =
-                useState(false);
+                <span>Release</span>
+                
                 <span className="bold">
                   {new Date(data.release).toLocaleDateString()}
                 </span>
