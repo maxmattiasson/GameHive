@@ -46,9 +46,9 @@ export function GameCard({ game, compact, featured }: Props) {
         )}
         {!compact && (
           <div className={styles.badges}>
-            {game.genres.map((genre) => (
-              <Badge key={genre._id} label={genre.name} />
-            ))}
+          {(game.genres ?? []).map((genre) => (
+      <Badge key={genre._id} label={genre.name} />
+    ))}
             {game.multiplayer && <Badge label="Multiplayer" />}
           </div>
         )}

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import {
   getPlayerLibrary,
-  type LibraryEntry,
+  type LibraryEntry
 } from "../services/libraryService";
 import { useAuth } from "../hooks/useAuth";
 

@@ -10,7 +10,7 @@ type LibraryEntry = {
   userId: string;
   gameId: Game;
   playtimeMinutes: number;
-  newUnlocks?: unknown[];
+  newUnlocks?: string[]; // Optional field for new achievements unlocked when adding a game
 };
 
 // Extracts error messages from the library API response

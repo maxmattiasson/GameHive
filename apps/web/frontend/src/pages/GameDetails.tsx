@@ -1,5 +1,4 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useState } from "react";
 
 import { useGame } from "../hooks/useGame";
 import { usePlaytime } from "../hooks/usePlaytime";
@@ -184,7 +183,7 @@ export function GameDetails() {
                 existingReview={myReview}
                 onReviewCreated={() => {
                   refetchReviews();
-                  setShowReviewForm(false);
+                  // setShowReviewForm(false);
                 }}
               />
             ) : (
