@@ -9,7 +9,9 @@ export function useUserAchievements(id: string | undefined) {
   useEffect(() => {
     if (!id) return;
 
-    fetch(`${API_BASE_URL}/users/${id}/achievements`)
+    fetch(`${API_BASE_URL}/users/${id}/achievements`, {
+      credentials: "include",
+    })
       .then((res) => res.json())
       .then(setData)
       .finally(() => setLoading(false));
