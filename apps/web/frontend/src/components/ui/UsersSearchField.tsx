@@ -6,6 +6,7 @@ import styles from "./UsersSearchField.module.css";
 import parentStyles from "../../pages/playerPage/PlayerFriendsPage.module.css";
 import { Link } from "react-router-dom";
 import { slugify } from "../../helpers/slugify";
+import { API_BASE_URL } from "../../config/api";
 
 const getUsers = async (query: string): Promise<User[]> => {
   const trimmedQuery = query.trim();
@@ -15,7 +16,7 @@ const getUsers = async (query: string): Promise<User[]> => {
 
   try {
     const response = await fetch(
-      `/api/users/search?query=${encodeURIComponent(trimmedQuery)}`,
+      `${API_BASE_URL}/users/search?query=${encodeURIComponent(trimmedQuery)}`,
     );
     if (!response.ok) {
       return [];
