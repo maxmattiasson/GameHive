@@ -17,6 +17,7 @@ const getUsers = async (query: string): Promise<User[]> => {
   try {
     const response = await fetch(
       `${API_BASE_URL}/users/search?query=${encodeURIComponent(trimmedQuery)}`,
+      { credentials: "include" },
     );
     if (!response.ok) {
       return [];
