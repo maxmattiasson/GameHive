@@ -10,6 +10,7 @@ type LibraryEntry = {
   userId: string;
   gameId: Game;
   playtimeMinutes: number;
+  newUnlocks?: string[]; // Optional field for new achievements unlocked when adding a game
 };
 
 // Extracts error messages from the library API response
@@ -29,7 +30,7 @@ const parseApiError = async (res: Response, fallback: string) => {
 export const getPlayerLibrary = async (): Promise<LibraryEntry[]> => {
   const res = await fetch(API_URL, {
     method: "GET",
-    credentials: "include"
+    credentials: "include",
   });
 
   if (!res.ok) {
@@ -44,9 +45,9 @@ export const addToLibrary = async (gameId: string): Promise<LibraryEntry> => {
     method: "POST",
     credentials: "include",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify({ gameId })
+    body: JSON.stringify({ gameId }),
   });
 
   if (!res.ok) {
@@ -58,15 +59,15 @@ export const addToLibrary = async (gameId: string): Promise<LibraryEntry> => {
 
 export const updateLibraryEntry = async (
   gameId: string,
-  playtimeMinutes: number
+  playtimeMinutes: number,
 ): Promise<LibraryEntry> => {
   const res = await fetch(`${API_URL}/${gameId}`, {
     method: "PATCH",
     credentials: "include",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify({ playtimeMinutes })
+    body: JSON.stringify({ playtimeMinutes }),
   });
 
   if (!res.ok) {
@@ -79,7 +80,7 @@ export const updateLibraryEntry = async (
 export const removeFromLibrary = async (gameId: string): Promise<void> => {
   const res = await fetch(`${API_URL}/${gameId}`, {
     method: "DELETE",
-    credentials: "include"
+    credentials: "include",
   });
 
   if (!res.ok) {

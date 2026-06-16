@@ -7,6 +7,7 @@ import { AddFriendButton } from "../../components/ui/AddFriendButton";
 import styles from "./PlayerProfile.module.css";
 import Avatar from "../../components/ui/Avatar";
 import Button from "../../components/ui/Button";
+import {API_BASE_URL} from "../../config/api";
 
 export function PlayerProfile() {
   const { user, setUser, loading: authLoading, logout } = useAuth();
@@ -56,7 +57,7 @@ export function PlayerProfile() {
 
   const onSaveAvatar = async () => {
     try {
-      const res = await fetch("/api/users/me/avatar", {
+      const res = await fetch(`${API_BASE_URL}/users/me/avatar`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json"
@@ -94,7 +95,9 @@ export function PlayerProfile() {
   useEffect(() => {
     if (!id) return;
 
-    fetch(`/api/users/${id}`)
+    fetch(`${API_BASE_URL}/users/${id}`, {
+      credentials: "include"
+    })
       .then((res) => res.json())
       .then((data) => setOtherUser(data));
   }, [id]);

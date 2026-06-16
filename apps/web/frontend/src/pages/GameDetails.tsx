@@ -1,5 +1,4 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useState } from "react";
 
 import { useGame } from "../hooks/useGame";
 import { usePlaytime } from "../hooks/usePlaytime";
@@ -33,15 +32,13 @@ export function GameDetails() {
   const { playtime, setPlaytime } = usePlaytime(id);
   const { user } = useAuth();
 
-  const [showReviewForm, setShowReviewForm] = useState(false);
-
   const {
     reviews,
     reviewsLoading,
     reviewsError,
     refetchReviews,
     handleVote,
-    averageRating
+    averageRating,
   } = useReviews(id);
 
   const myReview = reviews.find((review) => review.user?._id === user?._id);
@@ -89,6 +86,7 @@ export function GameDetails() {
             <ul>
               <li>
                 <span>Release</span>
+                
                 <span className="bold">
                   {new Date(data.release).toLocaleDateString()}
                 </span>
@@ -183,7 +181,7 @@ export function GameDetails() {
                 existingReview={myReview}
                 onReviewCreated={() => {
                   refetchReviews();
-                  setShowReviewForm(false);
+                  // setShowReviewForm(false);
                 }}
               />
             ) : (

@@ -3,6 +3,8 @@ import styles from "./ReviewItem.module.css";
 import Button from "../ui/Button";
 import RemoveButton from "../ui/RemoveButton";
 import { useAuth } from "../../hooks/useAuth";
+import { Link } from "react-router-dom";
+import { slugify } from "../../helpers/slugify";
 
 type ReviewItemProps = {
   review: Review;
@@ -17,7 +19,7 @@ export default function ReviewItem({
   currentUserId,
   onVote,
   onDelete,
-  showGameTitle = false
+  showGameTitle = false,
 }: ReviewItemProps) {
   const { user } = useAuth();
 
@@ -30,7 +32,7 @@ export default function ReviewItem({
     <article className={styles.reviewCont}>
       {showGameTitle && review.game && (
         <h3 className={styles.gameTitle}>
-          <a href={`/games/${review.game._id}`}>{review.game.title}</a>
+          <Link to={`/games/${review.game._id}`}>{review.game.title}</Link>
         </h3>
       )}
       <div className={styles.reviewHeader}>
@@ -41,9 +43,11 @@ export default function ReviewItem({
         )}
       </div>
       <p className={styles.reviewerName}>
-        <a href={`/users/${review.user?._id}`}>
+        <Link
+          to={`/users/${slugify(review.user?.username ?? "")}-${review.user?._id}`}
+        >
           {review.user?.username ?? "Deleted user"}
-        </a>
+        </Link>
       </p>
       {review.rating !== undefined && (
         <p className={styles.rating}>Rating: {review.rating}/5</p>

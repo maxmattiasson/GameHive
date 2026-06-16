@@ -20,6 +20,7 @@
     "dev:both": "concurrently \"npm run dev:web\" \"npm run dev:backend\""
   },
   "dependencies": {
+    "cors": "^2.8.6",
     "mongodb": "^7.1.1",
     "swagger-jsdoc": "^6.3.0",
     "swagger-ui-express": "^5.0.1",

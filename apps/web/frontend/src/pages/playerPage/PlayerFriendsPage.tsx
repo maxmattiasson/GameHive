@@ -58,9 +58,11 @@ export function PlayerFriendsPage() {
                     {request.requester.username[0]}
                   </div>
                   <span className={styles.username}>
-                    <a href={`/users/${request.requester._id}`}>
+                    <Link
+                      to={`/users/${slugify(request.requester.username)}-${request.requester._id}`}
+                    >
                       {request.requester.username}
-                    </a>
+                    </Link>
                   </span>
                   <div className={styles.requestActions}>
                     <FriendRequestActions
