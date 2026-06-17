@@ -7,6 +7,7 @@ import type { Game } from "../types/game";
 import styles from "./DevProfilePage.module.css";
 import { useNavigate } from "react-router-dom";
 import Button from "../components/ui/Button";
+import { addToLibrary as addToLibrary, removeFromLibrary } from "../services/libraryService";
 
 export default function DevProfilePage() {
   const [isUploading, setIsUploading] = useState(false);
@@ -38,7 +39,7 @@ export default function DevProfilePage() {
     setIsUploading(true);
   };
 
-  const handleFormSuccess = (savedGame: Game) => {
+  const handleFormSuccess = async (savedGame: Game) => {
   if (selectedGame) {
     setGamesList((prev) =>
       prev.map((game) =>
@@ -47,14 +48,22 @@ export default function DevProfilePage() {
     );
   } else {
     setGamesList((prev) => [savedGame, ...prev]);
+    await addToLibrary(savedGame._id);
   }
   setSelectedGame(null);
   setIsUploading(false);
   };
+
   const handleDelete = async (id: string) => {
     try {
-      await deleteGame(id);
-      setGamesList((prev) => prev.filter((game) => game._id !== id));
+      const confirmed = window.confirm(
+        "Are you sure you want to delete this game? This CANNOT be undone!"
+      );
+      if (confirmed) {
+        await deleteGame(id);
+        setGamesList((prev) => prev.filter((game) => game._id !== id));
+        await removeFromLibrary(id);
+      }
     } catch (err) {
       console.error(err);
     }

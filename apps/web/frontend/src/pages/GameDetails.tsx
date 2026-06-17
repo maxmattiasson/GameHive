@@ -1,5 +1,4 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useState } from "react";
 
 import { useGame } from "../hooks/useGame";
 import { usePlaytime } from "../hooks/usePlaytime";
@@ -33,8 +32,6 @@ export function GameDetails() {
   const { playtime, setPlaytime } = usePlaytime(id);
   const { user } = useAuth();
 
-  const [showReviewForm, setShowReviewForm] = useState(false);
-
   const {
     reviews,
     reviewsLoading,
@@ -60,6 +57,7 @@ export function GameDetails() {
   if (!data) return <p>Game not found</p>;
 
   const isAdmin = user?.role === "admin";
+  const isDev = user?.role === "dev";
 
   const handleDeleteGame = async (gameId: string) => {
     try {
@@ -76,7 +74,7 @@ export function GameDetails() {
         <h1>{data.title}</h1>
         <p>Rating: {averageRating ? averageRating.toFixed(1) : "0"}/5</p>
         <div className="star-button-wrapper">
-          <StarButton game={data} showOnDetails={true} />
+          <StarButton game={data} showOnDetails={!isDev && !isAdmin} />
         </div>
         <p>
           {data.genres.map((g) => g.name).join(", ")} - {data.dev}
@@ -186,7 +184,6 @@ export function GameDetails() {
                 existingReview={myReview}
                 onReviewCreated={() => {
                   refetchReviews();
-                  setShowReviewForm(false);
                 }}
               />
             ) : (

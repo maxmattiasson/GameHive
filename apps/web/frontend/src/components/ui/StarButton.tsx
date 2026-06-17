@@ -48,7 +48,6 @@ export function StarButton({ game, showOnDetails = false }: StarButtonProps) {
           `Achievement unlocked: ${newUnlocks.length} new achievement(s) unlocked!`
         );
       }
-      console.log("apiResponse from addToLibrary:", apiResponse);
       refetch();
     }
   };

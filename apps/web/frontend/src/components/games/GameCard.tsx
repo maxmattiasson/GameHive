@@ -4,6 +4,7 @@ import { StarButton } from "../ui/StarButton";
 import styles from "./GameCard.module.css";
 import { slugify } from "../../helpers/slugify";
 import { Link } from "react-router-dom";
+import { useAuth } from "../../hooks/useAuth";
 
 interface Props {
   game: Game;
@@ -12,6 +13,10 @@ interface Props {
 }
 
 export function GameCard({ game, compact, featured }: Props) {
+  const { user } = useAuth();
+  const isDev = user?.role === "dev";
+  const isAdmin = user?.role === "admin";
+
   const cardClass = [
     styles.card,
     compact ? styles.compact : "",
@@ -23,9 +28,11 @@ export function GameCard({ game, compact, featured }: Props) {
   return (
     <div className={cardClass}>
       <div className={styles.imageWrapper}>
-        <div className={styles.starButton}>
-          <StarButton game={game} />
-        </div>
+        {!isDev && !isAdmin && (
+          <div className={styles.starButton}>
+            <StarButton game={game} />
+          </div>
+        )}
         <img
           className={styles.image}
           src={game.thumb || "..."}

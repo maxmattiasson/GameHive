@@ -144,7 +144,7 @@ export function PlayerProfile() {
         </div>
       </div>
 
-      {otherUser?.role === "user" && (
+      { otherUser?.role !== "dev" && (
         <ul className={styles.nav}>
           <li>
             <NavLink to="library">Library</NavLink>
