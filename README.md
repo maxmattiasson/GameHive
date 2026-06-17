@@ -18,10 +18,17 @@ Delivered:
 ## Project Documents
 
 - [Users Data Flows](USERS_DATA_FLOWS.md)
-- [Friends Data Flows](FRIENDS_DATA_FLOWS.md)
-- [Documentation](DOKUMENTATION.md)
-- [Project Description](PROJEKTBESKRIVNING.md)
 
+  Graphs of the signup och login flows, showing how user data is processed and stored in the system.
+
+- [Friends Data Flows](FRIENDS_REQUEST_AND_ACCEPT_PROCESS.md)
+
+  Graphs of the friend request and accept process, showing a good example of API interactions and data flows between users and the system.
+
+- [GDPR Compliance](GDPR.md)
+
+  Overview of how user data is stored, logged, and protected in compliance with GDPR regulations.
+  
 ## Monorepo Structure
 
 ```text
@@ -33,49 +40,49 @@ GameHive/
 
 ## Implemented Features
 
-- Authentication
+**Authentication**
 - Signup, login, logout, and "me" endpoint
 - JWT cookie-based sessions
 - Role-based authorization (user, dev, admin)
 
-- Games
+**Games**
 - List and filter games
 - Get game by id
 - Create/update/delete games (role-protected)
 - Dev-only endpoint for "my games"
 
-- Library
+**Library**
 - Get own library
 - Add game to library
 - Update playtime
 - Remove game from library
 
-- Reviews
+**Reviews**
 - Create review per game
 - List reviews per game
 - Update and delete own review (admin override)
 - Vote helpful/not helpful and remove vote
 - Automatic game average rating updates
 
-- Friends
+**Friends**
 - Send friend request
 - List pending requests
 - Accept/reject requests
 - Remove friend
 - List own friends and friends by user id
 
-- Users & Profile
+**Users & Profile**
 - List/search users (role-aware output)
 - Get user profile by id
 - Get user library, achievements, and reviews
 - Update own avatar
 - Delete user with related data cleanup
 
-- Achievements & Genres
+**Achievements & Genres**
 - List achievements
 - List genres
 
-- External Data
+**External Data**
 - RAWG proxy endpoint for game search
 
 ## Tech Stack
@@ -170,6 +177,8 @@ Key route groups:
 - `/api/achievements`
 - `/api/genres`
 - `/api/rawg`
+
+
 
 ## Swagger API Documentation
 
