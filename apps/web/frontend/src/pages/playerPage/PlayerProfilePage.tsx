@@ -32,7 +32,9 @@ export function PlayerProfile() {
     console.log(id);
     try {
       await deleteUser(id);
-      await logout()
+      if(!isAdmin) {
+        await logout();
+      }
       navigate(isAdmin ? "/admin" : "/");
     } catch (error) {
       console.error(error);
