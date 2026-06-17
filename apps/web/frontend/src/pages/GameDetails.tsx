@@ -38,7 +38,7 @@ export function GameDetails() {
     reviewsError,
     refetchReviews,
     handleVote,
-    averageRating
+    averageRating,
   } = useReviews(id);
 
   const myReview = reviews.find((review) => review.user?._id === user?._id);
@@ -79,9 +79,7 @@ export function GameDetails() {
         <p>
           {data.genres.map((g) => g.name).join(", ")} - {data.dev}
         </p>
-        <p>
-          {data.desc || " "}
-        </p>
+        <p className="description">{data.desc}</p>
       </div>
 
       <div className="details-container">
@@ -90,6 +88,7 @@ export function GameDetails() {
             <ul>
               <li>
                 <span>Release</span>
+                
                 <span className="bold">
                   {new Date(data.release).toLocaleDateString()}
                 </span>
