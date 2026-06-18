@@ -57,6 +57,7 @@ export function GameDetails() {
   if (!data) return <p>Game not found</p>;
 
   const isAdmin = user?.role === "admin";
+  const isDev = user?.role === "dev";
 
   const handleDeleteGame = async (gameId: string) => {
     try {
@@ -73,11 +74,12 @@ export function GameDetails() {
         <h1>{data.title}</h1>
         <p>Rating: {averageRating ? averageRating.toFixed(1) : "0"}/5</p>
         <div className="star-button-wrapper">
-          <StarButton game={data} showOnDetails={true} />
+          <StarButton game={data} showOnDetails={!isDev && !isAdmin} />
         </div>
         <p>
           {data.genres.map((g) => g.name).join(", ")} - {data.dev}
         </p>
+        <p className="description">{data.desc}</p>
       </div>
 
       <div className="details-container">
@@ -181,7 +183,6 @@ export function GameDetails() {
                 existingReview={myReview}
                 onReviewCreated={() => {
                   refetchReviews();
-                  // setShowReviewForm(false);
                 }}
               />
             ) : (

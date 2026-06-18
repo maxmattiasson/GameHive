@@ -8,9 +8,10 @@ import Button from "../../ui/Button";
 
 type Props = {
   selectedGame: Game | null;
+  onSuccess: (savedGame: Game) => void;
 };
 
-export default function DevGameForm({ selectedGame }: Props) {
+export default function DevGameForm({ selectedGame, onSuccess }: Props) {
   const [title, setTitle] = useState(selectedGame?.title ?? "");
   const [release, setRelease] = useState(
     selectedGame?.release
@@ -40,11 +41,16 @@ export default function DevGameForm({ selectedGame }: Props) {
       thumb,
     };
     try {
-      if (selectedGame) {
-        await updateGame(selectedGame._id, newGame);
-      } else {
-        await createGame(newGame);
-      }
+      const result = selectedGame
+        ? await updateGame(selectedGame._id, newGame)
+        : await createGame(newGame);
+      onSuccess?.(result);
+      // if (selectedGame) {
+      //   await updateGame(selectedGame._id, newGame);
+      // } else {
+      //   await createGame(newGame);
+      //   onSuccess();
+      // }
       setTitle("");
       setDesc("");
       setRelease("");

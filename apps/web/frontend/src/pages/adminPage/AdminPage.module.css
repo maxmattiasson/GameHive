@@ -1,10 +1,16 @@
 .page {
-  max-width: 40rem;
+  max-width: 800px;
   margin: 5rem auto;
   padding: 0 var(--space-4);
   display: flex;
   flex-direction: column;
-  gap: var(--space-5);
+  gap: var(--space-7);
+}
+
+.titleBlock {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
 }
 
 .heading {
@@ -21,26 +27,109 @@
   color: #7a8a95;
 }
 
-.input {
-  font-size: var(--fs-1);
-  padding: var(--space-2) var(--space-3);
+.adminName {
+  color: #e05a5a;
+}
+
+.statsRow {
+  display: flex;
+  gap: var(--space-4);
+}
+
+.statCard {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-4) var(--space-5);
   background: var(--gray-800);
-  border: 1px solid var(--gray-600);
-  border-radius: var(--radius-1);
-  color: var(--white-100);
+  border: 1px solid rgba(224, 90, 90, 0.15);
+  border-radius: var(--radius-2);
+}
+
+.statValue {
+  font-family: var(--font-sans);
+  font-size: var(--fs-4);
+  font-weight: 700;
+  color: var(--accent-500);
+}
+
+.statLabel {
   font-family: var(--font-mono);
-  transition:
-    border-color 0.2s,
-    box-shadow 0.2s;
-  outline: none;
-  width: 100%;
-}
-
-.input:focus {
-  border-color: #e05a5a;
-  box-shadow: 0 0 0 3px rgba(224, 90, 90, 0.2);
-}
-
-.input::placeholder {
+  font-size: var(--fs-1);
   color: #7a8a95;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.sectionTitle {
+  font-family: var(--font-sans);
+  font-size: var(--fs-3);
+  margin: 0;
+}
+
+.sectionDesc {
+  margin: 0;
+  font-size: var(--fs-1);
+  font-family: var(--font-mono);
+  color: #7a8a95;
+}
+
+.userList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.userItem {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background: var(--gray-800);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: var(--radius-1);
+  font-family: var(--font-mono);
+  font-size: var(--fs-1);
+}
+
+.userName {
+  flex: 1;
+  color: var(--white-100);
+}
+
+.userRole {
+  color: #7a8a95;
+  font-size: var(--fs-1);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  width: 3rem;
+}
+
+.deleteBtn {
+  background: transparent;
+  border: 1px solid rgba(224, 90, 90, 0.4);
+  border-radius: var(--radius-round);
+  color: #e05a5a;
+  font-family: var(--font-mono);
+  font-size: var(--fs-1);
+  padding: var(--space-1) var(--space-3);
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    border-color 0.2s;
+}
+
+.deleteBtn:hover {
+  background: rgba(224, 90, 90, 0.1);
+  border-color: #e05a5a;
 }
